@@ -12,6 +12,15 @@
         android:theme="@style/Theme.PawSwipeApp"
         tools:targetApi="31">
         <activity
+            android:name=".AnimalListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MatchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateUserActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
