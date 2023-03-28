@@ -12,6 +12,9 @@
         android:theme="@style/Theme.PawSwipeApp"
         tools:targetApi="31">
         <activity
+            android:name=".RegisterUserAccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".AnimalListActivity"
             android:exported="false" />
         <activity

@@ -26,4 +26,13 @@
     <string name="requestSupportOption">Support</string>
     <string name="logoutOption">Abmelden</string>
 
+    <string name="pawSwipeTitle">PawSwipe</string>
+    <string name="registerButton">Registrieren</string>
+    <string name="toLoginButton">Zurück zum Login</string>
+    <string name="goUserButton">Nutzer</string>
+    <string name="goAnimalHomeButton">Tierheim</string>
+    <string name="emailTextView">E-Mail</string>
+    <string name="passwordTextView">Passwort</string>
+    <string name="confirmPasswordTextView">Passwort bestätigen</string>
+
 </resources>
