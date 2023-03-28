@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateUserProfileActivity">
+    tools:context=".CreateShelterActivity">
 
     <Button
         android:id="@+id/clearButton"
@@ -44,7 +44,7 @@
         app:layout_constraintVertical_bias="0.973" />
 
     <EditText
-        android:id="@+id/addressEditText"
+        android:id="@+id/shelterAddressEditText"
         android:layout_width="250dp"
         android:layout_height="48dp"
         android:layout_marginEnd="4dp"
@@ -59,16 +59,16 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPostalAddress"
+        android:id="@+id/plzEditText"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="50dp"
         android:ems="10"
         android:hint="PLZ"
         android:inputType="number"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/phoneNumberEditText"
-        app:layout_constraintEnd_toStartOf="@+id/addressEditText"
+        app:layout_constraintEnd_toStartOf="@+id/shelterAddressEditText"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -95,7 +95,7 @@
         android:hint="Homepage"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/addressEditText"
+        app:layout_constraintBottom_toTopOf="@+id/shelterAddressEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
