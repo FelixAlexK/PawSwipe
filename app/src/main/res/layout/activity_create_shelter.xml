@@ -30,7 +30,7 @@
     <EditText
         android:id="@+id/shelterEditText"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginBottom="50dp"
         android:ems="10"
         android:hint="Name des Tierheims"
@@ -38,16 +38,56 @@
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/ownerEditText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/homepageEditText"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="50dp"
+        android:ems="10"
+        android:hint="Homepage"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/shelterAddressEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/ownerEditText"
+        android:layout_width="350dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="50dp"
+        android:ems="10"
+        android:hint="Inhaber"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/homepageEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/phoneNumberEditText"
+        android:layout_width="350dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="184dp"
+        android:ems="10"
+        android:hint="Telefonnummer"
+        android:inputType="number"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/clearButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.973" />
+        tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/shelterAddressEditText"
         android:layout_width="250dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="4dp"
         android:layout_marginBottom="50dp"
         android:ems="10"
         android:hint="Wohnort"
@@ -55,7 +95,7 @@
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/phoneNumberEditText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.828"
+        app:layout_constraintHorizontal_bias="0.827"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -71,48 +111,5 @@
         app:layout_constraintEnd_toStartOf="@+id/shelterAddressEditText"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/ownerEditText"
-        android:layout_width="350dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="50dp"
-        android:ems="10"
-        android:hint="Inhaber"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/homepageEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/homepageEditText"
-        android:layout_width="350dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="50dp"
-        android:ems="10"
-        android:hint="Homepage"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/shelterAddressEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/phoneNumberEditText"
-        android:layout_width="350dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="116dp"
-        android:ems="10"
-        android:hint="Telefonnummer"
-        android:inputType="number"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/clearButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
