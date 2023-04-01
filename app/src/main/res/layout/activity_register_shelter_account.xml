@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterUserAccountActivity">
+    tools:context=".RegisterShelterAccountActivity">
 
     <TextView
         android:id="@+id/pawSwipeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:fontFamily="sans-serif"
         android:text="@string/pawSwipeTitle"
         android:textSize="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="#8965BC"
+        android:backgroundTint="#6200ED"
         android:text="@string/goUserButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/pawSwipeTitle" />
@@ -35,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:backgroundTint="#8865BB"
         android:text="@string/goAnimalHomeButton"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/pawSwipeTitle" />
@@ -115,11 +115,11 @@
         app:layout_constraintTop_toBottomOf="@+id/gotoRegisterButton" />
 
     <TextView
-        android:id="@+id/registerAsUserTextView"
+        android:id="@+id/registerAsShelterTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="@string/registerAsUserTextView"
+        android:text="@string/registerAsShelterTextView"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/emailInput"
         app:layout_constraintEnd_toEndOf="parent"
