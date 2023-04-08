@@ -4,26 +4,24 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.Toast
 import java.util.*
 
 class RegisterShelterAccountActivity : AppCompatActivity() {
+
+    private lateinit var gotoAnimalHomeButton : Button
+    private lateinit var registerButton : Button
+    private lateinit var backToLoginButton : Button
+    private lateinit var gotoUserRegistrationButton : Button
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_shelter_account)
 
-        val gotoUserButton = findViewById<Button>(R.id.gotoUserButton)
-        val gotoAnimalHomeButton = findViewById<Button>(R.id.gotoAnimalHomeButton)
-        val gotoRegisterButton = findViewById<Button>(R.id.gotoRegisterButton)
-        val backToLoginButton = findViewById<Button>(R.id.backToLoginButton)
+        initViewElements()
 
-        val errorTextView = findViewById<TextView>(R.id.errorTextView)
-
-        // checkInput()
         /*
         val emailInput = findViewById<EditText>(R.id.emailInput)
         val emailInputString = emailInput.text.toString().trim()
@@ -56,18 +54,22 @@ class RegisterShelterAccountActivity : AppCompatActivity() {
         }
          */
 
-        gotoRegisterButton.setOnClickListener {
+        registerButton.setOnClickListener {
             checkInput()
-            // just trying to get this compiled
+            try {
+                // further code following when database is established
+            } catch(e: java.lang.Exception) {
+                displayGeneralErrorMessage()
+            }
         }
 
         backToLoginButton.setOnClickListener {
-            /*
-           try {
+           /*
+            try {
                val intent = Intent(it.context, UserLoginActivity::class.java)
                startActivity(intent)
            } catch(e: java.lang.Exception) {
-                displayErrorMessage()
+                displayNetworkErrorMessage()
            }
             */
         }
@@ -76,7 +78,7 @@ class RegisterShelterAccountActivity : AppCompatActivity() {
             // does nothing because we are already in its Activity
         }
 
-        gotoUserButton.setOnClickListener {
+        gotoUserRegistrationButton.setOnClickListener {
             try {
                 val intent = Intent(it.context, RegisterUserAccountActivity::class.java)
                 startActivity(intent)
@@ -88,17 +90,38 @@ class RegisterShelterAccountActivity : AppCompatActivity() {
 
 
     }
+    private fun initViewElements() {
+        val gotoUserButton = findViewById<Button>(R.id.gotoUserRegistrationButton)
+        val gotoAnimalHomeButton = findViewById<Button>(R.id.gotoAnimalHomeButton)
+        val gotoRegisterButton = findViewById<Button>(R.id.registerButton)
+        val backToLoginButton = findViewById<Button>(R.id.backToLoginButton)
 
-    /**
-     * When trying to return to Activities where no sensitive data
-     * is being send to, such as back to Login.
-     */
+        val emailInput = findViewById<EditText>(R.id.emailInput)
+        val passwordInput = findViewById<EditText>(R.id.passwordInput)
+        val passwordConfirmInput = findViewById<EditText>(R.id.passwordConfirmInput)
+    }
+
+    /*
     private fun displayNetworkErrorMessage() {
         val errorTextView = findViewById<TextView>(R.id.errorTextView)
         errorTextView.setText("Etwas ist schiefgelaufen.  \n " +
                 "Ueberpruefe deine Verbindung \n" +
                 " oder versuche es später noch einmal")
         errorTextView.setVisibility(View.VISIBLE)
+    }
+     */
+
+    /**
+     * When trying to return to Activities where no sensitive data
+     * is being send to, such as back to Login.
+     */
+    private fun displayNetworkErrorMessage() {
+        Toast.makeText(this,"Überprüfe deine Netzwerkverbindung",
+            Toast.LENGTH_LONG).show()
+    }
+    private fun displayGeneralErrorMessage() {
+        Toast.makeText(this,"Irgendetwas ist falsch gelaufen",
+            Toast.LENGTH_LONG).show()
     }
 
     private fun checkInput() {
@@ -111,13 +134,30 @@ class RegisterShelterAccountActivity : AppCompatActivity() {
         val passwordConfirmInput = findViewById<EditText>(R.id.passwordConfirmInput)
         val passwordConfirmInputString = passwordConfirmInput.text.toString().trim()
 
+        // checks if any input field is empty
         if (emailInputString.isEmpty()
             || passwordInputString.isEmpty()
             || passwordConfirmInputString.isEmpty()) {
             // throw java.lang.IllegalArgumentException("")
-            displayNetworkErrorMessage()
+            emptyInputErrorMessage()
         }
+        isValidEmail(emailInputString)
     }
+    private fun emptyInputErrorMessage() {
+        Toast.makeText(this, "Eingabefelder können nicht leer sein",
+            Toast.LENGTH_LONG).show()
+    }
+    fun isValidEmail(emailInputString: String): Boolean {
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(emailInputString).matches()) {
+            return true
+        } else
+            Toast.makeText(this,"Ungültige E-Mail Adresse",
+                Toast.LENGTH_LONG).show()
+        return false
+    }
+
+
+
     /*
     private fun registerUser() {
         val emailInput = findViewById<EditText>(R.id.emailInput)
