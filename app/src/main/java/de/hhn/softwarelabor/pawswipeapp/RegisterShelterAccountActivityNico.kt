@@ -7,6 +7,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
 import java.util.*
 
 class RegisterShelterAccountActivityNico : AppCompatActivity() {
@@ -61,6 +65,40 @@ class RegisterShelterAccountActivityNico : AppCompatActivity() {
         registerButton.setOnClickListener {
             checkInput()
             try {
+
+                // @Nico this part needs to be refactored and cleared up as good as possible
+
+                val client = OkHttpClient()
+                val baseUrl = "http://45.146.253.199:8080"
+                val path = "/profile/create"
+                val url = baseUrl + path
+
+                val emailInput = findViewById<EditText>(R.id.emailInput)
+                val passwordInput = findViewById<EditText>(R.id.passwordInput)
+                val email = emailInput.text.toString()
+                val password = passwordInput.text.toString()
+
+                val json = """{"email": "${email}", "password": "${password}"  }""".trimIndent()
+                val body = json.toRequestBody("application/json".toMediaTypeOrNull())
+                val request = Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build()
+
+
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        val errorMessage = e.message
+                        // Print the error message to the console
+                        println("Request failed: -------------------------------- $errorMessage" )
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        println("SUCCESS ------------------------------")
+
+                    }
+                })
+
                 // further code following when database is established
             } catch(e: java.lang.Exception) {
                 displayGeneralErrorMessage()
