@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">PawSwipeApp</string>
 
+
+    <string name="chat_btn">Chats</string>
+    <string name="matching_btn">Matchen</string>
+    <string name="animalList_btn">Tierliste</string>
+    <string name="search_pt">Suchen</string>
+
     <string name="addPetProfileImageButton_text">Profilbild hinzufügen</string>
     <string name="petName_hint">Name</string>
     <string name="petSpecies_hint">Tierart</string>
@@ -10,6 +16,7 @@
     <string name="petPreExistingIllness_hint">Vorerkrankungen</string>
     <string name="cancelButton_text">Abbrechen</string>
     <string name="createButton_text">Tier erstellen</string>
+
 
     <string name="addProfilePictureButtonText">Profilbild hinzufügen</string>
     <string name="cancelButtonText">Abbrechen</string>
