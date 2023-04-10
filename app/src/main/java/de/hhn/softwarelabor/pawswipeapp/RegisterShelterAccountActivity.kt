@@ -15,6 +15,10 @@ class RegisterShelterAccountActivity : AppCompatActivity() {
     private lateinit var registerButton : Button
     private lateinit var backToLoginButton : Button
     private lateinit var gotoUserRegistrationButton : Button
+    private lateinit var gotoUserButton : Button
+    private lateinit var gotoRegisterButton : Button
+
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,14 +68,14 @@ class RegisterShelterAccountActivity : AppCompatActivity() {
         }
 
         backToLoginButton.setOnClickListener {
-           /*
-            try {
-               val intent = Intent(it.context, UserLoginActivity::class.java)
-               startActivity(intent)
-           } catch(e: java.lang.Exception) {
-                displayNetworkErrorMessage()
-           }
-            */
+            /*
+             try {
+                val intent = Intent(it.context, UserLoginActivity::class.java)
+                startActivity(intent)
+            } catch(e: java.lang.Exception) {
+                 displayNetworkErrorMessage()
+            }
+             */
         }
 
         gotoAnimalHomeButton.setOnClickListener {
@@ -86,15 +90,15 @@ class RegisterShelterAccountActivity : AppCompatActivity() {
                 displayNetworkErrorMessage()
             }
         }
-
-
-
     }
+
     private fun initViewElements() {
-        val gotoUserButton = findViewById<Button>(R.id.gotoUserRegistrationButton)
-        val gotoAnimalHomeButton = findViewById<Button>(R.id.gotoAnimalHomeButton)
-        val gotoRegisterButton = findViewById<Button>(R.id.registerButton)
-        val backToLoginButton = findViewById<Button>(R.id.backToLoginButton)
+        registerButton = findViewById<Button>(R.id.registerButton)
+        gotoUserButton = findViewById<Button>(R.id.gotoUserRegistrationButton)
+        gotoAnimalHomeButton = findViewById<Button>(R.id.gotoAnimalHomeButton)
+        gotoRegisterButton = findViewById<Button>(R.id.registerButton)
+        backToLoginButton = findViewById<Button>(R.id.backToLoginButton)
+        gotoUserRegistrationButton = findViewById(R.id.gotoUserRegistrationButton)
 
         val emailInput = findViewById<EditText>(R.id.emailInput)
         val passwordInput = findViewById<EditText>(R.id.passwordInput)
