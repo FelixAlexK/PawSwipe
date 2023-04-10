@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatActivity">
+
+    <TextView
+        android:id="@+id/chat"
+        android:layout_width="333dp"
+        android:layout_height="65dp"
+        android:text="Chat1"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/matching_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_pt"
+        app:layout_constraintVertical_bias="0.219" />
+
+    <Button
+        android:id="@+id/matching_btn"
+        android:layout_width="126dp"
+        android:layout_height="59dp"
+        android:text="@string/matching_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <Button
+        android:id="@+id/animalList_btn"
+        android:layout_width="126dp"
+        android:layout_height="59dp"
+        android:text="@string/animalList_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <Button
+        android:id="@+id/chat_btn"
+        android:layout_width="126dp"
+        android:layout_height="59dp"
+        android:backgroundTint="@android:color/holo_purple"
+        android:text="@string/chat_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <TextView
+        android:id="@+id/chat_tv"
+        android:layout_width="157dp"
+        android:layout_height="85dp"
+        android:text="@string/chat_btn"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.093"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025" />
+
+
+    <EditText
+        android:id="@+id/search_pt"
+        android:layout_width="289dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/search_pt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.212" />
+
+    <TextView
+        android:id="@+id/chat2"
+        android:layout_width="333dp"
+        android:layout_height="65dp"
+        android:text="Chat2"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/matching_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_pt"
+        app:layout_constraintVertical_bias="0.399" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

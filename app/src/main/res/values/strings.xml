@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PawSwipeApp</string>
+    <string name="chat_btn">Chats</string>
+    <string name="matching_btn">Matchen</string>
+    <string name="animalList_btn">Tierliste</string>
+    <string name="search_pt">Suchen</string>
 </resources>
