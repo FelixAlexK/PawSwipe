@@ -1,3 +1,40 @@
 <resources>
     <string name="app_name">PawSwipeApp</string>
+    <string name="addProfilePictureButtonText">Profilbild hinzufügen</string>
+    <string name="cancelButtonText">Abbrechen</string>
+    <string name="createUserButtonText">Profil erstellen</string>
+
+    <string name="matchingText">Matchen</string>
+    <string name="settingsDropDown">Settings</string>
+    <string name="chatsButton">Chats</string>
+    <string name="matchenButton">Matchen</string>
+    <string name="tierlisteButton">Tierliste</string>
+
+    <string name="tierliste">Tierliste</string>
+    <string name="search_hint">Suchen</string>
+    <string name="app_label">WhatIsThis</string>
+
+    <string name="animalNameText">Tiername</string>
+
+    <string name="editProfileOption">Profil bearbeiten</string>
+    <string name="editFilerOption">Filter bearbeiten</string>
+    <string name="messageSettingsOption">Nachrichteneinstellungen</string>
+    <string name="animalServicesOption">Tierdienste</string>
+    <string name="createAnimalOption">Tier erstellen</string>
+    <string name="editAnimalOption">Tier bearbeiten</string>
+    <string name="blockedUsersOption">Blockierte Nutzer</string>
+    <string name="requestSupportOption">Support</string>
+    <string name="logoutOption">Abmelden</string>
+
+    <string name="pawSwipeTitle">PawSwipe</string>
+    <string name="registerButton">Registrieren</string>
+    <string name="toLoginButton">Zurück zum Login</string>
+    <string name="goUserButton">Nutzer</string>
+    <string name="goAnimalHomeButton">Tierheim</string>
+    <string name="emailTextView">E-Mail</string>
+    <string name="passwordTextView">Passwort</string>
+    <string name="confirmPasswordTextView">Passwort bestätigen</string>
+    <string name="registerAsUserTextView">Als Nutzer registrieren:</string>
+    <string name="registerAsShelterTextView">---</string>
+
 </resources>
