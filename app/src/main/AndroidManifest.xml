@@ -12,19 +12,19 @@
         android:theme="@style/Theme.PawSwipeApp"
         tools:targetApi="31">
         <activity
-            android:name=".RegisterShelterAccountActivity"
+            android:name=".RegisterShelterAccountActivityNico"
             android:exported="false" />
         <activity
-            android:name=".RegisterUserAccountActivity"
+            android:name=".RegisterUserAccountActivityNico"
             android:exported="false" />
         <activity
-            android:name=".AnimalListActivity"
+            android:name=".AnimalListActivityNico"
             android:exported="false" />
         <activity
-            android:name=".MatchActivity"
+            android:name=".MatchActivityNico"
             android:exported="false" />
         <activity
-            android:name=".CreateUserActivity"
+            android:name=".CreateUserActivityNico"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

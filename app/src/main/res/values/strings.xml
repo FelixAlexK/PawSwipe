@@ -35,6 +35,6 @@
     <string name="passwordTextView">Passwort</string>
     <string name="confirmPasswordTextView">Passwort bestätigen</string>
     <string name="registerAsUserTextView">Als Nutzer registrieren:</string>
-    <string name="registerAsShelterTextView">Als Tierheim registrieren:</string>
+    <string name="registerAsShelterTextView">---</string>
 
 </resources>

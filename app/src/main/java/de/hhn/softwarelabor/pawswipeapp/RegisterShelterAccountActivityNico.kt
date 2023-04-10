@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import java.util.*
 
-class RegisterShelterAccountActivity : AppCompatActivity() {
+class RegisterShelterAccountActivityNico : AppCompatActivity() {
 
     private lateinit var gotoAnimalHomeButton : Button
     private lateinit var registerButton : Button
@@ -84,7 +84,7 @@ class RegisterShelterAccountActivity : AppCompatActivity() {
 
         gotoUserRegistrationButton.setOnClickListener {
             try {
-                val intent = Intent(it.context, RegisterUserAccountActivity::class.java)
+                val intent = Intent(it.context, RegisterUserAccountActivityNico::class.java)
                 startActivity(intent)
             } catch (e: java.lang.Exception) {
                 displayNetworkErrorMessage()
