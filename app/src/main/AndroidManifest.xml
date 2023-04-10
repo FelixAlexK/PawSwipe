@@ -47,6 +47,7 @@
             android:exported="false" />
         <activity
             android:name=".CreateUserActivityNico"
+
             android:exported="false" />
         <activity
             android:name=".MainActivity"
