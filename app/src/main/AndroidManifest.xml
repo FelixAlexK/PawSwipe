@@ -18,6 +18,15 @@
         android:usesCleartextTraffic="true"
 
         tools:targetApi="31">
+        <!--<activity
+            android:name=".SettingsActivity"
+            android:exported="false" />-->
+        <!--<activity
+            android:name=".ChatActivity"
+            android:exported="false" />-->
+        <!--<activity
+            android:name=".PetProfilActivity"
+            android:exported="false" />-->
         <activity
             android:name=".CreateShelterActivity"
             android:exported="false" />
@@ -25,7 +34,6 @@
             android:name=".CreateUserProfileActivity"
             android:exported="false" />
         <activity
-
             android:name=".RegisterShelterAccountActivityNico"
             android:exported="false" />
         <activity
@@ -49,7 +57,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
     </application>
 
 </manifest>
