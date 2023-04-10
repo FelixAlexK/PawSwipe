@@ -13,6 +13,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.util.*
 
+
 class RegisterShelterAccountActivityNico : AppCompatActivity() {
 
     private lateinit var gotoAnimalHomeButton : Button
@@ -62,6 +63,7 @@ class RegisterShelterAccountActivityNico : AppCompatActivity() {
         }
          */
 
+
         registerButton.setOnClickListener {
             checkInput()
             try {
@@ -95,6 +97,9 @@ class RegisterShelterAccountActivityNico : AppCompatActivity() {
 
                     override fun onResponse(call: Call, response: Response) {
                         println("SUCCESS ------------------------------")
+
+                        val intent = Intent(this@RegisterShelterAccountActivityNico, CreateUserProfileActivity::class.java)
+                        startActivity(intent)
 
                     }
                 })

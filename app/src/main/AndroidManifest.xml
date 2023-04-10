@@ -23,7 +23,8 @@
             android:exported="false" />
         <activity
             android:name=".CreateUserProfileActivity"
-
+            android:exported="false" />
+        <activity
             android:name=".RegisterShelterAccountActivityNico"
             android:exported="false" />
         <activity
