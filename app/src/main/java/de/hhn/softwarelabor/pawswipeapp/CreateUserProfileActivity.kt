@@ -16,6 +16,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_user_profile)
 
+        //Data Fields
         val prename : EditText = findViewById(R.id.prenameEditText)
         val name : EditText = findViewById(R.id.nameEditText)
         val age : EditText = findViewById(R.id.agesEditText)
@@ -34,6 +35,10 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
                 Toast.makeText(this@CreateUserProfileActivity, "Bitte ein Alter zwischen 18 und 110 Jahren auswählen", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
+            }
+
+            else{
+                Toast.makeText(this@CreateUserProfileActivity, "Profil erfolgreich angelegt", Toast.LENGTH_SHORT).show()
             }
 
 

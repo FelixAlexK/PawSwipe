@@ -32,6 +32,10 @@ class CreateShelterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            else{
+                Toast.makeText(this@CreateShelterActivity, "Profil erfolgreich angelegt", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         cancel.setOnClickListener {
