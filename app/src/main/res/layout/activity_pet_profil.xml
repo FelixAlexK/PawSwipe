@@ -159,17 +159,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/petBirthdayEditText"
+                <Button
+                    android:id="@+id/petBirthdayButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:minHeight="48dp"
-                    android:ems="10"
                     android:importantForAutofill="no"
-                    android:inputType="textPersonName"
-                    android:hint="@string/petBirthday_hint"
+                    android:minHeight="48dp"
+                    android:text="@string/birthdayButton_text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
