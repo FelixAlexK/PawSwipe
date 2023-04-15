@@ -5,19 +5,26 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
+import java.security.MessageDigest
 import java.util.*
 
 
 open class RegisterAccountActivity : AppCompatActivity() {
 
-    protected lateinit var gotoShelterRegistrationButton : Button
-    protected lateinit var registerButton : Button
-    protected lateinit var backToLoginButton : Button
-    protected lateinit var gotoUserRegistrationButton : Button
+    private lateinit var gotoShelterRegistrationButton : Button
+    private lateinit var registerButton : Button
+    private lateinit var backToLoginButton : Button
+    private lateinit var gotoUserRegistrationButton : Button
+    // We are either a shelter or a user. Overwritten in the subclasses
+    private var isShelter: Boolean = true
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +35,8 @@ open class RegisterAccountActivity : AppCompatActivity() {
 
 
         registerButton.setOnClickListener {
-            registerAccount()
+            // registerAccount()
+            testEncryption()
         }
         backToLoginButton.setOnClickListener {
             goBackToLoginActivity()
@@ -41,33 +49,48 @@ open class RegisterAccountActivity : AppCompatActivity() {
         }
     }
 
+    fun testEncryption() {
+        val emailInputString = findViewById<EditText>(R.id.emailInputField)
+        val passwordInputString = findViewById<EditText>(R.id.passwordInputField)
+        val email = emailInputString.text.toString()
+        val password = passwordInputString.text.toString()
+
+        // Email and password get hashed
+        val emailHashed = hashStringToSHA256(email)
+        val passwordHashed = hashStringToSHA256(password)
+
+        Log.i(RegisterAccountActivity::javaClass.name, "Email hash: " + emailHashed)
+        Log.i(RegisterAccountActivity::javaClass.name, "Password Hashed: " + passwordHashed)
+    }
+
     fun registerAccount() {
-        // if input isn't valid
+        // cancels registration when inputs are not valid
         if (!checkInput()) {
             return
         }
-        Toast.makeText(
-            this, "Bis jetzt erfolgreich",
-            Toast.LENGTH_LONG).show()
-        // makeRegisterRequest()
+        makeRegisterRequest()
     }
 
-    /*
-    fun makeRegisterRequest() {
+    private fun makeRegisterRequest() {
         try {
             // @Nico this part needs to be refactored and cleared up as good as possible
             val client = OkHttpClient()
             val baseUrl = "http://45.146.253.199:8080"
-            val path = "/profile/create"
+            val path = "/account/create"
             val url = baseUrl + path
 
-            val emailInput = findViewById<EditText>(R.id.emailInputField)
-            val passwordInput = findViewById<EditText>(R.id.passwordInputField)
-            val email = emailInput.text.toString()
-            val password = passwordInput.text.toString()
+            val emailInputString = findViewById<EditText>(R.id.emailInputField)
+            val passwordInputString = findViewById<EditText>(R.id.passwordInputField)
+            val email = emailInputString.text.toString()
+            val password = passwordInputString.text.toString()
 
-            val json = """{"email": "${email}", "password": "${password}"  }""".trimIndent()
+            // Email and password get hashed
+            val emailHashed = hashStringToSHA256(email)
+            val passwordHashed = hashStringToSHA256(password)
+
+            val json = """{"email": "${emailHashed}", "password": "${passwordHashed}"  }""".trimIndent()
             val body = json.toRequestBody("application/json".toMediaTypeOrNull())
+
             val request = Request.Builder()
                 .url(url)
                 .post(body)
@@ -84,11 +107,12 @@ open class RegisterAccountActivity : AppCompatActivity() {
                 override fun onResponse(call: Call, response: Response) {
                     println("SUCCESS ------------------------------")
 
-                    val intent = Intent(this@RegisterShelterAccountActivityNico, CreateUserProfileActivity::class.java)
-                    startActivity(intent)
 
                 }
             })
+
+            // everything is successful
+            proceedToProfileCreation()
 
             // further code following when database is established
         } catch(e: NetworkErrorException) {
@@ -97,8 +121,10 @@ open class RegisterAccountActivity : AppCompatActivity() {
             displayGeneralErrorMessage()
         }
     }
-    */
 
+    /**
+     * Redirects to other activities
+     */
     protected fun goBackToLoginActivity() {
         try {
                                                 // change this after testing
@@ -109,14 +135,21 @@ open class RegisterAccountActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     *  These will be overridden.
-     */
+    protected fun proceedToProfileCreation() {
+        if (isShelter) {
+            val intent = Intent(this, CreateShelterActivity::class.java)
+            startActivity(intent)
+        } else {
+            val intent = Intent(this, CreateUserProfileActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
     protected open fun goBackToUserRegistrationActivity() {
     }
     protected open fun goBackToShelterRegistrationActivity() {
     }
-
+    /** -------------------------------------------------------------------------------------- */
 
     protected fun initGUIElements() {
         try {
@@ -219,6 +252,18 @@ open class RegisterAccountActivity : AppCompatActivity() {
     protected fun passwordLengthTooShortErrorMessage() {
         Toast.makeText(this, "Passwort muss mindestens 8 Stellen lang sein",
             Toast.LENGTH_LONG).show()
+    }
+    /** -------------------------------------------------------------------------------------- */
+
+    /**
+     * Hashes data (for instance a password) to SHA-256
+     */
+    fun hashStringToSHA256(input: String): String {
+        val md = MessageDigest.getInstance("SHA-256")
+        val hashBytes = md.digest(input.toByteArray())
+        return hashBytes.joinToString("") { byte ->
+            "%02x".format(byte)
+        }
     }
 
 }

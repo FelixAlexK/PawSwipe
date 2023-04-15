@@ -10,6 +10,10 @@ import java.util.*
 
 
 class RegisterUserAccountActivityNico : RegisterAccountActivity() {
+
+    // we are not a shelter
+    private var isShelter: Boolean = false
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

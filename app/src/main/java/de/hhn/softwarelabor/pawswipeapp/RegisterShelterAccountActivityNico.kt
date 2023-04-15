@@ -17,6 +17,10 @@ import java.util.*
 
 
 class RegisterShelterAccountActivityNico : RegisterAccountActivity() {
+
+    // we are indeed a shelter
+    private var isShelter: Boolean = true
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

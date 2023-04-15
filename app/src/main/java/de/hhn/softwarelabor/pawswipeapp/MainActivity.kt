@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         /**
          * NUR fürs schnelle Testen, started in meiner Register Activity
          */
-        val intent = Intent(this, RegisterUserAccountActivityNico::class.java)
+        val intent = Intent(this, RegisterAccountActivity::class.java)
         startActivity(intent)
 
     }
