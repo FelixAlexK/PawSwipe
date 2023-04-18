@@ -13,43 +13,68 @@ import okhttp3.Response
 import java.io.IOException
 import java.util.Date
 
+interface UserProfileCallback {
+    fun onResponse(userProfile: UserProfileApi.UserProfileAnimal?, response: Response)
+    fun onFailure()
+}
 
 class UserProfileApi {
     private var client: OkHttpClient = OkHttpClient()
     private var baseUrl = "http://45.146.253.199:8080/profile"
     private var gson = Gson()
 
-    data class UserProfile(
-        val username: String?,
+    data class UserProfileAnimal(
+        val profileId: Int,
+        val username: String,
         val profilePicture: Array<Byte>?,
-        val description: String?,
+        val description: String,
         val password: String,
         val creationDate: Date?,
         val email: String,
-        val isCompleted: Boolean?,
+        val isCompleted: Boolean,
         val birthday: Date?,
-        val phoneNumber: String?,
-        val openingHours: String?,
-        val street: String?,
-        val country: String?,
-        val city: String?,
-        val streetNumber: Int?,
-        val homepage: String?,
-        val postalCode: Int?,
+        val phoneNumber: String,
+        val openingHours: String,
+        val street: String,
+        val country: String,
+        val city: String,
+        val streetNumber: Int,
+        val homepage: String,
+        val postalCode: Int,
+        val discriminator: String
+    )
+
+    data class UserProfileSimple(
+        val username: String,
+        val profilePicture: Array<Byte>?,
+        val description: String,
+        val password: String,
+        val creationDate: Date?,
+        val email: String,
+        val isCompleted: Boolean,
+        val birthday: Date?,
+        val phoneNumber: String,
+        val openingHours: String,
+        val street: String,
+        val country: String,
+        val city: String,
+        val streetNumber: Int,
+        val homepage: String,
+        val postalCode: Int,
         val discriminator: String
     )
 
 
     fun createUserProfile(
-        username: String?, profilePicture: Array<Byte>?, description: String?,
-        password: String, creationDate: Date?, email: String, isCompleted: Boolean?,
-        birthday: Date?, phoneNumber: String?, openingHours: String?, street: String?,
-        country: String?, city: String?, streetNumber: Int?, homepage: String?,
-        postalCode: Int?, discriminator: String
+        username: String, profilePicture: Array<Byte>?, description: String,
+        password: String, creationDate: Date?, email: String, isCompleted: Boolean,
+        birthday: Date?, phoneNumber: String, openingHours: String, street: String,
+        country: String, city: String, streetNumber: Int, homepage: String,
+        postalCode: Int, discriminator: String
     ) {
 
 
-        val userProfile = UserProfile(
+        val userProfile = UserProfileSimple(
             username,
             profilePicture,
             description,
@@ -82,8 +107,7 @@ class UserProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
-                response.code
-                Log.d(TAG, "Response body: $responseBody")
+                Log.d("response" , response.code.toString())
             }
 
             override fun onFailure(call: Call, e: IOException) {
@@ -107,14 +131,13 @@ class UserProfileApi {
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
-                response.code
-                Log.d("ids", responseBody.toString())
+                Log.d("response", response.code.toString())
             }
         })
 
     }
 
-    suspend fun getUserProfileByID(id: Int) {
+    fun getUserProfileByID(id: Int, callback: UserProfileCallback?) {
 
 
         val request = Request.Builder()
@@ -125,19 +148,23 @@ class UserProfileApi {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e(TAG, "Request failed", e)
+                callback?.onFailure()
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
-                response.code
-                Log.d("ids", responseBody.toString())
+                if (response.isSuccessful && responseBody != null) {
+                    val animalProfile =
+                        gson.fromJson(responseBody, UserProfileApi.UserProfileAnimal::class.java)
+                    callback?.onResponse(animalProfile, response)
+                } else {
+                    callback?.onFailure()
+                }
             }
 
         })
-
-
     }
+
 
     fun updateUserProfileByID(id: Int, map: Map<String, String>) {
 
@@ -158,8 +185,8 @@ class UserProfileApi {
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
-                response.code
-                Log.d("ids", responseBody.toString())
+                Log.d("response", response.code.toString())
+
             }
 
         })
@@ -183,8 +210,8 @@ class UserProfileApi {
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
-                response.code
-                Log.d("ids", response.code.toString())
+                Log.d("response", response.code.toString())
+
             }
 
         })
