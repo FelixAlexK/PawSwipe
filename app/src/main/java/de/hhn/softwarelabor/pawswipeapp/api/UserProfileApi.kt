@@ -19,7 +19,7 @@ class UserProfileApi {
     private var baseUrl = "http://45.146.253.199:8080/profile"
     private var gson = Gson()
 
-    private data class UserProfile(
+    data class UserProfile(
         val username: String,
         val profilePicture: Array<Byte>?,
         val description: String,
@@ -82,6 +82,7 @@ class UserProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                response.code
                 Log.d(TAG, "Response body: $responseBody")
             }
 
@@ -106,13 +107,14 @@ class UserProfileApi {
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                response.code
                 Log.d("ids", responseBody.toString())
             }
         })
 
     }
 
-    fun getUserProfileByID(id: Int) {
+    suspend fun getUserProfileByID(id: Int) {
 
 
         val request = Request.Builder()
@@ -128,6 +130,7 @@ class UserProfileApi {
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                response.code
                 Log.d("ids", responseBody.toString())
             }
 
@@ -136,7 +139,7 @@ class UserProfileApi {
 
     }
 
-    fun updateUserProfileByID(id: Int, map: Map<String,String>) {
+    fun updateUserProfileByID(id: Int, map: Map<String, String>) {
 
 
         val updateJson = gson.toJson(map)
@@ -155,6 +158,7 @@ class UserProfileApi {
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                response.code
                 Log.d("ids", responseBody.toString())
             }
 
@@ -179,6 +183,7 @@ class UserProfileApi {
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                response.code
                 Log.d("ids", response.code.toString())
             }
 

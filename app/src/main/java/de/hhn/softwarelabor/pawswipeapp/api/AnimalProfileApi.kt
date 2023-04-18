@@ -3,6 +3,7 @@ package de.hhn.softwarelabor.pawswipeapp.api
 import android.content.ContentValues
 import android.util.Log
 import com.google.gson.Gson
+import kotlinx.coroutines.Deferred
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -32,22 +33,20 @@ class AnimalProfileApi {
         val profile: Unit
     )
 
-
-     fun createAnimalProfile(
-         name: String?, species: String?, birthday: LocalDate?, illness: String?,
-         description: String?,
-         breed: String?, color: String?, gender: String?, profile: Unit
+    suspend fun createAnimalProfile(
+        name: String?, species: String?, birthday: LocalDate?, illness: String?,
+        description: String?,
+        breed: String?, color: String?, gender: String?, profile: Unit
     ) {
-
 
         val animalProfile = AnimalProfile(
             name, species, birthday, illness, description, breed, color, gender, profile
         )
 
 
-        val profileJson = gson.toJson(animalProfile)
-        val body = profileJson.toRequestBody("application/json; charset=utf-8".toMediaType())
-        Log.i("json", profileJson)
+        val animalProfileJson = gson.toJson(animalProfile)
+        val body = animalProfileJson.toRequestBody("application/json; charset=utf-8".toMediaType())
+        Log.i("json", animalProfileJson)
 
         val request = Request.Builder()
             .url("$baseUrl/create")
@@ -62,8 +61,83 @@ class AnimalProfileApi {
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                response.code
                 Log.d("ids", responseBody.toString())
             }
+        })
+
+
+    }
+
+    fun getAnimalProfileByID(id: Int){
+        val request = Request.Builder()
+            .url("$baseUrl/$id")
+            .get()
+            .build()
+
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e(ContentValues.TAG, "Request failed", e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                response.code
+                Log.d("ids", responseBody.toString())
+            }
+
+        })
+    }
+
+    fun updateAnimalProfileByID(id: Int, map: Map<String, String>) {
+
+
+        val updateJson = gson.toJson(map)
+        val body = updateJson.toRequestBody("application/json; charset=utf-8".toMediaType())
+
+        val request = Request.Builder()
+            .url("$baseUrl/update/$id")
+            .put(body)
+            .build()
+
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e(ContentValues.TAG, "Request failed", e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                response.code
+                Log.d("ids", responseBody.toString())
+            }
+
+        })
+
+
+    }
+
+    fun deleteAnimalProfileByID(id: Int) {
+
+
+        val request = Request.Builder()
+            .url("$baseUrl/$id")
+            .delete()
+            .build()
+
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e(ContentValues.TAG, "Request failed", e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                response.code
+                Log.d("ids", response.code.toString())
+            }
+
         })
 
 
