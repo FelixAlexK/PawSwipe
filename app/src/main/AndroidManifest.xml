@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,11 +12,35 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.PawSwipeApp"
-
-
         android:usesCleartextTraffic="true"
-
         tools:targetApi="31">
+        <activity
+            android:name=".EditAnimalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AnimalServiceActivity"
+            android:exported="false" />
+        <!--
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        -->
+        <!--
+<activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        -->
+        <!--
+<activity
+            android:name=".PetProfilActivity"
+            android:exported="false" />
+        -->
+        <activity
+            android:name=".CreateShelterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateUserProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".RegisterShelterAccountActivityNico"
             android:exported="false" />
@@ -31,13 +54,16 @@
             android:name=".MatchActivityNico"
             android:exported="false" />
         <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PetProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateUserActivityNico"
-            android:exported="false" />
-        <activity
-            android:name=".CreateShelterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CreateUserProfileActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

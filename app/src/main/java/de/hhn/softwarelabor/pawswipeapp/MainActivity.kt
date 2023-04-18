@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         // Inside the onClick method of a button or any other event listener
         val intent = Intent(this, RegisterShelterAccountActivityNico::class.java)
         startActivity(intent)
