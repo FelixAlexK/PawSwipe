@@ -20,32 +20,32 @@ class UserProfileApi {
     private var gson = Gson()
 
     data class UserProfile(
-        val username: String,
+        val username: String?,
         val profilePicture: Array<Byte>?,
-        val description: String,
+        val description: String?,
         val password: String,
         val creationDate: Date?,
         val email: String,
-        val isCompleted: Boolean,
+        val isCompleted: Boolean?,
         val birthday: Date?,
-        val phoneNumber: String,
-        val openingHours: String,
-        val street: String,
-        val country: String,
-        val city: String,
-        val streetNumber: Int,
-        val homepage: String,
-        val postalCode: Int,
+        val phoneNumber: String?,
+        val openingHours: String?,
+        val street: String?,
+        val country: String?,
+        val city: String?,
+        val streetNumber: Int?,
+        val homepage: String?,
+        val postalCode: Int?,
         val discriminator: String
     )
 
 
     fun createUserProfile(
-        username: String, profilePicture: Array<Byte>?, description: String,
-        password: String, creationDate: Date?, email: String, isCompleted: Boolean,
-        birthday: Date?, phoneNumber: String, openingHours: String, street: String,
-        country: String, city: String, streetNumber: Int, homepage: String,
-        postalCode: Int, discriminator: String
+        username: String?, profilePicture: Array<Byte>?, description: String?,
+        password: String, creationDate: Date?, email: String, isCompleted: Boolean?,
+        birthday: Date?, phoneNumber: String?, openingHours: String?, street: String?,
+        country: String?, city: String?, streetNumber: Int?, homepage: String?,
+        postalCode: Int?, discriminator: String
     ) {
 
 
