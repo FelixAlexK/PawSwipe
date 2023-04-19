@@ -12,7 +12,6 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import java.io.IOException
-import java.time.LocalDate
 
 /**
  * [AnimalProfileApi], provides functions to do http requests
@@ -42,7 +41,7 @@ class AnimalProfileApi {
     data class AnimalProfile(
         val name: String?,
         val species: String?,
-        val birthday: LocalDate?,
+        val birthday: String?,
         val illness: String?,
         val description: String?,
         val breed: String?,
@@ -68,7 +67,7 @@ class AnimalProfileApi {
     fun createAnimalProfile(
         name: String?,
         species: String?,
-        birthday: LocalDate?,
+        birthday: String?,
         illness: String?,
         description: String?,
         breed: String?,
@@ -93,22 +92,26 @@ class AnimalProfileApi {
             .build()
 
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e(ContentValues.TAG, "Request failed", e)
-                callback(null, e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                if (response.isSuccessful && responseBody != null) {
-                    callback(response.code, null)
-                } else {
-                    callback(null, Exception("Error fetching IDs"))
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(ContentValues.TAG, "Request failed", e)
+                    callback(null, e)
                 }
-                Log.d("response", response.code.toString())
-            }
-        })
+
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    if (response.isSuccessful && responseBody != null) {
+                        callback(response.code, null)
+                    }else {
+                        callback(null, Exception(response.code.toString()))
+                    }
+                    Log.d("response", response.code.toString())
+                }
+            })
+        }catch (e: IllegalStateException){
+            e.printStackTrace()
+        }
 
 
     }
@@ -124,23 +127,28 @@ class AnimalProfileApi {
             .build()
 
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e(ContentValues.TAG, "Request failed", e)
-                callback(null, e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                if (response.isSuccessful && responseBody != null) {
-                    val ids = gson.fromJson(responseBody, Array<String>::class.java).toList()
-                    callback(ids, null)
-                } else {
-                    callback(null, Exception("Error fetching IDs"))
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(ContentValues.TAG, "Request failed", e)
+                    callback(null, e)
                 }
-                Log.d("response", response.code.toString())
-            }
-        })
+
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    if (response.isSuccessful && responseBody != null) {
+                        val ids = gson.fromJson(responseBody, Array<String>::class.java).toList()
+                        callback(ids, null)
+                    } else {
+                        callback(null, Exception("Error fetching IDs"))
+                    }
+                    Log.d("response", response.code.toString())
+                }
+            })
+        }catch (e: IllegalStateException){
+            e.printStackTrace()
+        }
+
 
     }
 
@@ -158,25 +166,30 @@ class AnimalProfileApi {
             .build()
 
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e(ContentValues.TAG, "Request failed", e)
-                callback(null, e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                if(response.isSuccessful && responseBody != null){
-
-                    val jsonObject = Gson().fromJson(responseBody, JsonObject::class.java)
-                    callback(jsonObject, null)
-                }else {
-                    callback(null, Exception("Error fetching IDs"))
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(ContentValues.TAG, "Request failed", e)
+                    callback(null, e)
                 }
-                Log.d("response", response.code.toString())
-            }
 
-        })
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    if(response.isSuccessful && responseBody != null){
+
+                        val jsonObject = Gson().fromJson(responseBody, JsonObject::class.java)
+                        callback(jsonObject, null)
+                    }else {
+                        callback(null, Exception("Error fetching IDs"))
+                    }
+                    Log.d("response", response.code.toString())
+                }
+
+            })
+        }catch (e: IllegalStateException){
+            e.printStackTrace()
+        }
+
     }
 
     /**
@@ -197,23 +210,28 @@ class AnimalProfileApi {
             .build()
 
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e(ContentValues.TAG, "Request failed", e)
-                callback(null, e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                if(response.isSuccessful && responseBody != null){
-                    callback(response.code, null)
-                }else {
-                    callback(null, Exception("Error fetching IDs"))
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(ContentValues.TAG, "Request failed", e)
+                    callback(null, e)
                 }
-                Log.d("response", response.code.toString())
-            }
 
-        })
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    if(response.isSuccessful && responseBody != null){
+                        callback(response.code, null)
+                    }else {
+                        callback(null, Exception("Error fetching IDs"))
+                    }
+                    Log.d("response", response.code.toString())
+                }
+
+            })
+        }catch (e: IllegalStateException){
+            e.printStackTrace()
+        }
+
 
 
     }
@@ -232,64 +250,31 @@ class AnimalProfileApi {
             .build()
 
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e(ContentValues.TAG, "Request failed", e)
-                callback(null, e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                if(response.isSuccessful && responseBody != null){
-                    callback(response.code, null)
-                }else {
-                    callback(null, Exception("Error fetching IDs"))
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(ContentValues.TAG, "Request failed", e)
+                    callback(null, e)
                 }
-                Log.d("response", response.code.toString())
 
-            }
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    if(response.isSuccessful && responseBody != null){
+                        callback(response.code, null)
+                    }else {
+                        callback(null, Exception("Error fetching IDs"))
+                    }
+                    Log.d("response", response.code.toString())
 
-        })
+                }
+
+            })
+        }catch (e: IllegalStateException){
+            e.printStackTrace()
+        }
+
 
 
     }
 }
 
-/* Example Code for creating a Animal
-* private fun test() = runBlocking {
-        val animalProfileApi = AnimalProfileApi()
-        val userProfileApi = UserProfileApi()
-
-        launch {
-           val send = async {
-
-                userProfileApi.getUserProfileByID(29, object : UserProfileCallback {
-                    override fun onResponse(
-                        userProfile: UserProfileApi.UserProfileAnimal?,
-                        response: Response
-                    ) {
-                        animalProfileApi.createAnimalProfile(
-                            "Mozart", "Cat", null,
-                            null, "Black Cat", "n/a", "black", "male", userProfile!!
-
-
-                        )
-
-                    }
-
-                    override fun onFailure() {
-                        Log.e(ContentValues.TAG, "Request failed")
-                    }
-
-                })
-
-
-
-
-
-            }
-
-            send.await()
-
-        }
-*/
