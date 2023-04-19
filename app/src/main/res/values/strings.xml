@@ -57,6 +57,7 @@
     <string name="birthdayButton_text">Birthday</string>
     <string name="animalService_tv">Tierdienste</string>
     <string name="saveChanges_btn"> Speichern</string>
+    <string name="petDescription_hint">Beschreibung</string>
 
 
 </resources>
