@@ -13,11 +13,11 @@ import okhttp3.Response
 import java.io.IOException
 import java.time.LocalDate
 
-interface AnimalProfileCallback {
-    fun onResponse(responseBody: String)
-    fun onFailure()
-}
-
+/**
+ * [AnimalProfileApi], provides functions to do http requests
+ * @author Felix Kuhbier
+ * @since 2023.04.19
+ */
 class AnimalProfileApi {
 
     private var client: OkHttpClient = OkHttpClient()
@@ -25,6 +25,19 @@ class AnimalProfileApi {
     private var gson = Gson()
 
 
+    /**
+     * [AnimalProfile], holds data for an animal profile
+     *
+     * @property name
+     * @property species
+     * @property birthday
+     * @property illness
+     * @property description
+     * @property breed
+     * @property color
+     * @property gender
+     * @property profile
+     */
     data class AnimalProfile(
         val name: String?,
         val species: String?,
@@ -34,10 +47,23 @@ class AnimalProfileApi {
         val breed: String?,
         val color: String?,
         val gender: String?,
-        val profile: UserProfileApi.UserProfileAnimal
+        val profile: UserProfileApi.ShelterProfileData
     )
 
 
+    /**
+     * Create animal profile
+     *
+     * @param [name] name of the animal
+     * @param [species] species of the animal
+     * @param [birthday] Birthday date of the animal
+     * @param [illness] Diseases of the animal
+     * @param [description] description of the animal
+     * @param [breed] breed of the animal
+     * @param [color] color of the animal
+     * @param [gender] gender of the animal
+     * @param [profile] shelter profile
+     */
     fun createAnimalProfile(
         name: String?,
         species: String?,
@@ -47,7 +73,7 @@ class AnimalProfileApi {
         breed: String?,
         color: String?,
         gender: String?,
-        profile: UserProfileApi.UserProfileAnimal
+        profile: UserProfileApi.ShelterProfileData
     ) {
 
 
@@ -79,6 +105,35 @@ class AnimalProfileApi {
 
     }
 
+    /**
+     * Get all animal profile ids
+     *
+     */
+    fun getAllAnimalProfileIDs() {
+        val request = Request.Builder()
+            .url("$baseUrl/all/ids")
+            .get()
+            .build()
+
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e(ContentValues.TAG, "Request failed", e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                Log.d("response", response.code.toString())
+            }
+        })
+
+    }
+
+    /**
+     * Get animal profile by id
+     *
+     * @param id ID of the animal profile
+     */
     fun getAnimalProfileByID(id: Int) {
 
 
@@ -101,6 +156,12 @@ class AnimalProfileApi {
         })
     }
 
+    /**
+     * Update animal profile by id
+     *
+     * @param id ID of the animal profile
+     * @param map Map collection with the contents to be updated
+     */
     fun updateAnimalProfileByID(id: Int, map: Map<String, String>) {
 
 
@@ -128,6 +189,11 @@ class AnimalProfileApi {
 
     }
 
+    /**
+     * Delete user profile by id
+     *
+     * @param id ID of the animal profile
+     */
     fun deleteUserProfileByID(id: Int) {
 
 
