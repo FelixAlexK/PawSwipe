@@ -1,5 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp.api
 
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.google.gson.Gson
@@ -13,25 +14,6 @@ import okhttp3.Response
 import java.io.IOException
 import java.util.Date
 
-/**
- * User profile callback
- *
- */
-interface UserProfileCallback {
-    /**
-     * On response
-     *
-     * @param userProfile
-     * @param response
-     */
-    fun onResponse(userProfile: UserProfileApi.ShelterProfileData?, response: Response)
-
-    /**
-     * On failure
-     *
-     */
-    fun onFailure()
-}
 
 /**
  * [UserProfileApi], provides functions to do http requests
@@ -259,7 +241,7 @@ class UserProfileApi {
         password: String, creationDate: Date?, email: String, isCompleted: Boolean?,
         birthday: Date?, phoneNumber: String?, openingHours: String?, street: String?,
         country: String?, city: String?, streetNumber: Int?, homepage: String?,
-        postalCode: Int?, discriminator: String
+        postalCode: Int?, discriminator: String, callback: (Int?, Throwable?) -> Unit
     ) {
 
 
@@ -296,11 +278,17 @@ class UserProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                if (response.isSuccessful && responseBody != null) {
+                    callback(response.code, null)
+                } else {
+                    callback(null, Exception("Error fetching IDs"))
+                }
                 Log.d("response", response.code.toString())
             }
 
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(TAG, "Request failed", e)
+                callback(null, e)
             }
         })
 
@@ -310,7 +298,7 @@ class UserProfileApi {
      * Get all user profile ids
      *
      */
-    fun getAllUserProfileIDs() {
+    fun getAllUserProfileIDs(callback: (List<String>?, Throwable?) -> Unit) {
         val request = Request.Builder()
             .url("$baseUrl/all/ids")
             .get()
@@ -320,10 +308,17 @@ class UserProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(TAG, "Request failed", e)
+                callback(null, e)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                if (response.isSuccessful && responseBody != null) {
+                    val ids = gson.fromJson(responseBody, Array<String>::class.java).toList()
+                    callback(ids, null)
+                } else {
+                    callback(null, Exception("Error fetching IDs"))
+                }
                 Log.d("response", response.code.toString())
             }
         })
@@ -337,7 +332,7 @@ class UserProfileApi {
      * @param callback the callback to be invoked when the API response is received. This callback
      *                 provides the response data and status to the caller.
      */
-    fun getUserProfileByID(id: Int, callback: UserProfileCallback?) {
+    fun getUserProfileByID(id: Int, callback: (ShelterProfileData?, Throwable?) -> Unit) {
 
 
         val request = Request.Builder()
@@ -348,17 +343,19 @@ class UserProfileApi {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                callback?.onFailure()
+                Log.e(ContentValues.TAG, "Request failed", e)
+                callback(null, e)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
                 if (response.isSuccessful && responseBody != null) {
-                    val animalProfile =
-                        gson.fromJson(responseBody, UserProfileApi.ShelterProfileData::class.java)
-                    callback?.onResponse(animalProfile, response)
+                    val animalProfileShelter =
+                        gson.fromJson(responseBody, ShelterProfileData::class.java)
+
+                    callback(animalProfileShelter, null)
                 } else {
-                    callback?.onFailure()
+                    callback(null, Exception("Error fetching IDs"))
                 }
             }
 
@@ -372,7 +369,7 @@ class UserProfileApi {
      * @param id ID of user profile
      * @param map Map collection with the contents to be updated
      */
-    fun updateUserProfileByID(id: Int, map: Map<String, String>) {
+    fun updateUserProfileByID(id: Int, map: Map<String, String>, callback: (Int?, Throwable?) -> Unit) {
 
 
         val updateJson = gson.toJson(map)
@@ -387,10 +384,16 @@ class UserProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(TAG, "Request failed", e)
+                callback(null, e)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                if(response.isSuccessful && responseBody != null){
+                    callback(response.code, null)
+                }else {
+                    callback(null, Exception("Error fetching IDs"))
+                }
                 Log.d("response", response.code.toString())
 
             }
@@ -405,7 +408,7 @@ class UserProfileApi {
      *
      * @param id ID of user profile
      */
-    fun deleteUserProfileByID(id: Int) {
+    fun deleteUserProfileByID(id: Int, callback: (Int?, Throwable?) -> Unit) {
 
 
         val request = Request.Builder()
@@ -417,10 +420,16 @@ class UserProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(TAG, "Request failed", e)
+                callback(null, e)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                if(response.isSuccessful && responseBody != null){
+                    callback(response.code, null)
+                }else {
+                    callback(null, Exception("Error fetching IDs"))
+                }
                 Log.d("response", response.code.toString())
 
             }

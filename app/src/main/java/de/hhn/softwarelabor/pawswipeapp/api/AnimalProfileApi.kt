@@ -3,6 +3,7 @@ package de.hhn.softwarelabor.pawswipeapp.api
 import android.content.ContentValues
 import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -73,12 +74,13 @@ class AnimalProfileApi {
         breed: String?,
         color: String?,
         gender: String?,
-        profile: UserProfileApi.ShelterProfileData
+        profile: UserProfileApi.ShelterProfileData?,
+        callback: (Int?, Throwable?) -> Unit
     ) {
 
 
         val animalProfile = AnimalProfile(
-            name, species, birthday, illness, description, breed, color, gender, profile
+            name, species, birthday, illness, description, breed, color, gender, profile!!
         )
 
 
@@ -94,10 +96,16 @@ class AnimalProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(ContentValues.TAG, "Request failed", e)
+                callback(null, e)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                if (response.isSuccessful && responseBody != null) {
+                    callback(response.code, null)
+                } else {
+                    callback(null, Exception("Error fetching IDs"))
+                }
                 Log.d("response", response.code.toString())
             }
         })
@@ -109,7 +117,7 @@ class AnimalProfileApi {
      * Get all animal profile ids
      *
      */
-    fun getAllAnimalProfileIDs() {
+    fun getAllAnimalProfileIDs(callback: (List<String>?, Throwable?) -> Unit) {
         val request = Request.Builder()
             .url("$baseUrl/all/ids")
             .get()
@@ -119,10 +127,17 @@ class AnimalProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(ContentValues.TAG, "Request failed", e)
+                callback(null, e)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                if (response.isSuccessful && responseBody != null) {
+                    val ids = gson.fromJson(responseBody, Array<String>::class.java).toList()
+                    callback(ids, null)
+                } else {
+                    callback(null, Exception("Error fetching IDs"))
+                }
                 Log.d("response", response.code.toString())
             }
         })
@@ -134,7 +149,7 @@ class AnimalProfileApi {
      *
      * @param id ID of the animal profile
      */
-    fun getAnimalProfileByID(id: Int) {
+    fun getAnimalProfileByID(id: Int, callback: (JsonObject?, Throwable?) -> Unit) {
 
 
         val request = Request.Builder()
@@ -146,10 +161,18 @@ class AnimalProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(ContentValues.TAG, "Request failed", e)
+                callback(null, e)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                if(response.isSuccessful && responseBody != null){
+
+                    val jsonObject = Gson().fromJson(responseBody, JsonObject::class.java)
+                    callback(jsonObject, null)
+                }else {
+                    callback(null, Exception("Error fetching IDs"))
+                }
                 Log.d("response", response.code.toString())
             }
 
@@ -162,7 +185,7 @@ class AnimalProfileApi {
      * @param id ID of the animal profile
      * @param map Map collection with the contents to be updated
      */
-    fun updateAnimalProfileByID(id: Int, map: Map<String, String>) {
+    fun updateAnimalProfileByID(id: Int, map: Map<String, String>, callback: (Int?, Throwable?) -> Unit) {
 
 
         val updateJson = gson.toJson(map)
@@ -177,10 +200,16 @@ class AnimalProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(ContentValues.TAG, "Request failed", e)
+                callback(null, e)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                if(response.isSuccessful && responseBody != null){
+                    callback(response.code, null)
+                }else {
+                    callback(null, Exception("Error fetching IDs"))
+                }
                 Log.d("response", response.code.toString())
             }
 
@@ -194,7 +223,7 @@ class AnimalProfileApi {
      *
      * @param id ID of the animal profile
      */
-    fun deleteUserProfileByID(id: Int) {
+    fun deleteUserProfileByID(id: Int, callback: (Int?, Throwable?) -> Unit) {
 
 
         val request = Request.Builder()
@@ -206,10 +235,16 @@ class AnimalProfileApi {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(ContentValues.TAG, "Request failed", e)
+                callback(null, e)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
+                if(response.isSuccessful && responseBody != null){
+                    callback(response.code, null)
+                }else {
+                    callback(null, Exception("Error fetching IDs"))
+                }
                 Log.d("response", response.code.toString())
 
             }
