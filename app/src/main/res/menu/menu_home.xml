@@ -11,7 +11,11 @@
         android:title="Filter bearbeiten" />
 
     <item
-        android:id="@+id/menu_animalServvies"
+        android:id="@+id/menu_animalEdit"
+        android:title="Tier bearbeiten" />
+
+    <item
+        android:id="@+id/menu_animalServices"
         android:title="Tierdienste" />
 
     <item

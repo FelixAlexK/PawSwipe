@@ -55,6 +55,8 @@
     <string name="registerAsUserTextView">Als Nutzer registrieren:</string>
     <string name="registerAsShelterTextView">---</string>
     <string name="birthdayButton_text">Birthday</string>
+    <string name="animalService_tv">Tierdienste</string>
+    <string name="saveChanges_btn"> Speichern</string>
 
 
 </resources>

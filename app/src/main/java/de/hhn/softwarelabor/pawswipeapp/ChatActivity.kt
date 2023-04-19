@@ -6,11 +6,27 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Button
 
 class ChatActivity : AppCompatActivity() {
+
+    private lateinit var matchBtn: Button
+    private lateinit var animalListBtn: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
+        matchBtn = findViewById(R.id.matching_btn)
+        matchBtn.setOnClickListener {
+            val intent = Intent(this@ChatActivity, MatchActivityNico::class.java)
+            startActivity(intent)
+        }
+
+        animalListBtn = findViewById(R.id.animalList_btn)
+        animalListBtn.setOnClickListener {
+            val intent = Intent(this@ChatActivity, AnimalListActivityNico::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -23,6 +39,16 @@ class ChatActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menu_settings -> {
                 val intent = Intent(this@ChatActivity, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_animalServices -> {
+                val intent = Intent(this@ChatActivity, AnimalServiceActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_animalEdit -> {
+                val intent = Intent(this@ChatActivity, EditAnimalActivity::class.java)
                 startActivity(intent)
                 true
             }
