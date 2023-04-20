@@ -15,6 +15,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".EditAnimalActivity"
             android:exported="false" />
         <activity
