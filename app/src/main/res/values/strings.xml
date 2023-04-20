@@ -56,6 +56,7 @@
     <string name="registerAsShelterTextView">---</string>
     <string name="animalService_tv">Tierdienste</string>
     <string name="saveChanges_btn"> Speichern</string>
+    <string name="loginButton_Text">Anmelden</string>
 
 
 </resources>
