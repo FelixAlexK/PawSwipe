@@ -58,6 +58,8 @@
     <string name="animalService_tv">Tierdienste</string>
     <string name="saveChanges_btn"> Speichern</string>
     <string name="petDescription_hint">Beschreibung</string>
+    <string name="loginButton_Text">Anmelden</string>
+
 
 
 </resources>
