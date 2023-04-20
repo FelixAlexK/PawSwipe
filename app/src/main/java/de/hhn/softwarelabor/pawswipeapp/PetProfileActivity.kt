@@ -53,7 +53,8 @@ class PetProfileActivity : AppCompatActivity() {
                 petDescriptionText.text.toString(),
                 breedEditText.text.toString(),
                 petColorEditText.text.toString(),
-                spinner.selectedItem.toString()
+                spinner.selectedItem.toString(),
+                38
             )
 
         }
@@ -84,12 +85,13 @@ class PetProfileActivity : AppCompatActivity() {
     private fun createPet(
         name: String?, species: String?, birthday: String?, illness: String?,
         description: String?, breed: String?, color: String?, gender: String?,
+        profileId: Int
     ) {
 
         val userProfile = UserProfileApi()
 
         try {
-            userProfile.getUserProfileByID(38) { profile, error ->
+            userProfile.getUserProfileByID(profileId) { profile, error ->
 
                 if (error != null) {
                     Log.e("AnimalProfileApi", "Error fetching: $error")
