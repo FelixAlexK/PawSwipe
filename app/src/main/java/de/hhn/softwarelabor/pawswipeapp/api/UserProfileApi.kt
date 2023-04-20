@@ -265,6 +265,7 @@ class UserProfileApi {
             discriminator
         )
 
+
         val profileJson = gson.toJson(userProfile)
         val body = profileJson.toRequestBody("application/json; charset=utf-8".toMediaType())
 
@@ -274,23 +275,27 @@ class UserProfileApi {
             .build()
 
 
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                if (response.isSuccessful && responseBody != null) {
-                    callback(response.code, null)
-                } else {
-                    callback(null, Exception("Error fetching IDs"))
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    if (response.isSuccessful && responseBody != null) {
+                        callback(response.code, null)
+                    } else {
+                        callback(null, Exception("Error fetching IDs"))
+                    }
+                    Log.d("response", response.code.toString())
                 }
-                Log.d("response", response.code.toString())
-            }
 
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e(TAG, "Request failed", e)
-                callback(null, e)
-            }
-        })
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(TAG, "Request failed", e)
+                    callback(null, e)
+                }
+            })
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        }
+
 
     }
 
@@ -305,23 +310,28 @@ class UserProfileApi {
             .build()
 
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e(TAG, "Request failed", e)
-                callback(null, e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                if (response.isSuccessful && responseBody != null) {
-                    val ids = gson.fromJson(responseBody, Array<String>::class.java).toList()
-                    callback(ids, null)
-                } else {
-                    callback(null, Exception("Error fetching IDs"))
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(TAG, "Request failed", e)
+                    callback(null, e)
                 }
-                Log.d("response", response.code.toString())
-            }
-        })
+
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    if (response.isSuccessful && responseBody != null) {
+                        val ids = gson.fromJson(responseBody, Array<String>::class.java).toList()
+                        callback(ids, null)
+                    } else {
+                        callback(null, Exception("Error fetching IDs"))
+                    }
+                    Log.d("response", response.code.toString())
+                }
+            })
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        }
+
 
     }
 
@@ -341,25 +351,30 @@ class UserProfileApi {
             .build()
 
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e(ContentValues.TAG, "Request failed", e)
-                callback(null, e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                if (response.isSuccessful && responseBody != null) {
-                    val animalProfileShelter =
-                        gson.fromJson(responseBody, ShelterProfileData::class.java)
-
-                    callback(animalProfileShelter, null)
-                } else {
-                    callback(null, Exception("Error fetching IDs"))
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(ContentValues.TAG, "Request failed", e)
+                    callback(null, e)
                 }
-            }
 
-        })
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    if (response.isSuccessful && responseBody != null) {
+                        val animalProfileShelter =
+                            gson.fromJson(responseBody, ShelterProfileData::class.java)
+
+                        callback(animalProfileShelter, null)
+                    } else {
+                        callback(null, Exception("Error fetching IDs"))
+                    }
+                }
+
+            })
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        }
+
     }
 
 
@@ -369,7 +384,11 @@ class UserProfileApi {
      * @param id ID of user profile
      * @param map Map collection with the contents to be updated
      */
-    fun updateUserProfileByID(id: Int, map: Map<String, String>, callback: (Int?, Throwable?) -> Unit) {
+    fun updateUserProfileByID(
+        id: Int,
+        map: Map<String, String>,
+        callback: (Int?, Throwable?) -> Unit
+    ) {
 
 
         val updateJson = gson.toJson(map)
@@ -381,24 +400,28 @@ class UserProfileApi {
             .build()
 
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e(TAG, "Request failed", e)
-                callback(null, e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                if(response.isSuccessful && responseBody != null){
-                    callback(response.code, null)
-                }else {
-                    callback(null, Exception("Error fetching IDs"))
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(TAG, "Request failed", e)
+                    callback(null, e)
                 }
-                Log.d("response", response.code.toString())
 
-            }
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    if (response.isSuccessful && responseBody != null) {
+                        callback(response.code, null)
+                    } else {
+                        callback(null, Exception("Error fetching IDs"))
+                    }
+                    Log.d("response", response.code.toString())
 
-        })
+                }
+
+            })
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        }
 
 
     }
@@ -417,24 +440,28 @@ class UserProfileApi {
             .build()
 
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e(TAG, "Request failed", e)
-                callback(null, e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                if(response.isSuccessful && responseBody != null){
-                    callback(response.code, null)
-                }else {
-                    callback(null, Exception("Error fetching IDs"))
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(TAG, "Request failed", e)
+                    callback(null, e)
                 }
-                Log.d("response", response.code.toString())
 
-            }
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    if (response.isSuccessful && responseBody != null) {
+                        callback(response.code, null)
+                    } else {
+                        callback(null, Exception("Error fetching IDs"))
+                    }
+                    Log.d("response", response.code.toString())
 
-        })
+                }
+
+            })
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        }
 
 
     }
