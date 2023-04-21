@@ -54,8 +54,12 @@
     <string name="confirmPasswordTextView">Passwort bestätigen</string>
     <string name="registerAsUserTextView">Als Nutzer registrieren:</string>
     <string name="registerAsShelterTextView">---</string>
+    <string name="birthdayButton_text">Birthday</string>
     <string name="animalService_tv">Tierdienste</string>
     <string name="saveChanges_btn"> Speichern</string>
+    <string name="petDescription_hint">Beschreibung</string>
+    <string name="loginButton_Text">Anmelden</string>
+
 
 
 </resources>
