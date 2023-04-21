@@ -56,7 +56,7 @@ class UserProfileApi {
         val creationDate: Date?,
         val email: String,
         val isCompleted: Boolean?,
-        val birthday: Date?,
+        val birthday: String?,
         val phoneNumber: String?,
         val openingHours: String?,
         val street: String?,
@@ -151,7 +151,7 @@ class UserProfileApi {
         val creationDate: Date?,
         val email: String,
         val isCompleted: Boolean?,
-        val birthday: Date?,
+        val birthday: String?,
         val phoneNumber: String?,
         val openingHours: String?,
         val street: String?,
@@ -239,7 +239,7 @@ class UserProfileApi {
     fun createUserProfile(
         username: String?, profilePicture: Array<Byte>?, description: String?,
         password: String, creationDate: Date?, email: String, isCompleted: Boolean?,
-        birthday: Date?, phoneNumber: String?, openingHours: String?, street: String?,
+        birthday: String?, phoneNumber: String?, openingHours: String?, street: String?,
         country: String?, city: String?, streetNumber: Int?, homepage: String?,
         postalCode: Int?, discriminator: String, callback: (Int?, Throwable?) -> Unit
     ) {
@@ -342,7 +342,7 @@ class UserProfileApi {
      * @param callback the callback to be invoked when the API response is received. This callback
      *                 provides the response data and status to the caller.
      */
-    fun getUserProfileByID(id: Int, callback: (ShelterProfileData?, Throwable?) -> Unit) {
+    fun getUserProfileByID(id: Int, callback: (ShelterProfileData?, UserProfileData?, Throwable?) -> Unit) {
 
 
         val request = Request.Builder()
@@ -355,7 +355,7 @@ class UserProfileApi {
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.e(ContentValues.TAG, "Request failed", e)
-                    callback(null, e)
+                    callback(null,null, e)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
@@ -364,9 +364,11 @@ class UserProfileApi {
                         val animalProfileShelter =
                             gson.fromJson(responseBody, ShelterProfileData::class.java)
 
-                        callback(animalProfileShelter, null)
+                        val userProfile = gson.fromJson(responseBody, UserProfileData::class.java)
+
+                        callback(animalProfileShelter, userProfile, null)
                     } else {
-                        callback(null, Exception("Error fetching IDs"))
+                        callback(null,null, Exception("Error fetching IDs"))
                     }
                 }
 
