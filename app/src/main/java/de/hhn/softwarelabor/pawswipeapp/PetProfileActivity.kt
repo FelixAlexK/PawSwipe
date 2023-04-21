@@ -89,7 +89,7 @@ class PetProfileActivity : AppCompatActivity() {
         val userProfile = UserProfileApi()
 
         try {
-            userProfile.getUserProfileByID(38) { profile, error ->
+            userProfile.getUserProfileByID(38) { profile,_, error ->
 
                 if (error != null) {
                     Log.e("AnimalProfileApi", "Error fetching: $error")
@@ -169,6 +169,20 @@ class PetProfileActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
+    }
+
+    fun test(){
+        val userProfileApi = UserProfileApi()
+
+        userProfileApi.getUserProfileByID(38) { _,profile, error ->
+
+            if(error != null){
+                //handle error
+            }else if(profile != null){
+                //handle response
+            }
+
+        }
     }
 
 
