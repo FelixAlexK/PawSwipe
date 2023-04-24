@@ -46,7 +46,7 @@
         android:id="@+id/chat_btn"
         android:layout_width="126dp"
         android:layout_height="59dp"
-        android:backgroundTint="@android:color/holo_purple"
+        android:backgroundTint="?android:attr/colorPressedHighlight"
         android:text="@string/chat_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

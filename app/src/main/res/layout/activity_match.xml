@@ -22,7 +22,7 @@
         android:id="@+id/matching_btn2"
         android:layout_width="126dp"
         android:layout_height="59dp"
-        android:backgroundTint="@android:color/holo_purple"
+        android:backgroundTint="?android:attr/colorPressedHighlight"
         android:text="@string/matching_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
