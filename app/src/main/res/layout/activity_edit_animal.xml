@@ -154,7 +154,7 @@
                 android:layout_height="match_parent">
 
                 <Spinner
-                    android:id="@+id/petGenderSpinner"
+                    android:id="@+id/editPetGenderSpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -287,7 +287,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/petCreateButton"
+            android:id="@+id/editPetSaveButton"
             android:layout_width="126dp"
             android:layout_height="59dp"
             android:text="@string/saveChanges_btn"
