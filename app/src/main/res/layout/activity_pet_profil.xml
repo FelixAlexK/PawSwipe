@@ -108,7 +108,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/petBreedsEditText"
+                    android:id="@+id/nameEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -181,7 +181,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/petColorEditText"
+                    android:id="@+id/adressEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -233,7 +233,7 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/createButton"
+                        android:id="@+id/save_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -242,11 +242,11 @@
                         android:text="@string/createButton_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/cancelButton"
+                        app:layout_constraintStart_toEndOf="@+id/cancel_btn"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        android:id="@+id/cancelButton"
+                        android:id="@+id/cancel_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -254,7 +254,7 @@
                         android:layout_weight="1"
                         android:text="@string/cancelButton_text"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/createButton"
+                        app:layout_constraintEnd_toStartOf="@+id/save_btn"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
