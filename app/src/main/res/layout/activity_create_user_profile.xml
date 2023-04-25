@@ -28,7 +28,7 @@
         app:layout_constraintStart_toEndOf="@+id/clearUserButton" />
 
     <EditText
-        android:id="@+id/petBreedEditText"
+        android:id="@+id/userLastNameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
@@ -63,7 +63,7 @@
         android:hint="Vorname"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/petBreedEditText"
+        app:layout_constraintBottom_toTopOf="@+id/userLastNameEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

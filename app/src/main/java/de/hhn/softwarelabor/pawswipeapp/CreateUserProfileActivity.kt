@@ -1,6 +1,5 @@
 package de.hhn.softwarelabor.pawswipeapp
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -17,8 +16,8 @@ class CreateUserProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_user_profile)
 
         //Data Fields
-        val prename : EditText = findViewById(R.id.prenameEditText)
-        val name : EditText = findViewById(R.id.nameEditText)
+        val firstname : EditText = findViewById(R.id.prenameEditText)
+        val lastname : EditText = findViewById(R.id.userLastNameEditText)
         val age : EditText = findViewById(R.id.agesEditText)
         val address : EditText = findViewById(R.id.addressEditText)
         val done : Button = findViewById(R.id.doneUserButton)
@@ -26,7 +25,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
 
         done.setOnClickListener{
-            if (prename.length()==0 || name.length()==0 || age.length()==0||address.length()==0){
+            if (firstname.length()==0 || lastname.length()==0 || age.length()==0||address.length()==0){
                 Toast.makeText(this@CreateUserProfileActivity, "Bitte alle Felder ausfüllen", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
