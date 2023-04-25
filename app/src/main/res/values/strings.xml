@@ -7,12 +7,12 @@
     <string name="animalList_btn">Tierliste</string>
     <string name="search_pt">Suchen</string>
 
-    <string name="addPetProfileImageButton_text">Profilbild hinzufügen</string>
+    <string name="addProfileImageButton_text">Profilbild hinzufügen</string>
     <string name="petName_hint">Name</string>
     <string name="petSpecies_hint">Tierart</string>
     <string name="petBreed_hint">Rasse</string>
     <string name="petColor_hint">Farbe/Muster</string>
-    <string name="petBirthday_hint">Geburtstag</string>
+    <string name="birthday_hint">Geburtstag</string>
     <string name="petPreExistingIllness_hint">Vorerkrankungen</string>
     <string name="cancelButton_text">Abbrechen</string>
     <string name="createButton_text">Tier erstellen</string>
@@ -54,7 +54,7 @@
     <string name="confirmPasswordTextView">Passwort bestätigen</string>
     <string name="registerAsUserTextView">Als Nutzer registrieren:</string>
     <string name="registerAsShelterTextView">---</string>
-    <string name="birthdayButton_text">Birthday</string>
+    <string name="birthdayButton_text">Geburtstag</string>
     <string name="animalService_tv">Tierdienste</string>
     <string name="saveChanges_btn"> Speichern</string>
     <string name="petDescription_hint">Beschreibung</string>
