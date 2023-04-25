@@ -59,7 +59,12 @@
     <string name="saveChanges_btn"> Speichern</string>
     <string name="petDescription_hint">Beschreibung</string>
     <string name="loginButton_Text">Anmelden</string>
-
+    <string name="cancel">Abbrechen</string>
+    <string name="create">Erstellen</string>
+    <string name="lastname">Nachname</string>
+    <string name="address">Wohnort</string>
+    <string name="prename">Vorname</string>
+    <string name="profileCreated">Profil erfolgreich angelegt</string>
 
 
 </resources>

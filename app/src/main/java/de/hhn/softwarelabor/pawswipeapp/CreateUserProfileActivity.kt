@@ -1,16 +1,15 @@
 package de.hhn.softwarelabor.pawswipeapp
 
-import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import de.hhn.softwarelabor.pawswipeapp.api.UserProfileApi
+
 
 class CreateUserProfileActivity : AppCompatActivity() {
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +22,8 @@ class CreateUserProfileActivity : AppCompatActivity() {
         val address : EditText = findViewById(R.id.addressEditText)
         val done : Button = findViewById(R.id.doneUserButton)
         val cancel : Button = findViewById(R.id.clearUserButton)
+        //val picture : View = findViewById(R.id.pictureView)
+        lateinit var picture : Array<Byte>
 
 
         done.setOnClickListener{
@@ -38,18 +39,35 @@ class CreateUserProfileActivity : AppCompatActivity() {
             }
 
             else{
-                Toast.makeText(this@CreateUserProfileActivity, "Profil erfolgreich angelegt", Toast.LENGTH_SHORT).show()
+
+                val username : String = prename.text.toString() + " " + name.text.toString()
+                val birthdate : String
+                val userProfileApi = UserProfileApi()
+
+                userProfileApi.createUserProfile(username, null,
+                    "description", "password", null, "email@mail.de",
+                    null, null, null,
+                    null, null, "de", "city",
+                    null, null, 74072, "profile")
+                { profile, error ->
+
+
+                    if(error != null){
+
+                    }
+                    else if(profile != null){
+
+                    }
+                }
+
+
+
+                Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
             }
-
-
         }
-
         cancel.setOnClickListener {
-
+            val intent = Intent(this, RegisterUserAccountActivityNico::class.java)
+            startActivity(intent)
         }
     }
-
-
-
-
 }

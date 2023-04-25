@@ -51,7 +51,7 @@
         android:layout_marginEnd="80dp"
         android:src="@drawable/heart_unliked_small"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/pictureView" />
 
     <TextView
         android:id="@+id/matchingText"
@@ -67,7 +67,7 @@
         app:layout_constraintVertical_bias="0.024" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/pictureView"
         android:layout_width="326dp"
         android:layout_height="334dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +85,7 @@
         android:layout_marginStart="84dp"
         android:layout_marginTop="44dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/pictureView"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
