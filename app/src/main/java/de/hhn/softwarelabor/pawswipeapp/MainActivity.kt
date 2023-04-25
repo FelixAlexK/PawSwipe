@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
 
         // Inside the onClick method of a button or any other event listener
-        val intent = Intent(this, RegisterShelterAccountActivityNico::class.java)
+        val intent = Intent(this, ChatActivity::class.java)
         startActivity(intent)
 
     }
