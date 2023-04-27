@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.UserProfileApi
@@ -31,7 +32,8 @@ class CreateUserProfileActivity : AppCompatActivity() {
         val streetAndNumber : EditText = findViewById(R.id.streetEditText)
         var password : String = intent.getStringExtra("password").toString()
         var email : String = intent.getStringExtra("email").toString()
-        //val picture : View = findViewById(R.id.pictureView)
+        val picture : ImageView = findViewById(R.id.pictureView)
+        //picture.setImageResource(R.drawable.wf)
         //lateinit var picture : Array<Byte>
 
 
