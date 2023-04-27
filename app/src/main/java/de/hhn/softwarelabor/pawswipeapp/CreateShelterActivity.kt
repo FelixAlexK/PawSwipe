@@ -12,7 +12,7 @@ class CreateShelterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_shelter)
 
         val shelterName : EditText = findViewById(R.id.shelterEditText)
-        val owner : EditText = findViewById(R.id.ownerEditText)
+        val owner : EditText = findViewById(R.id.openingHoursEditText)
         val homepage : EditText = findViewById(R.id.homepageEditText)
         val plz : EditText = findViewById(R.id.plzEditText)
         val shelterAddress : EditText = findViewById(R.id.shelterAddressEditText)

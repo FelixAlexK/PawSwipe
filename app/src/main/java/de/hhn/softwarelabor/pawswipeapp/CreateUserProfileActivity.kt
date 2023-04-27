@@ -1,12 +1,14 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.UserProfileApi
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class CreateUserProfileActivity : AppCompatActivity() {
@@ -18,37 +20,42 @@ class CreateUserProfileActivity : AppCompatActivity() {
         //Data Fields
         val prename : EditText = findViewById(R.id.prenameEditText)
         val name : EditText = findViewById(R.id.nameEditText)
-        val age : EditText = findViewById(R.id.agesEditText)
+        val birthdate : EditText = findViewById(R.id.agesEditText)
         val address : EditText = findViewById(R.id.addressEditText)
         val done : Button = findViewById(R.id.doneUserButton)
         val cancel : Button = findViewById(R.id.clearUserButton)
+        val upload : Button = findViewById(R.id.uploadPictureButton)
+        val description : EditText= findViewById(R.id.descriptionEditText)
+        val username : EditText = findViewById(R.id.usernameEditText)
+        val plz : EditText = findViewById(R.id.postalAddressEditText)
+        val streetAndNumber : EditText = findViewById(R.id.streetEditText)
+        var password : String = intent.getStringExtra("password").toString()
+        var email : String = intent.getStringExtra("email").toString()
         //val picture : View = findViewById(R.id.pictureView)
-        lateinit var picture : Array<Byte>
+        //lateinit var picture : Array<Byte>
+
 
 
         done.setOnClickListener{
-            if (prename.length()==0 || name.length()==0 || age.length()==0||address.length()==0){
+            if (prename.length()==0 || name.length()==0 ||address.length()==0){
                 Toast.makeText(this@CreateUserProfileActivity, "Bitte alle Felder ausfüllen", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if(age.text.toString().toInt() < 18 || age.text.toString().toInt() >110){
-
-                Toast.makeText(this@CreateUserProfileActivity, "Bitte ein Alter zwischen 18 und 110 Jahren auswählen", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             else{
+                val creationDate : Date = Calendar.getInstance().time
+                val street : String = streetAndNumber.text.toString().split(" ")[0]
+                val streetNr : Int = streetAndNumber.text.toString().split(" ")[1].toInt()
+                val birthday : Date? = SimpleDateFormat("dd-MM-yyyy").parse(birthdate.text.toString())
 
-                val username : String = prename.text.toString() + " " + name.text.toString()
-                val birthdate : String
+
                 val userProfileApi = UserProfileApi()
 
-                userProfileApi.createUserProfile(username, null,
-                    "description", "password", null, "email@mail.de",
-                    null, null, null,
-                    null, null, "de", "city",
-                    null, null, 74072, "profile")
+                userProfileApi.createUserProfile(username.text.toString(), null,
+                    description.text.toString(), "password", creationDate, "email@mail.de",
+                    null, birthday, null,
+                    null, street, "de", address.text.toString(),
+                    streetNr, null, plz.text.toString().toInt(), "profile")
                 { profile, error ->
 
 
@@ -69,5 +76,12 @@ class CreateUserProfileActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterUserAccountActivityNico::class.java)
             startActivity(intent)
         }
+
+
+        upload.setOnClickListener {
+
+        }
+
+
     }
 }
