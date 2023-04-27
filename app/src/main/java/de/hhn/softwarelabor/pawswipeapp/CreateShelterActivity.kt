@@ -1,5 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -60,7 +61,8 @@ class CreateShelterActivity : AppCompatActivity() {
         }
 
         cancel.setOnClickListener {
-
+            val intent = Intent(this, RegisterShelterAccountActivityNico::class.java)
+            startActivity(intent)
         }
     }
 }
