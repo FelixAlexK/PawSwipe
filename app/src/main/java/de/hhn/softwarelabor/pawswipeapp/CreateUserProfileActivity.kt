@@ -1,8 +1,7 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 
-import androidx.appcompat.app.AppCompatActivity
-
+import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
@@ -44,11 +43,9 @@ class CreateUserProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_user_profile)
 
         //Data Fields
-
-        val firstname : EditText = findViewById(R.id.prenameEditText)
-        val lastname : EditText = findViewById(R.id.userLastNameEditText)
-        val age : EditText = findViewById(R.id.agesEditText)
-
+        val prename : EditText = findViewById(R.id.prenameEditText)
+        val name : EditText = findViewById(R.id.nameEditText)
+        val birthdate : EditText = findViewById(R.id.agesEditText)
         val address : EditText = findViewById(R.id.addressEditText)
         val done : Button = findViewById(R.id.doneUserButton)
         val cancel : Button = findViewById(R.id.clearUserButton)
@@ -63,9 +60,10 @@ class CreateUserProfileActivity : AppCompatActivity() {
         //picture.setImageResource(R.drawable.wf)
         //lateinit var picture : Array<Byte>
         done.setOnClickListener{
+            /**
+             *
 
-            if (firstname.length()==0 || lastname.length()==0 || age.length()==0||address.length()==0){
-
+            if (prename.length()==0 || name.length()==0 ||address.length()==0){
                 Toast.makeText(this@CreateUserProfileActivity, "Bitte alle Felder ausfüllen", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }*/

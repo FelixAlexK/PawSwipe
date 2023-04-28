@@ -6,10 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.Toast
-import de.hhn.softwarelabor.pawswipeapp.api.UserProfileApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -17,7 +13,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var cancelButton: Button
     private lateinit var saveButton: Button
     private lateinit var deleteUserProfile: Button
-    private var userProfileApi: UserProfileApi = UserProfileApi()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -30,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        saveButton = findViewById(R.id.saveChangesButton)
+        saveButton = findViewById(R.id.save_btn)
         saveButton.setOnClickListener {
 
             AlertDialog.Builder(this@SettingsActivity)
@@ -54,7 +50,6 @@ class SettingsActivity : AppCompatActivity() {
                 .setMessage(getString(R.string.deleteProfile_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
 
-                    deleteUserProfile(41)
 
                     dialog.dismiss()
                 }
@@ -74,29 +69,5 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun changeBirthday() {}
 
-    private fun deleteUserProfile(id: Int) {
-        try {
-
-            userProfileApi.deleteUserProfileByID(id){ response, error ->
-                run {
-                    if (error != null) {
-                        runOnUiThread {
-                            Toast.makeText(this@SettingsActivity,
-                                "Ein Fehler ist aufgetretten (code: $response)",
-                                Toast.LENGTH_SHORT).show()
-                        }
-                    }else if(response != null){
-                        runOnUiThread { Toast.makeText(this@SettingsActivity,
-                            "Profil wurde unwiderrufbar gelöscht!",
-                            Toast.LENGTH_SHORT).show() }
-
-                    }
-                }
-
-            }
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-
-    }
+    private fun deleteUserProfile() {}
 }
