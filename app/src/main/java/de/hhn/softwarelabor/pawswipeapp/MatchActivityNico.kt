@@ -7,11 +7,19 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageButton
+import androidx.viewpager.widget.ViewPager
 
 class MatchActivityNico : AppCompatActivity() {
 
     private lateinit var chatBtn: Button
     private lateinit var animalListBtn: Button
+    private lateinit var likeBtn: ImageButton
+    private lateinit var dislikeBtn: ImageButton
+    private lateinit var viewPager: ViewPager
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private lateinit var imageList: List<Int>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
@@ -27,6 +35,28 @@ class MatchActivityNico : AppCompatActivity() {
             val intent = Intent(this@MatchActivityNico, AnimalListActivityNico::class.java)
             startActivity(intent)
         }
+
+        likeBtn = findViewById(R.id.like_btn)
+        likeBtn.setOnClickListener {
+            likeBtn.setImageResource(R.drawable.heart_liked_small)
+        }
+
+        dislikeBtn = findViewById(R.id.dislike_btn)
+        dislikeBtn.setOnClickListener {
+
+        }
+
+        viewPager = findViewById(R.id.idViewPager)
+
+
+        imageList = ArrayList()
+        imageList = imageList + R.drawable.pixabay_cute_cat
+        imageList = imageList + R.drawable.heart_liked_small
+        imageList = imageList + R.drawable.dislike_x
+
+        viewPagerAdapter = ViewPagerAdapter(this@MatchActivityNico, imageList)
+
+        viewPager.adapter = viewPagerAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -66,5 +66,17 @@
     <string name="prename">Vorname</string>
     <string name="profileCreated">Profil erfolgreich angelegt</string>
 
-
+    <string name="yes_dialogText">Ja</string>
+    <string name="no_dialogText">Nein</string>
+    <string name="saveChanges_headerText">Änderungen speichern</string>
+    <string name="saveChanges_messageText">Wollen Sie alle Änderungen speichern?</string>
+    <string name="deleteProfile_headerText">Account löschen</string>
+    <string name="deleteProfile_messageText">Wollen Sie das Profil löschen?</string>
+    <string name="firstName_tv">Vorname</string>
+    <string name="name_et">Nachname</string>
+    <string name="address_et">Wohnort</string>
+    <string name="deleteProfile_btn">Profil löschen</string>
+    <string name="editAnimal_tv">Tier bearbeiten</string>
+    <string name="editUser_tv">Profil bearbeiten</string>
+    />
 </resources>
