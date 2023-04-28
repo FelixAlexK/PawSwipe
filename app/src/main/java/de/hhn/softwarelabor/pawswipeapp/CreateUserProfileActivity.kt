@@ -72,7 +72,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 val creationDate : Date = Calendar.getInstance().time
                 val street : String = streetAndNumber.text.toString().split(" ")[0]
                 val streetNr : Int = streetAndNumber.text.toString().split(" ")[1].toInt()
-             //   val birthday : Date? = SimpleDateFormat("dd.MM.yyyy").parse(birthdate.text.toString())
+              //  val birthday : Date? = SimpleDateFormat("dd/MM/yyyy").parse(birthdate.text.toString())
 
 
                 val userProfileApi = UserProfileApi()
@@ -92,9 +92,6 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
                     }
                // }
-
-
-
               runOnUiThread {
                   Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
               }
