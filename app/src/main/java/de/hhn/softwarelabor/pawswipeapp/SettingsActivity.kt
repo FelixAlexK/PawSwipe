@@ -17,7 +17,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var cancelButton: Button
     private lateinit var saveButton: Button
     private lateinit var deleteUserProfile: Button
-    private lateinit var userProfileApi: UserProfileApi
+    private var userProfileApi: UserProfileApi = UserProfileApi()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -76,7 +76,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun deleteUserProfile(id: Int) {
         try {
-            userProfileApi = UserProfileApi()
+
             userProfileApi.deleteUserProfileByID(id){ response, error ->
                 run {
                     if (error != null) {
