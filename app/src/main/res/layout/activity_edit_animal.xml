@@ -78,7 +78,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="@string/addPetProfileImageButton_text"
+                    android:text="@string/addProfileImageButton_text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -133,7 +133,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/nameEditText"
+                    android:id="@+id/petBreedEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -154,7 +154,7 @@
                 android:layout_height="match_parent">
 
                 <Spinner
-                    android:id="@+id/petGenderSpinner"
+                    android:id="@+id/editPetGenderSpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -194,7 +194,7 @@
                     android:ems="10"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:hint="@string/petBirthday_hint"
+                    android:hint="@string/birthday_hint"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -206,7 +206,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/adressEditText"
+                    android:id="@+id/petColorEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -287,7 +287,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/save_btn"
+            android:id="@+id/editPetSaveButton"
             android:layout_width="126dp"
             android:layout_height="59dp"
             android:text="@string/saveChanges_btn"

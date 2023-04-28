@@ -109,7 +109,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/nameEditText"
+                    android:id="@+id/petBreedEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -170,7 +170,7 @@
                     android:ems="10"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:hint="@string/petBirthday_hint"
+                    android:hint="@string/birthday_hint"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -182,7 +182,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/adressEditText"
+                    android:id="@+id/petColorEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
