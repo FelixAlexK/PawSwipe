@@ -414,7 +414,7 @@ class UserProfileApi {
                     if (response.isSuccessful && responseBody != null) {
                         callback(response.code, null)
                     } else {
-                        callback(response.code, Exception("Error fetching IDs"))
+                        callback(null, Exception("Error fetching IDs"))
                     }
                     Log.d("response", response.code.toString())
 
@@ -454,7 +454,7 @@ class UserProfileApi {
                     if (response.isSuccessful && responseBody != null) {
                         callback(response.code, null)
                     } else {
-                        callback(response.code, Exception("Error fetching IDs"))
+                        callback(null, Exception("Error fetching IDs"))
                     }
                     Log.d("response", response.code.toString())
 

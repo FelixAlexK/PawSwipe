@@ -23,7 +23,7 @@ class EditAnimalActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
-        spinner = findViewById(R.id.editPetGenderSpinner)
+        spinner = findViewById(R.id.petGenderSpinner)
 
         ArrayAdapter.createFromResource(
             this,
@@ -41,7 +41,7 @@ class EditAnimalActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        saveButton = findViewById(R.id.editPetSaveButton)
+        saveButton = findViewById(R.id.save_btn)
         saveButton.setOnClickListener {
 
             AlertDialog.Builder(this@EditAnimalActivity)
@@ -88,7 +88,5 @@ class EditAnimalActivity : AppCompatActivity() {
 
     private fun changeIllness() {}
 
-    private fun deletePetProfile() {
-
-    }
+    private fun deletePetProfile() {}
 }
