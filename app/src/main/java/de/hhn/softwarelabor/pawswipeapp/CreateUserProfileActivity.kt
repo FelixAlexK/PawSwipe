@@ -60,23 +60,26 @@ class CreateUserProfileActivity : AppCompatActivity() {
         //picture.setImageResource(R.drawable.wf)
         //lateinit var picture : Array<Byte>
         done.setOnClickListener{
+            /**
+             *
+
             if (prename.length()==0 || name.length()==0 ||address.length()==0){
                 Toast.makeText(this@CreateUserProfileActivity, "Bitte alle Felder ausfüllen", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            }
+            }*/
 
-            else{
+           // else{
                 val creationDate : Date = Calendar.getInstance().time
                 val street : String = streetAndNumber.text.toString().split(" ")[0]
                 val streetNr : Int = streetAndNumber.text.toString().split(" ")[1].toInt()
-                val birthday : Date? = SimpleDateFormat("dd-MM-yyyy").parse(birthdate.text.toString())
+             //   val birthday : Date? = SimpleDateFormat("dd.MM.yyyy").parse(birthdate.text.toString())
 
 
                 val userProfileApi = UserProfileApi()
 
                 userProfileApi.createUserProfile(username.text.toString(), null,
                     description.text.toString(), "password", creationDate, "email@mail.de",
-                    null, birthday, null,
+                    null, null, null,
                     null, street, "de", address.text.toString(),
                     streetNr, null, plz.text.toString().toInt(), "profile")
                 { profile, error ->
@@ -88,11 +91,13 @@ class CreateUserProfileActivity : AppCompatActivity() {
                     else if(profile != null){
 
                     }
-                }
+               // }
 
 
 
-                Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
+              runOnUiThread {
+                  Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
+              }
             }
         }
         cancel.setOnClickListener {

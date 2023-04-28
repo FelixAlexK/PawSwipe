@@ -134,7 +134,7 @@
             android:layout_marginBottom="24dp"
             android:ems="10"
             android:hint="Geburtsdatum"
-            android:inputType="number"
+            android:inputType="datetime"
             android:minHeight="48dp"
             app:layout_constraintBottom_toTopOf="@+id/descriptionEditText"
             app:layout_constraintEnd_toEndOf="parent"

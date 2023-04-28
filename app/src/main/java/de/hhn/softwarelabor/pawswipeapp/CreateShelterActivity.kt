@@ -55,7 +55,9 @@ class CreateShelterActivity : AppCompatActivity() {
                     }
                 }
 
-                Toast.makeText(this@CreateShelterActivity, "Profil erfolgreich angelegt", Toast.LENGTH_SHORT).show()
+               runOnUiThread {
+                   Toast.makeText(this@CreateShelterActivity, "Profil erfolgreich angelegt", Toast.LENGTH_SHORT).show()
+               }
             }
 
         }
