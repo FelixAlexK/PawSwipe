@@ -23,18 +23,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="#6200ED"
         android:text="@string/goUserButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/pawSwipeTitle" />
 
     <Button
-        android:id="@+id/gotoAnimalHomeButton"
+        android:id="@+id/gotoShelterRegistrationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:backgroundTint="#8865BB"
+        android:backgroundTint="?android:attr/colorPressedHighlight"
         android:text="@string/goAnimalHomeButton"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/pawSwipeTitle" />
@@ -47,7 +46,7 @@
         android:text="@string/registerButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordConfirmInput" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordConfirmInputField" />
 
     <Button
         android:id="@+id/backToLoginButton"
@@ -60,20 +59,20 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/emailInput"
+        android:id="@+id/emailInputField"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginBottom="32dp"
         android:ems="10"
         android:hint="@string/emailTextView"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/passwordInput"
+        app:layout_constraintBottom_toTopOf="@+id/passwordInputField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/passwordInput"
+        android:id="@+id/passwordInputField"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:ems="10"
@@ -85,7 +84,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/passwordConfirmInput"
+        android:id="@+id/passwordConfirmInputField"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
@@ -94,24 +93,13 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInput" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordInputField" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="204dp" />
-
-    <TextView
-        android:id="@+id/registerAsShelterTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/registerAsShelterTextView"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/emailInput"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

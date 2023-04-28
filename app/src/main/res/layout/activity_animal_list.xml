@@ -34,7 +34,7 @@
         android:id="@+id/animalList_btn3"
         android:layout_width="126dp"
         android:layout_height="59dp"
-        android:backgroundTint="@android:color/holo_purple"
+        android:backgroundTint="?android:attr/colorPressedHighlight"
         android:text="@string/animalList_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +107,7 @@
         android:layout_marginStart="276dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/pictureView"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
