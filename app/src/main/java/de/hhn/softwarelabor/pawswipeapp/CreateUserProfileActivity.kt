@@ -135,6 +135,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             }
 
         }
+
         cancel.setOnClickListener {
             val intent = Intent(this, RegisterUserAccountActivityNico::class.java)
             startActivity(intent)
@@ -144,5 +145,4 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 selectImageFromGallery()
             }
     }
-
 }
