@@ -146,16 +146,16 @@ class PetProfileActivity : AppCompatActivity() {
             spinner = findViewById(R.id.petGenderSpinner)
 
             addPictureButton = findViewById(R.id.addPetProfileImageButton)
-            cancelPetButton = findViewById(R.id.cancelButton)
-            createPetButton = findViewById(R.id.createButton)
+            cancelPetButton = findViewById(R.id.cancel_btn)
+            createPetButton = findViewById(R.id.save_btn)
 
             petBirthdayButton = findViewById(R.id.petBirthdayButton)
             petBirthdayButton.text = getCurrentDate()
 
             petNameEditText = findViewById(R.id.petNameEditText)
             speciesEditText = findViewById(R.id.petSpeciesEditText)
-            breedEditText = findViewById(R.id.petBreedsEditText)
-            petColorEditText = findViewById(R.id.petColorEditText)
+            breedEditText = findViewById(R.id.nameEditText)
+            petColorEditText = findViewById(R.id.addressEditText)
             petDescriptionText = findViewById(R.id.petDescriptionMultiLineText)
 
             petIllnessMultilineText = findViewById(R.id.petPreExistingIllnessMultiLineText)

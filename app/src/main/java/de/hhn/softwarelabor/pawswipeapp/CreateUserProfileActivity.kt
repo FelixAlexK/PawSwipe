@@ -12,12 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.UserProfileApi
 import java.text.SimpleDateFormat
 import java.util.*
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import java.io.ByteArrayOutputStream
 
 
 class CreateUserProfileActivity : AppCompatActivity() {
     companion object {
         private const val PICK_IMAGE_REQUEST = 1
     }
+    private lateinit var imageView :ImageView
 
     // This function will be called when the user clicks a button to select an image from the gallery
     private fun selectImageFromGallery() {
@@ -33,7 +37,6 @@ class CreateUserProfileActivity : AppCompatActivity() {
             val imageUri = data.data
 
             // Display the selected image in an ImageView
-            val imageView = findViewById<ImageView>(R.id.pictureView)
             imageView.setImageURI(imageUri)
         }
         }
@@ -56,46 +59,81 @@ class CreateUserProfileActivity : AppCompatActivity() {
         val streetAndNumber : EditText = findViewById(R.id.streetEditText)
         var password : String = intent.getStringExtra("password").toString()
         var email : String = intent.getStringExtra("email").toString()
+        var streetNr: Int = 0
+        lateinit var imageArray : Array<Byte>
 
-        //picture.setImageResource(R.drawable.wf)
-        //lateinit var picture : Array<Byte>
+                imageView = findViewById(R.id.pictureView)
+
         done.setOnClickListener{
-            /**
-             *
 
-            if (prename.length()==0 || name.length()==0 ||address.length()==0){
-                Toast.makeText(this@CreateUserProfileActivity, "Bitte alle Felder ausfüllen", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }*/
-
-           // else{
-                val creationDate : Date = Calendar.getInstance().time
-                val street : String = streetAndNumber.text.toString().split(" ")[0]
-                val streetNr : Int = streetAndNumber.text.toString().split(" ")[1].toInt()
-              //  val birthday : Date? = SimpleDateFormat("dd/MM/yyyy").parse(birthdate.text.toString())
+            val creationDate : Date = Calendar.getInstance().time
+            lateinit var street : String
 
 
-                val userProfileApi = UserProfileApi()
-
-                userProfileApi.createUserProfile(username.text.toString(), null,
-                    description.text.toString(), "password", creationDate, "email@mail.de",
-                    null, null, null,
-                    null, street, "de", address.text.toString(),
-                    streetNr, null, plz.text.toString().toInt(), "profile")
-                { profile, error ->
-
-
-                    if(error != null){
-
-                    }
-                    else if(profile != null){
-
-                    }
-               // }
-              runOnUiThread {
-                  Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
-              }
+            if(streetAndNumber.text.toString().isNotEmpty()){
+                street = streetAndNumber.text.toString().split(" ")[0]
+                streetNr = streetAndNumber.text.toString().split(" ")[1].toInt()
             }
+            else{
+                street = null.toString()
+
+                }
+
+            lateinit var birthday : String
+            if(birthdate.text.toString().isNotEmpty()){
+                val inputDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val outPutDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+
+                val date = inputDateFormat.parse(birthdate.text.toString())
+                birthday  = outPutDateFormat.format(date)
+            }
+            else{
+                birthday = null.toString()
+            }
+
+            if(imageView.drawable == null){
+                    imageArray = emptyArray()
+            }
+            else{
+                val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
+
+                // Convert Bitmap to byte array
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                val byteArray: ByteArray = stream.toByteArray()
+
+                // Convert the ByteArray to Array<Byte>
+                imageArray = byteArray.toTypedArray()
+            }
+            val postalCode: Int?
+            if(plz.text.toString().isEmpty()){
+                postalCode = null
+            }
+            else{
+                postalCode = plz.text.toString().toInt()
+            }
+
+
+            val userProfileApi = UserProfileApi()
+
+            userProfileApi.createUserProfile(username.text.toString(), imageArray,
+                description.text.toString(), "password", creationDate, "email@mail.de",
+                null, birthday, null,
+                null, street, "de", address.text.toString(),
+                streetNr, null, postalCode, "profile")
+            { profile, error ->
+
+                if(error != null){
+
+                }
+                else if(profile != null){
+
+                }
+            }
+            runOnUiThread {
+                Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
+            }
+
         }
         cancel.setOnClickListener {
             val intent = Intent(this, RegisterUserAccountActivityNico::class.java)
