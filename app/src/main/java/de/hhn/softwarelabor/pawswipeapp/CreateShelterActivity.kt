@@ -43,7 +43,7 @@ class CreateShelterActivity : AppCompatActivity() {
                     null, "null", creationDate, "email@mail.de",
                     null,null, phoneNumber.text.toString(),
                     openingHours.text.toString(), street, "de", shelterAddress.text.toString(),
-                    streetNr, homepage.text.toString(), plz.text.toString().toInt(), "shelter")
+                    streetNr, homepage.text.toString(), plz.text.toString(), "shelter")
                 { profile, error ->
 
 

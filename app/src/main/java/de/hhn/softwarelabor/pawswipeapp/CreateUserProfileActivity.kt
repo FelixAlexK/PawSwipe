@@ -91,10 +91,9 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 birthday = null.toString()
             }
 
-            if(imageView.drawable == null){
-                    imageArray = emptyArray()
-            }
-            else{
+
+
+            if(imageView.drawable != null){
                 val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
 
                 // Convert Bitmap to byte array
@@ -105,21 +104,22 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 // Convert the ByteArray to Array<Byte>
                 imageArray = byteArray.toTypedArray()
             }
-            val postalCode: Int?
-            if(plz.text.toString().isEmpty()){
-                postalCode = null
-            }
-            else{
-                postalCode = plz.text.toString().toInt()
-            }
 
+            val postalCode: String? = plz.text.toString().takeIf { it.isNotBlank() }
 
+            val usernameString : String? = username.text.toString().takeIf { it.isNotBlank() }
+
+            val cityString : String? = address.text.toString().takeIf { it.isNotBlank() }
+
+            val descriptionString : String? = description.text.toString().takeIf { it.isNotBlank() }
+
+            // Creating instance of the UserProfileAPI
             val userProfileApi = UserProfileApi()
 
-            userProfileApi.createUserProfile(username.text.toString(), imageArray,
-                description.text.toString(), "password", creationDate, "email@mail.de",
+            userProfileApi.createUserProfile(usernameString, imageArray,
+                descriptionString, "password", creationDate, "email@mail.de",
                 null, birthday, null,
-                null, street, "de", address.text.toString(),
+                null, street, "de", cityString,
                 streetNr, null, postalCode, "profile")
             { profile, error ->
 
@@ -133,9 +133,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             runOnUiThread {
                 Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
             }
-
         }
-
         cancel.setOnClickListener {
             val intent = Intent(this, RegisterUserAccountActivityNico::class.java)
             startActivity(intent)

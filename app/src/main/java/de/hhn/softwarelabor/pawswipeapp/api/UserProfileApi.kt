@@ -64,7 +64,7 @@ class UserProfileApi {
         val city: String?,
         val streetNumber: Int?,
         val homepage: String?,
-        val postalCode: Int?,
+        val postalCode: String?,
         val discriminator: String
     ) {
         override fun equals(other: Any?): Boolean {
@@ -115,7 +115,7 @@ class UserProfileApi {
             result = 31 * result + city.hashCode()
             result = 31 * result + streetNumber!!
             result = 31 * result + homepage.hashCode()
-            result = 31 * result + postalCode!!
+            result = 31 * result + postalCode.hashCode()
             result = 31 * result + discriminator.hashCode()
             return result
         }
@@ -159,7 +159,7 @@ class UserProfileApi {
         val city: String?,
         val streetNumber: Int?,
         val homepage: String?,
-        val postalCode: Int?,
+        val postalCode: String?,
         val discriminator: String
     ) {
         override fun equals(other: Any?): Boolean {
@@ -208,7 +208,7 @@ class UserProfileApi {
             result = 31 * result + city.hashCode()
             result = 31 * result + streetNumber!!
             result = 31 * result + homepage.hashCode()
-            result = 31 * result + postalCode!!
+            result = 31 * result + postalCode.hashCode()
             result = 31 * result + discriminator.hashCode()
             return result
         }
@@ -241,7 +241,7 @@ class UserProfileApi {
         password: String, creationDate: Date?, email: String, isCompleted: Boolean?,
         birthday: String?, phoneNumber: String?, openingHours: String?, street: String?,
         country: String?, city: String?, streetNumber: Int?, homepage: String?,
-        postalCode: Int?, discriminator: String, callback: (Int?, Throwable?) -> Unit
+        postalCode: String?, discriminator: String, callback: (Int?, Throwable?) -> Unit
     ) {
 
 
