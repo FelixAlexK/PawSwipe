@@ -69,14 +69,20 @@ class CreateUserProfileActivity : AppCompatActivity() {
             val creationDate : Date = Calendar.getInstance().time
             lateinit var street : String
 
-
-            if(streetAndNumber.text.toString().isNotEmpty()){
+            if(streetAndNumber.text.toString().isNotEmpty()) {
+                if (!streetAndNumber.text.toString().contains("\\s".toRegex())) {
+                    Toast.makeText(
+                        this@CreateUserProfileActivity,
+                        getString(R.string.seperateStreetAndNumber),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
                 street = streetAndNumber.text.toString().split(" ")[0]
                 streetNr = streetAndNumber.text.toString().split(" ")[1].toInt()
             }
             else{
                 street = null.toString()
-
                 }
 
             lateinit var birthday : String
@@ -90,7 +96,6 @@ class CreateUserProfileActivity : AppCompatActivity() {
             else{
                 birthday = null.toString()
             }
-
 
 
             if(imageView.drawable != null){
@@ -115,30 +120,50 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
             // Creating instance of the UserProfileAPI
             val userProfileApi = UserProfileApi()
+            /**
+             * userProfileApi.createUserProfile(usernameString, imageArray,
+            descriptionString, "password", creationDate, "email@mail.de",
+            null, birthday, null,
+            null, street, "de", cityString,
+            streetNr, null, postalCode, "profile")
+            { profile, error ->
 
-            userProfileApi.createUserProfile(usernameString, imageArray,
-                descriptionString, "password", creationDate, "email@mail.de",
-                null, birthday, null,
-                null, street, "de", cityString,
-                streetNr, null, postalCode, "profile")
+            if(error != null){
+
+
+            }
+            else if(profile != null){
+
+            }
+            }
+             */
+
+            userProfileApi.createUserProfile("Testrequest", null,
+                null, "password", creationDate, "email@mail.de",
+                null, null, null,
+                null, null, "de", null,
+                null, null, null, "profile")
             { profile, error ->
 
                 if(error != null){
+
 
                 }
                 else if(profile != null){
 
                 }
             }
+            //Toast message if Registration was successful
             runOnUiThread {
                 Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
             }
         }
+        //Click Listener for the Cancel Button, returns to Registration Activity
         cancel.setOnClickListener {
             val intent = Intent(this, RegisterUserAccountActivityNico::class.java)
             startActivity(intent)
         }
-
+        //Click Listener for uploadPicture Button
         upload.setOnClickListener {
                 selectImageFromGallery()
             }
