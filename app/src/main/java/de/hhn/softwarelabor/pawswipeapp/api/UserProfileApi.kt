@@ -62,7 +62,7 @@ class UserProfileApi {
         val street: String?,
         val country: String?,
         val city: String?,
-        val streetNumber: Int?,
+        val streetNumber: String?,
         val homepage: String?,
         val postalCode: String?,
         val discriminator: String
@@ -113,7 +113,7 @@ class UserProfileApi {
             result = 31 * result + street.hashCode()
             result = 31 * result + country.hashCode()
             result = 31 * result + city.hashCode()
-            result = 31 * result + streetNumber!!
+            result = 31 * result + streetNumber.hashCode()
             result = 31 * result + homepage.hashCode()
             result = 31 * result + postalCode.hashCode()
             result = 31 * result + discriminator.hashCode()
@@ -157,7 +157,7 @@ class UserProfileApi {
         val street: String?,
         val country: String?,
         val city: String?,
-        val streetNumber: Int?,
+        val streetNumber: String?,
         val homepage: String?,
         val postalCode: String?,
         val discriminator: String
@@ -206,7 +206,7 @@ class UserProfileApi {
             result = 31 * result + street.hashCode()
             result = 31 * result + country.hashCode()
             result = 31 * result + city.hashCode()
-            result = 31 * result + streetNumber!!
+            result = 31 * result + streetNumber.hashCode()
             result = 31 * result + homepage.hashCode()
             result = 31 * result + postalCode.hashCode()
             result = 31 * result + discriminator.hashCode()
@@ -240,7 +240,7 @@ class UserProfileApi {
         username: String?, profilePicture: Array<Byte>?, description: String?,
         password: String, creationDate: Date?, email: String, isCompleted: Boolean?,
         birthday: String?, phoneNumber: String?, openingHours: String?, street: String?,
-        country: String?, city: String?, streetNumber: Int?, homepage: String?,
+        country: String?, city: String?, streetNumber: String?, homepage: String?,
         postalCode: String?, discriminator: String, callback: (Int?, Throwable?) -> Unit
     ) {
 

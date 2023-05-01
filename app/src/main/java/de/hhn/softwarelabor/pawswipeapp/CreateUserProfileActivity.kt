@@ -56,10 +56,11 @@ class CreateUserProfileActivity : AppCompatActivity() {
         val description : EditText= findViewById(R.id.descriptionEditText)
         val username : EditText = findViewById(R.id.usernameEditText)
         val plz : EditText = findViewById(R.id.postalAddressEditText)
-        val streetAndNumber : EditText = findViewById(R.id.streetEditText)
+        val street : EditText = findViewById(R.id.streetEditText)
+        val streetNr : EditText = findViewById(R.id.streetNrEditText)
         var password : String = intent.getStringExtra("password").toString()
         var email : String = intent.getStringExtra("email").toString()
-        var streetNr: Int = 0
+
         lateinit var imageArray : Array<Byte>
 
                 imageView = findViewById(R.id.pictureView)
@@ -67,23 +68,8 @@ class CreateUserProfileActivity : AppCompatActivity() {
         done.setOnClickListener{
 
             val creationDate : Date = Calendar.getInstance().time
-            lateinit var street : String
 
-            if(streetAndNumber.text.toString().isNotEmpty()) {
-                if (!streetAndNumber.text.toString().contains("\\s".toRegex())) {
-                    Toast.makeText(
-                        this@CreateUserProfileActivity,
-                        getString(R.string.seperateStreetAndNumber),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-                street = streetAndNumber.text.toString().split(" ")[0]
-                streetNr = streetAndNumber.text.toString().split(" ")[1].toInt()
-            }
-            else{
-                street = null.toString()
-                }
+
 
             lateinit var birthday : String
             if(birthdate.text.toString().isNotEmpty()){
@@ -109,6 +95,9 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 // Convert the ByteArray to Array<Byte>
                 imageArray = byteArray.toTypedArray()
             }
+            val streetString : String? = street.text.toString().takeIf { it.isNotBlank() }
+
+            val streetNrString : String? = streetNr.text.toString().takeIf { it.isNotBlank() }
 
             val postalCode: String? = plz.text.toString().takeIf { it.isNotBlank() }
 
@@ -120,12 +109,12 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
             // Creating instance of the UserProfileAPI
             val userProfileApi = UserProfileApi()
-            /**
-             * userProfileApi.createUserProfile(usernameString, imageArray,
+
+            userProfileApi.createUserProfile(usernameString, imageArray,
             descriptionString, "password", creationDate, "email@mail.de",
             null, birthday, null,
-            null, street, "de", cityString,
-            streetNr, null, postalCode, "profile")
+            null, streetString, "de", cityString,
+            streetNrString, null, postalCode, "profile")
             { profile, error ->
 
             if(error != null){
@@ -136,7 +125,9 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
             }
             }
-             */
+
+            /**
+             *  TestRequest
 
             userProfileApi.createUserProfile("Testrequest", null,
                 null, "password", creationDate, "email@mail.de",
@@ -153,6 +144,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
                 }
             }
+            */
             //Toast message if Registration was successful
             runOnUiThread {
                 Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()

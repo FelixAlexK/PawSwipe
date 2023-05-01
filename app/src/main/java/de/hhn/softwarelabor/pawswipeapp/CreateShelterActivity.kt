@@ -20,7 +20,8 @@ class CreateShelterActivity : AppCompatActivity() {
         val shelterAddress : EditText = findViewById(R.id.shelterAddressEditText)
         val phoneNumber : EditText = findViewById(R.id.phoneNumberEditText)
         val openingHours: EditText = findViewById(R.id.openingHoursEditText)
-        val streetAndNumber : EditText = findViewById(R.id.streetPlusNrEditText)
+        val street : EditText = findViewById(R.id.shelterStreetEditText)
+        val streetNumber : EditText = findViewById(R.id.streetNumberEditText)
 
         val cancel : Button = findViewById(R.id.clearButton)
         val create : Button = findViewById(R.id.doneButton)
@@ -29,28 +30,9 @@ class CreateShelterActivity : AppCompatActivity() {
 
 
             val creationDate : Date = Calendar.getInstance().time
-            var street : String? = null
-            var streetNr : Int? = null
-            val streetAndNumberString : String? = streetAndNumber.text.toString().takeIf { it.isNotBlank() }
-            if (streetAndNumberString != null) {
-                if (!streetAndNumber.text.toString().contains("\\s".toRegex())) {
-                    Toast.makeText(
-                        this@CreateShelterActivity,
-                        getString(R.string.seperateStreetAndNumber),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-                else{
-                    street  = streetAndNumberString.split(" ")[0]
-                    streetNr  = streetAndNumberString.split(" ")[1].toInt()
-                }
 
-            }
-
-
-
-
+            val shelterStreetString : String?= street.text.toString().takeIf { it.isNotBlank() }
+            val shelterStreetNrString : String? = streetNumber.text.toString().takeIf { it.isNotBlank() }
             val shelterNameString : String? = shelterName.text.toString().takeIf { it.isNotBlank() }
             val phoneNumberString : String? = phoneNumber.text.toString().takeIf { it.isNotBlank() }
             val openingHrsString : String?= openingHours.text.toString().takeIf { it.isNotBlank() }
@@ -63,8 +45,8 @@ class CreateShelterActivity : AppCompatActivity() {
             userProfileApi.createUserProfile(shelterNameString, null,
                 null, "password123", creationDate, "email@mail.de",
                 null,null, phoneNumberString,
-                openingHrsString, street, "de", shelterAddressString,
-                streetNr, homepageString, postalCodeString, "shelter")
+                openingHrsString, shelterStreetString, "de", shelterAddressString,
+                shelterStreetNrString, homepageString, postalCodeString, "shelter")
             { profile, error ->
 
 

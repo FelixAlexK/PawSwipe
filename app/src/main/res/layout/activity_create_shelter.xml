@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CreateShelterActivity">
@@ -65,7 +65,7 @@
         android:hint="Wohnort"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/streetPlusNrEditText"
+        app:layout_constraintBottom_toTopOf="@+id/shelterStreetEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.846"
         app:layout_constraintStart_toStartOf="parent" />
@@ -85,16 +85,16 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/streetPlusNrEditText"
-        android:layout_width="350dp"
+        android:id="@+id/shelterStreetEditText"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="28dp"
         android:ems="10"
-        android:hint="Strasse + Hausnummer"
+        android:hint="Strasse"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/phoneNumberEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -125,5 +125,18 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homepageEditText" />
+
+    <EditText
+        android:id="@+id/streetNumberEditText"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:ems="10"
+        android:hint="HausNr"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/phoneNumberEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/shelterStreetEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
