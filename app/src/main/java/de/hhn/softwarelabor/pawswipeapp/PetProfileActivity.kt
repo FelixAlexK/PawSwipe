@@ -146,8 +146,8 @@ class PetProfileActivity : AppCompatActivity() {
             spinner = findViewById(R.id.petGenderSpinner)
 
             addPictureButton = findViewById(R.id.addPetProfileImageButton)
-            cancelPetButton = findViewById(R.id.cancelButton)
-            createPetButton = findViewById(R.id.createButton)
+            cancelPetButton = findViewById(R.id.cancel_btn)
+            createPetButton = findViewById(R.id.save_btn)
 
             petBirthdayButton = findViewById(R.id.petBirthdayButton)
             petBirthdayButton.text = getCurrentDate()
@@ -168,27 +168,12 @@ class PetProfileActivity : AppCompatActivity() {
                 spinner.adapter = adapter
             }
 
-            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         } catch (e: NullPointerException) {
             e.printStackTrace()
         }
 
     }
-
-    fun test(){
-        val userProfileApi = UserProfileApi()
-
-        userProfileApi.getUserProfileByID(38) { _,profile, error ->
-
-            if(error != null){
-                //handle error
-            }else if(profile != null){
-                //handle response
-            }
-
-        }
-    }
-
 
 
     companion object {
