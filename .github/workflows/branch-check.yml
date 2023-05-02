@@ -10,10 +10,10 @@ env:
 
 jobs:
   branch-check:
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest, macOS-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -29,6 +29,24 @@ jobs:
           fi
 
       - name: Set status
-        uses: marvinpinto/action-automatic-rebase@v1
+        uses: actions/github-script@v4
         with:
           github-token: ${{ env.GITHUB_TOKEN }}
+          script: |
+            const { data: checks } = await octokit.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha
+            });
+            const latestCheck = checks.check_runs[0];
+            const latestStatus = latestCheck.conclusion;
+            const conclusion = latestStatus === 'success' ? 'success' : 'failure';
+            const message = latestStatus === 'success' ? 'Branch is up to date' : 'Branch is not up to date';
+            const { data: status } = await octokit.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: conclusion,
+              description: message,
+              context: 'branch-up-to-date'
+            });
