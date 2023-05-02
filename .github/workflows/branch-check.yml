@@ -10,10 +10,11 @@ env:
 
 jobs:
   branch-check:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macOS-latest]
-    runs-on: ${{ matrix.os }}
+        os: [macOS-latest, windows-latest]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -21,7 +22,7 @@ jobs:
       - name: Check branch
         run: |
           git fetch
-          if [ `git rev-parse HEAD` = `git rev-parse @{u}` ]; then
+          if [ "$(git rev-parse HEAD)" = "$(git rev-parse @{u})" ]; then
             echo "Branch is up to date"
           else
             echo "Branch is not up to date"
