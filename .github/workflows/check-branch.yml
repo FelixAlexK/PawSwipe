@@ -1,0 +1,31 @@
+name: Check Branch Up-to-date
+
+on:
+  pull_request:
+    branches:
+      - development
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      
+      - name: Check branch up-to-date
+        run: |
+          git fetch origin
+          UPSTREAM=${1:-'@{u}'}
+          LOCAL=$(git rev-parse @)
+          REMOTE=$(git rev-parse "$UPSTREAM")
+          BASE=$(git merge-base @ "$UPSTREAM")
+          if [ $LOCAL = $REMOTE ]; then
+              echo "Your branch is up to date with the development branch"
+          elif [ $LOCAL = $BASE ]; then
+              echo "Your branch is behind the development branch. Please update your branch."
+              exit 1
+          else
+              echo "Your branch is ahead of the development branch. Please merge the development branch into your branch."
+          fi
