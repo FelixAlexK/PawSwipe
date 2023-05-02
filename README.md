@@ -1,4 +1,4 @@
-![GitHub contributors](https://img.shields.io/github/contributors-anon/FelixAlexK/PawSwipe?color=orange&style=badge)
+![GitHub contributors](https://img.shields.io/github/contributors/FelixAlexK/PawSwipe?color=orange&style=badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/FelixAlexK/PawSwipe?color=orange&style=badge)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/FelixAlexK/PawSwipe?color=orange&style=badge)
 # PawSwipe
