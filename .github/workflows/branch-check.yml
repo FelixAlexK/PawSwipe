@@ -10,10 +10,7 @@ env:
 
 jobs:
   branch-check:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macOS-latest, windows-latest]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
