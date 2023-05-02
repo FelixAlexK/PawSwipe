@@ -2,8 +2,10 @@ name: Branch Up-to-date Check
 
 on:
   pull_request:
-    branches: [ development ]
-  workflow_dispatch:
+    branches: [ $default-branch ]
+defaults:
+  run:
+    shell: bash
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
