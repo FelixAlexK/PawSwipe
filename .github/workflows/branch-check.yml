@@ -1,52 +1,29 @@
-name: Branch Up-to-date Check
+name: Check Branch Up-to-date
 
 on:
   pull_request:
-    branches: [ $default-branch ]
-defaults:
-  run:
-    shell: bash
-
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    branches:
+      - development
 
 jobs:
-  branch-check:
+  check-branch:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2.5.0
-
-      - name: Check branch
+        uses: actions/checkout@v2
+      
+      - name: Check branch up-to-date
         run: |
-          git fetch
-          if [ "$(git rev-parse HEAD)" = "$(git rev-parse @{u})" ]; then
-            echo "Branch is up to date"
+          git fetch origin
+          UPSTREAM=${1:-'@{u}'}
+          LOCAL=$(git rev-parse @)
+          REMOTE=$(git rev-parse "$UPSTREAM")
+          BASE=$(git merge-base @ "$UPSTREAM")
+          if [ $LOCAL = $REMOTE ]; then
+              echo "Your branch is up to date with the development branch"
+          elif [ $LOCAL = $BASE ]; then
+              echo "Your branch is behind the development branch. Please update your branch."
+              exit 1
           else
-            echo "Branch is not up to date"
-            exit 1
+              echo "Your branch is ahead of the development branch. Please merge the development branch into your branch."
           fi
-
-      - name: Set status
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ env.GITHUB_TOKEN }}
-          script: |
-            const { data: checks } = await octokit.checks.listForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: context.sha
-            });
-            const latestCheck = checks.check_runs[0];
-            const latestStatus = latestCheck.conclusion;
-            const conclusion = latestStatus === 'success' ? 'success' : 'failure';
-            const message = latestStatus === 'success' ? 'Branch is up to date' : 'Branch is not up to date';
-            const { data: status } = await octokit.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              state: conclusion,
-              description: message,
-              context: 'branch-up-to-date'
-            });
