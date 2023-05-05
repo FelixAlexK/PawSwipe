@@ -45,7 +45,8 @@
     <string name="logoutOption">Abmelden</string>
 
     <string name="pawSwipeTitle">PawSwipe</string>
-    <string name="registerButton">Registrieren</string>
+    <string name="registerAsUserButton">Als Nutzer registrieren</string>
+    <string name="registerAsShelterButton">Als Tierheim registrieren</string>
     <string name="toLoginButton">Zurück zum Login</string>
     <string name="goUserButton">Nutzer</string>
     <string name="goAnimalHomeButton">Tierheim</string>
@@ -59,6 +60,7 @@
     <string name="saveChanges_btn"> Speichern</string>
     <string name="petDescription_hint">Beschreibung</string>
     <string name="loginButton_Text">Anmelden</string>
+    <string name="loginRegister_button">Anmelden/Registrieren</string>
     <string name="cancel">Abbrechen</string>
     <string name="create">Erstellen</string>
     <string name="lastname">Nachname</string>

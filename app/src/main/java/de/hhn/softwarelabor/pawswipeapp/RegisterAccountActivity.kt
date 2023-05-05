@@ -16,10 +16,9 @@ open class RegisterAccountActivity : AppCompatActivity() {
     private lateinit var email : String
     private lateinit var passwordHashed : String
 
-    private lateinit var registerButton : Button
+    private lateinit var registerAsUserButton : Button
+    private lateinit var registerAsShelterButton : Button
     private lateinit var backToLoginButton : Button
-    private lateinit var accountTypeSpinner: Spinner
-    private lateinit var accountType: String
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,10 +26,12 @@ open class RegisterAccountActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register_account)
 
         initGUIElements()
-        initArrayAdapter()
 
-        registerButton.setOnClickListener {
-            registerAccount()
+        registerAsUserButton.setOnClickListener {
+            proceedToUserProfileCreation()
+        }
+        registerAsShelterButton.setOnClickListener {
+            proceedToShelterProfileCreation()
         }
         backToLoginButton.setOnClickListener {
             goBackToLoginActivity()
@@ -38,26 +39,13 @@ open class RegisterAccountActivity : AppCompatActivity() {
     }
 
 
-    fun registerAccount() {
-        // cancels registration when inputs are not valid
-        if (!checkInput()) {
-            return
-        }
-        if (accountType.equals("")) {
-            Toast.makeText(
-                this, "Keine Accountart ausgewählt",
-                Toast.LENGTH_LONG).show()
-            return
-        }
-        proceedToProfileCreation()
-    }
-
 
     /** -------------------------Initialization of GUI elements ------------------------------- */
 
     protected fun initGUIElements() {
         try {
-            registerButton = findViewById<Button>(R.id.registerButton)
+            registerAsUserButton = findViewById<Button>(R.id.registerAsUserButton)
+            registerAsShelterButton = findViewById<Button>(R.id.registerAsShelterButton)
             backToLoginButton = findViewById<Button>(R.id.backToLoginButton)
 
             val emailInputField = findViewById<EditText>(R.id.emailInputField)
@@ -68,49 +56,6 @@ open class RegisterAccountActivity : AppCompatActivity() {
             throw Exception("Could not initialize GUI elements")
         }
     }
-
-    protected fun initArrayAdapter() {
-        accountType = ""
-
-        val accountTypeSpinner: Spinner = findViewById(R.id.accountTypeSpinner)
-        // accountTypeSpinner.onItemSelectedListener = this
-        // val accountType = spinner.selectedItem.toString()
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.accountTypes,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            accountTypeSpinner.adapter = adapter
-        }
-
-
-    }
-    /*
-    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        // Exclude the hint item from being treated as a valid selection
-        // An item was selected. You can retrieve the selected item using
-        // accountType = parent.getItemAtPosition(p2).toString()
-        // val accountType: String = accountTypeSpinner.getSelectedItem().toString()
-        // val accountType: String = accountTypeSpinner.getItemAtPosition(p2) as String
-
-        // "lateinit property accountTypeSpinner has not been initialized"
-        // accountType = accountTypeSpinner.getItemAtPosition(p2) as String
-        accountType = accountTypeSpinner.selectedItem.toString()
-    }
-
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-
-        Toast.makeText(
-            this, "Nichts ausgewählt",
-            Toast.LENGTH_LONG).show()
-        return
-    }
-    */
     /** ----------------------------------- redirects ----------------------------------- */
 
     protected fun goBackToLoginActivity() {
@@ -121,32 +66,41 @@ open class RegisterAccountActivity : AppCompatActivity() {
             displayNetworkErrorMessage()
         }
     }
+
     /**
-     * Redirects to profile after registration has been successful
+     * Redirects to profiles after registration has been successful
      */
-    protected fun proceedToProfileCreation() {
-
-
+    fun proceedToUserProfileCreation() {
+        if (!checkInput()) {
+            return
+        }
         val passwordInputString = findViewById<EditText>(R.id.passwordInputField)
         val password = passwordInputString.text.toString()
 
         // Email and password get hashed
         val passwordHashed = hashStringToSHA256(password)
 
-        if (accountType.equals("Tierheim")) {
-            val intent = Intent(this, CreateShelterActivity::class.java)
-            intent.putExtra("email", email)
-            intent.putExtra("passwordHashed", passwordHashed)
-            // intent.putExtra("accountType", accountType)
-            startActivity(intent)
+        val intent = Intent(this, CreateUserProfileActivity::class.java)
+        intent.putExtra("email", email)
+        intent.putExtra("passwordHashed", passwordHashed)
+        // intent.putExtra("accountType", accountType)
+        startActivity(intent)
+    }
+    fun proceedToShelterProfileCreation() {
+        if (!checkInput()) {
+            return
         }
-        else {
-            val intent = Intent(this, CreateUserProfileActivity::class.java)
-            intent.putExtra("email", email)
-            intent.putExtra("passwordHashed", passwordHashed)
-            // intent.putExtra("accountType", accountType)
-            startActivity(intent)
-        }
+        val passwordInputString = findViewById<EditText>(R.id.passwordInputField)
+        val password = passwordInputString.text.toString()
+
+        // Email and password get hashed
+        val passwordHashed = hashStringToSHA256(password)
+
+        val intent = Intent(this, CreateShelterActivity::class.java)
+        intent.putExtra("email", email)
+        intent.putExtra("passwordHashed", passwordHashed)
+        // intent.putExtra("accountType", accountType)
+        startActivity(intent)
     }
 
     /** --------------------------------------------------------------------------------------- */

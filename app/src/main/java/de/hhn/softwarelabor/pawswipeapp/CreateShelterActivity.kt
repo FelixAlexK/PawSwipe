@@ -63,7 +63,7 @@ class CreateShelterActivity : AppCompatActivity() {
         }
 
         cancel.setOnClickListener {
-            val intent = Intent(this, RegisterShelterAccountActivityNico::class.java)
+            val intent = Intent(this, RegisterAccountActivity::class.java)
             startActivity(intent)
         }
     }

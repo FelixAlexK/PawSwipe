@@ -98,7 +98,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             }
         }
         cancel.setOnClickListener {
-            val intent = Intent(this, RegisterUserAccountActivityNico::class.java)
+            val intent = Intent(this, RegisterAccountActivity::class.java)
             startActivity(intent)
         }
 
