@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/editUser_tv"
+        android:id="@+id/filterEdit_tv"
         android:layout_width="330dp"
         android:layout_height="80dp"
         android:text="@string/editAnimal_tv"
@@ -133,7 +133,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/nameEditText"
+                    android:id="@+id/breedEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -184,17 +184,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/petBirthdayEditText"
+                <Button
+                    android:id="@+id/petBirthdayButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:minHeight="48dp"
-                    android:ems="10"
                     android:importantForAutofill="no"
-                    android:inputType="textPersonName"
-                    android:hint="@string/petBirthday_hint"
+                    android:minHeight="48dp"
+                    android:text="@string/birthdayButton_text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

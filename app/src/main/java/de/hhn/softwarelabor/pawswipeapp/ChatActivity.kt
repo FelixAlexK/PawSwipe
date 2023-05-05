@@ -56,6 +56,22 @@ class ChatActivity : AppCompatActivity() {
                 true
             }
 
+            R.id.menu_animalCreate -> {
+                val intent = Intent(this@ChatActivity, PetProfileActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_logOut -> {
+                val intent = Intent(this@ChatActivity, LoginActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_filter -> {
+                val intent = Intent(this@ChatActivity, FilterActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
