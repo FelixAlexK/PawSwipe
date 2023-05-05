@@ -3,160 +3,62 @@ package de.hhn.softwarelabor.pawswipeapp
 import android.accounts.NetworkErrorException
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.IOException
 import java.security.MessageDigest
 import java.util.*
 
 
 open class RegisterAccountActivity : AppCompatActivity() {
+    // , AdapterView.OnItemSelectedListener
+    private lateinit var email : String
+    private lateinit var passwordHashed : String
 
-    private lateinit var gotoShelterRegistrationButton : Button
     private lateinit var registerButton : Button
     private lateinit var backToLoginButton : Button
-    private lateinit var gotoUserRegistrationButton : Button
-    // We are either a shelter or a user. Overwritten in the subclasses
-    private var isShelter: Boolean = true
+    private lateinit var accountTypeSpinner: Spinner
+    private lateinit var accountType: String
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register_shelter)
+        setContentView(R.layout.activity_register_account)
 
         initGUIElements()
-
+        initArrayAdapter()
 
         registerButton.setOnClickListener {
-            // registerAccount()
-            testEncryption()
+            registerAccount()
         }
         backToLoginButton.setOnClickListener {
             goBackToLoginActivity()
         }
-        gotoShelterRegistrationButton.setOnClickListener {
-            goBackToShelterRegistrationActivity()
-        }
-        gotoUserRegistrationButton.setOnClickListener {
-            goBackToUserRegistrationActivity()
-        }
     }
 
-    fun testEncryption() {
-        val emailInputString = findViewById<EditText>(R.id.emailInputField)
-        val passwordInputString = findViewById<EditText>(R.id.passwordInputField)
-        val email = emailInputString.text.toString()
-        val password = passwordInputString.text.toString()
-
-        // Email and password get hashed
-        val emailHashed = hashStringToSHA256(email)
-        val passwordHashed = hashStringToSHA256(password)
-
-        Log.i(RegisterAccountActivity::javaClass.name, "Email hash: " + emailHashed)
-        Log.i(RegisterAccountActivity::javaClass.name, "Password Hashed: " + passwordHashed)
-    }
 
     fun registerAccount() {
         // cancels registration when inputs are not valid
         if (!checkInput()) {
             return
         }
-        makeRegisterRequest()
-    }
-
-    private fun makeRegisterRequest() {
-        try {
-            // @Nico this part needs to be refactored and cleared up as good as possible
-            val client = OkHttpClient()
-            val baseUrl = "http://45.146.253.199:8080"
-            val path = "/account/create"
-            val url = baseUrl + path
-
-            val emailInputString = findViewById<EditText>(R.id.emailInputField)
-            val passwordInputString = findViewById<EditText>(R.id.passwordInputField)
-            val email = emailInputString.text.toString()
-            val password = passwordInputString.text.toString()
-
-            // Email and password get hashed
-            val emailHashed = hashStringToSHA256(email)
-            val passwordHashed = hashStringToSHA256(password)
-
-            val json = """{"email": "${emailHashed}", "password": "${passwordHashed}"  }""".trimIndent()
-            val body = json.toRequestBody("application/json".toMediaTypeOrNull())
-
-            val request = Request.Builder()
-                .url(url)
-                .post(body)
-                .build()
-
-
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    val errorMessage = e.message
-                    // Print the error message to the console
-                    println("Request failed: -------------------------------- $errorMessage" )
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    println("SUCCESS ------------------------------")
-
-
-                }
-            })
-
-            // everything is successful
-            proceedToProfileCreation()
-
-            // further code following when database is established
-        } catch(e: NetworkErrorException) {
-            displayNetworkErrorMessage()
-        } catch(e: java.lang.Exception) {
-            displayGeneralErrorMessage()
+        if (accountType.equals("")) {
+            Toast.makeText(
+                this, "Keine Accountart ausgewählt",
+                Toast.LENGTH_LONG).show()
+            return
         }
+        proceedToProfileCreation()
     }
 
-    /**
-     * Redirects to other activities
-     */
-    protected fun goBackToLoginActivity() {
-        try {
-                                                // change this after testing
-            val backToLoginIntent = Intent(this, MainActivity::class.java)
-            startActivity(backToLoginIntent)
-        } catch(e: NetworkErrorException) {
-            displayNetworkErrorMessage()
-        }
-    }
 
-    protected fun proceedToProfileCreation() {
-        if (isShelter) {
-            val intent = Intent(this, CreateShelterActivity::class.java)
-            startActivity(intent)
-        } else {
-            val intent = Intent(this, CreateUserProfileActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    protected open fun goBackToUserRegistrationActivity() {
-    }
-    protected open fun goBackToShelterRegistrationActivity() {
-    }
-    /** -------------------------------------------------------------------------------------- */
+    /** -------------------------Initialization of GUI elements ------------------------------- */
 
     protected fun initGUIElements() {
         try {
-            gotoShelterRegistrationButton = findViewById<Button>(R.id.gotoShelterRegistrationButton)
             registerButton = findViewById<Button>(R.id.registerButton)
             backToLoginButton = findViewById<Button>(R.id.backToLoginButton)
-            gotoUserRegistrationButton = findViewById(R.id.gotoUserRegistrationButton)
 
             val emailInputField = findViewById<EditText>(R.id.emailInputField)
             val passwordInputField = findViewById<EditText>(R.id.passwordInputField)
@@ -167,6 +69,87 @@ open class RegisterAccountActivity : AppCompatActivity() {
         }
     }
 
+    protected fun initArrayAdapter() {
+        accountType = ""
+
+        val accountTypeSpinner: Spinner = findViewById(R.id.accountTypeSpinner)
+        // accountTypeSpinner.onItemSelectedListener = this
+        // val accountType = spinner.selectedItem.toString()
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.accountTypes,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            accountTypeSpinner.adapter = adapter
+        }
+
+
+    }
+    /*
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        // Exclude the hint item from being treated as a valid selection
+        // An item was selected. You can retrieve the selected item using
+        // accountType = parent.getItemAtPosition(p2).toString()
+        // val accountType: String = accountTypeSpinner.getSelectedItem().toString()
+        // val accountType: String = accountTypeSpinner.getItemAtPosition(p2) as String
+
+        // "lateinit property accountTypeSpinner has not been initialized"
+        // accountType = accountTypeSpinner.getItemAtPosition(p2) as String
+        accountType = accountTypeSpinner.selectedItem.toString()
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+
+        Toast.makeText(
+            this, "Nichts ausgewählt",
+            Toast.LENGTH_LONG).show()
+        return
+    }
+    */
+    /** ----------------------------------- redirects ----------------------------------- */
+
+    protected fun goBackToLoginActivity() {
+        try {
+            val backToLoginIntent = Intent(this, LoginActivity::class.java)
+            startActivity(backToLoginIntent)
+        } catch(e: NetworkErrorException) {
+            displayNetworkErrorMessage()
+        }
+    }
+    /**
+     * Redirects to profile after registration has been successful
+     */
+    protected fun proceedToProfileCreation() {
+
+
+        val passwordInputString = findViewById<EditText>(R.id.passwordInputField)
+        val password = passwordInputString.text.toString()
+
+        // Email and password get hashed
+        val passwordHashed = hashStringToSHA256(password)
+
+        if (accountType.equals("Tierheim")) {
+            val intent = Intent(this, CreateShelterActivity::class.java)
+            intent.putExtra("email", email)
+            intent.putExtra("passwordHashed", passwordHashed)
+            // intent.putExtra("accountType", accountType)
+            startActivity(intent)
+        }
+        else {
+            val intent = Intent(this, CreateUserProfileActivity::class.java)
+            intent.putExtra("email", email)
+            intent.putExtra("passwordHashed", passwordHashed)
+            // intent.putExtra("accountType", accountType)
+            startActivity(intent)
+        }
+    }
+
+    /** --------------------------------------------------------------------------------------- */
 
     /**
      * Input sanitization and error handling
@@ -211,7 +194,7 @@ open class RegisterAccountActivity : AppCompatActivity() {
     }
 
     protected fun isValidPassword(passwordInputString: String,
-                                passwordConfirmInputString: String): Boolean {
+                                  passwordConfirmInputString: String): Boolean {
         // empty fields
         if (passwordConfirmInputString.isEmpty() || passwordInputString.isEmpty()) {
             emptyInputErrorMessage()
@@ -258,7 +241,7 @@ open class RegisterAccountActivity : AppCompatActivity() {
     /**
      * Hashes data (for instance a password) to SHA-256
      */
-    fun hashStringToSHA256(input: String): String {
+    private fun hashStringToSHA256(input: String): String {
         val md = MessageDigest.getInstance("SHA-256")
         val hashBytes = md.digest(input.toByteArray())
         return hashBytes.joinToString("") { byte ->
