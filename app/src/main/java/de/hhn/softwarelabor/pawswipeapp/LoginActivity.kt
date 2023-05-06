@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginLoginButton.setOnClickListener {
             val email: String = loginEmailEditText.text.toString()
-            val password = loginPasswordEditText.text.toString()
+            val password: String = loginPasswordEditText.text.toString()
             if(email.isNotEmpty() && password.isNotEmpty()){
                 if(isShelter){
                     loginShelter(email, password)
