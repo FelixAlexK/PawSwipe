@@ -198,7 +198,7 @@ class PetProfileActivity : AppCompatActivity() {
 
     companion object {
         private const val EDIT_TEXT_LENGTH = 20
-        private const val MULTILINE_TEXT_LENGTH = 50
+        private const val MULTILINE_TEXT_LENGTH = 255
     }
 
 
