@@ -30,15 +30,27 @@ class LoginActivity : AppCompatActivity() {
         init()
 
         loginUserButton.setOnClickListener {
-            loginUserButton.setBackgroundColor(Color.GREEN)
-            loginShelterButton.setBackgroundColor(resources.getColor(R.color.pawswipe_orange_700, null))
+            try {
+                loginUserButton.setBackgroundColor(Color.GREEN)
+                loginShelterButton.setBackgroundColor(resources.getColor(R.color.pawswipe_orange_700, null))
+            }catch (e: Resources.NotFoundException){
+                Log.e(TAG, e.message.toString())
+                e.printStackTrace()
+            }
+
             isUser = true
             isShelter = false
         }
 
         loginShelterButton.setOnClickListener {
-            loginShelterButton.setBackgroundColor(Color.GREEN)
-            loginUserButton.setBackgroundColor(resources.getColor(R.color.pawswipe_orange_700,null))
+            try {
+                loginShelterButton.setBackgroundColor(Color.GREEN)
+                loginUserButton.setBackgroundColor(resources.getColor(R.color.pawswipe_orange_700,null))
+            }catch (e: Resources.NotFoundException){
+                Log.e(TAG, e.message.toString())
+                e.printStackTrace()
+            }
+
             isShelter = true
             isUser = false
         }
@@ -53,13 +65,13 @@ class LoginActivity : AppCompatActivity() {
                     //loginUser(email, password)
                 }else {
                     runOnUiThread{
-                        Toast.makeText(this, "Geben Sie an ob Sie sich als Nutzer oder als Tierheim einloggen möchten", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Bitte wählen Sie aus, ob Sie sich als Nutzer oder Tierheim anmelden möchten.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
             }else {
                 runOnUiThread{
-                    Toast.makeText(this, "Email oder Password angeben!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Bitte gib eine gültige E-Mail-Adresse und ein Passwort ein.", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -74,22 +86,22 @@ class LoginActivity : AppCompatActivity() {
         profile.getUserProfileByEmail(email){ shelter, error ->
             if(error != null){
                 runOnUiThread{
-                    Toast.makeText(this,"Es konnte kein Account mit dieser E-mail gefunden werden",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Es wurde kein Account mit dieser E-Mail-Adresse gefunden. Bitte überprüfen Sie Ihre Eingabe und versuchen Sie es erneut.",Toast.LENGTH_SHORT).show()
                 }
                 Log.e(TAG, error.message.toString())
             }else if(shelter != null && shelter.discriminator.equals(DISCRIMINATOR_SHELTER, ignoreCase = true)){
                 if (password == shelter.password){
                     runOnUiThread{
-                        Toast.makeText(this,"Willkommen zurück ${shelter.username}",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Willkommen zurück, ${shelter.username}! Sie haben sich erfolgreich angemeldet.",Toast.LENGTH_SHORT).show()
                     }
                 }else {
                     runOnUiThread{
-                        Toast.makeText(this,"Login fehlgeschlagen. Versuchen Sie es noch einmal",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Login fehlgeschlagen. Das eingegebene Passwort ist falsch. Bitte versuchen Sie es erneut.",Toast.LENGTH_SHORT).show()
                     }
                 }
             }else {
                 runOnUiThread{
-                    Toast.makeText(this,"Es wurde kein Tierheim Profil mit dieser E-mail gefunden!",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Es wurde kein Tierheim-Profil mit dieser E-Mail-Adresse gefunden. Bitte überprüfen Sie Ihre Eingabe und versuchen Sie es erneut.",Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -105,6 +117,7 @@ class LoginActivity : AppCompatActivity() {
             loginRegisterButton = findViewById(R.id.loginRegister_button)
             loginLoginButton = findViewById(R.id.loginLogin_button)
         }catch (e: NullPointerException){
+            Log.e(TAG, e.message.toString())
             e.printStackTrace()
         }
     }
