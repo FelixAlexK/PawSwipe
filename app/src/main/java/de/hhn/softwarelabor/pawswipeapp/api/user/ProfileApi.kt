@@ -1,4 +1,4 @@
-package de.hhn.softwarelabor.pawswipeapp.api
+package de.hhn.softwarelabor.pawswipeapp.api.user
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
@@ -19,11 +19,10 @@ import java.util.Date
 /**
  * [ProfileApi], provides functions to do http requests
  *  @author Felix Kuhbier
- *  @since 2023.04.19
+ *  @since 2023.05.06
  */
 
 private const val BASE_URL = "http://45.146.253.199:8080/profile"
-
 class ProfileApi : ProfileInterface {
     private var client: OkHttpClient = OkHttpClient()
     private var gson = Gson()
