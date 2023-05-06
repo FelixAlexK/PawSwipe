@@ -86,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
         profile.getUserProfileByEmail(email){ shelter, error ->
             if(error != null){
                 runOnUiThread{
-                    Toast.makeText(this,"Es wurde kein Account mit dieser E-Mail-Adresse gefunden. Bitte überprüfen Sie Ihre Eingabe und versuchen Sie es erneut.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Es wurde kein Account mit dieser E-Mail-Adresse gefunden.",Toast.LENGTH_SHORT).show()
                 }
                 Log.e(TAG, error.message.toString())
             }else if(shelter != null && shelter.discriminator.equals(DISCRIMINATOR_SHELTER, ignoreCase = true)){
@@ -96,12 +96,13 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }else {
                     runOnUiThread{
-                        Toast.makeText(this,"Login fehlgeschlagen. Das eingegebene Passwort ist falsch. Bitte versuchen Sie es erneut.",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Login fehlgeschlagen. Das eingegebene Passwort ist falsch.",Toast.LENGTH_SHORT).show()
                     }
                 }
             }else {
                 runOnUiThread{
-                    Toast.makeText(this,"Es wurde kein Tierheim-Profil mit dieser E-Mail-Adresse gefunden. Bitte überprüfen Sie Ihre Eingabe und versuchen Sie es erneut.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Kein Tierheim-Profil mit dieser E-Mail-Adresse gefunden",Toast.LENGTH_SHORT).show()
+
                 }
             }
 
