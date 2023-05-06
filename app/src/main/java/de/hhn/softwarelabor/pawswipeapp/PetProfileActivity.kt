@@ -1,5 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -33,9 +34,9 @@ class PetProfileActivity : AppCompatActivity() {
     private lateinit var petDescriptionText: EditText
 
 
-    private var newFragment: DatePickerFragment = DatePickerFragment()
+    private var datePickerFragment: DatePickerFragment = DatePickerFragment()
     private var animalProfile: AnimalProfileApi = AnimalProfileApi()
-
+    private var profileId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,19 +44,31 @@ class PetProfileActivity : AppCompatActivity() {
 
         init()
 
+        profileId = 11
         createPetButton.setOnClickListener {
+            if (petDescriptionText.length() <= MULTILINE_TEXT_LENGTH){
+                profileId?.let {
+                    createPet(
+                        petNameEditText.text.toString(),
+                        speciesEditText.text.toString(),
+                        datePickerFragment.toString(),
+                        petIllnessMultilineText.text.toString(),
+                        petDescriptionText.text.toString(),
+                        breedEditText.text.toString(),
+                        petColorEditText.text.toString(),
+                        spinner.selectedItem.toString(),
+                        it
+                    )
+                }?: run {
+                    Toast.makeText(this, "Die ID des Benutzerprofils ist ungültig. Bitte versuchen Sie es erneut.", Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "Profile ID is null")
+                }
+            }else {
+                runOnUiThread{
+                    Toast.makeText(this, "Beschreibung ist zu lang: ${petDescriptionText.length()}/50", Toast.LENGTH_SHORT).show()
+                }
+            }
 
-            createPet(
-                petNameEditText.text.toString(),
-                speciesEditText.text.toString(),
-                newFragment.toString(),
-                petIllnessMultilineText.text.toString(),
-                petDescriptionText.text.toString(),
-                breedEditText.text.toString(),
-                petColorEditText.text.toString(),
-                spinner.selectedItem.toString(),
-                38
-            )
 
         }
 
@@ -68,7 +81,7 @@ class PetProfileActivity : AppCompatActivity() {
             petColorEditText.setText("")
         }
 
-        newFragment.setOnDatePickedListener { date ->
+        datePickerFragment.setOnDatePickedListener { date ->
             petBirthdayButton.text = date
         }
 
@@ -90,37 +103,42 @@ class PetProfileActivity : AppCompatActivity() {
 
         val profile = ProfileApi()
 
-        try {
-
-            profile.getUserProfileByID(profile_id) { user, error ->
 
 
-                if (error != null) {
-                    Log.e("AnimalProfileApi", "Error fetching: $error")
-                } else if (user != null) {
-                    animalProfile.createAnimalProfile(
-                        name, species, birthday!!, illness, description, breed, color, gender, user
-                    ) { profile, error ->
+        profile.getUserProfileByID(profile_id) { user, error ->
 
-                        if (error != null) {
-                            Log.e("AnimalProfileApi", "Error fetching: $error")
-                        } else if (profile != null) {
-                            Log.d("AnimalProfileApi", "Successful: $profile")
+
+            if (error != null) {
+                Log.e(TAG, error.message.toString())
+                runOnUiThread{
+                    Toast.makeText(this, "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.", Toast.LENGTH_SHORT).show()
+                }
+            } else if (user != null) {
+                animalProfile.createAnimalProfile(
+                    name, species, birthday, illness, description, breed, color, gender, user
+                ) { profile, error ->
+
+                    if (error != null) {
+                        Log.e(TAG, error.message.toString())
+                        runOnUiThread{
+                            Toast.makeText(this, "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.", Toast.LENGTH_SHORT).show()
+                        }
+                    } else if (profile != null) {
+                        Log.d(TAG, "Successful: $profile")
+                        runOnUiThread{
+                            Toast.makeText(this, "Profil für $name wurde erfolgreich erstellt!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
+            }
         }
 
 
-
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
     }
 
 
     private fun showDatePickerDialog(v: View) {
-        newFragment.show(supportFragmentManager, "datePicker")
+        datePickerFragment.show(supportFragmentManager, "datePicker")
 
     }
 
@@ -135,7 +153,8 @@ class PetProfileActivity : AppCompatActivity() {
             val currentDate = Calendar.getInstance().time
             val formatter = SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault())
             currentDateString = formatter.format(currentDate)
-        } catch (e: java.lang.NullPointerException) {
+        } catch (e: NullPointerException) {
+            Log.e(TAG, e.message.toString())
             e.printStackTrace()
         }
         return currentDateString
@@ -170,6 +189,7 @@ class PetProfileActivity : AppCompatActivity() {
 
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         } catch (e: NullPointerException) {
+            Log.e(TAG, e.message.toString())
             e.printStackTrace()
         }
 
@@ -178,7 +198,7 @@ class PetProfileActivity : AppCompatActivity() {
 
     companion object {
         private const val EDIT_TEXT_LENGTH = 20
-        private const val MULTILINE_TEXT_LENGTH = 80
+        private const val MULTILINE_TEXT_LENGTH = 255
     }
 
 

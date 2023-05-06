@@ -72,11 +72,22 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         return ""
     }
 
-    override fun onDismiss(dialog: DialogInterface)  {
-        super.onDismiss(dialog)
-        onDatePickedListener(toString())
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+
+        if (pickedYear != 0 && pickedMonth != 0 && pickedDayOfMonth != 0) {
+            onDatePickedListener(toString())
+        }else {
+            val calendar = Calendar.getInstance()
+
+            val currentDate = calendar.time
+            val format = SimpleDateFormat(dateFormat, Locale.getDefault())
+
+            onDatePickedListener(format.format(currentDate))
+        }
     }
+
 
     fun setOnDatePickedListener(date: (String) -> Unit){
         onDatePickedListener = date
