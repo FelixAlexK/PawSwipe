@@ -1,9 +1,9 @@
 package de.hhn.softwarelabor.pawswipeapp.api.data
 
-import de.hhn.softwarelabor.pawswipeapp.api.UserProfileApi
-
 /**
  * [AnimalProfile], holds data for an animal profile
+ * @author Felix Kuhbier
+ * @since 2023.05.06
  *
  * @property name
  * @property species
@@ -13,7 +13,7 @@ import de.hhn.softwarelabor.pawswipeapp.api.UserProfileApi
  * @property breed
  * @property color
  * @property gender
- * @property profile
+ * @property profile_id must not be null
  */
 data class AnimalProfileData(
     val name: String?,
@@ -24,5 +24,5 @@ data class AnimalProfileData(
     val breed: String?,
     val color: String?,
     val gender: String?,
-    val profile: ShelterProfileData
+    val profile_id: ProfileData
 )
