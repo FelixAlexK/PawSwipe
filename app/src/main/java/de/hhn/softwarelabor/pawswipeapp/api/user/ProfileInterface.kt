@@ -39,7 +39,7 @@ interface ProfileInterface {
      * @receiver
      */
     fun createUserProfile(
-        profile_id: Int?,
+        profile_id: Int? = null,
         username: String?,
         email: String,
         phone_number: String?,

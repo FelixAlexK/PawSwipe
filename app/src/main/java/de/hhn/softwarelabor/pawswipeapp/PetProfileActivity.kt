@@ -10,8 +10,8 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import de.hhn.softwarelabor.pawswipeapp.api.AnimalProfileApi
-import de.hhn.softwarelabor.pawswipeapp.api.UserProfileApi
+import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
+import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -85,21 +85,21 @@ class PetProfileActivity : AppCompatActivity() {
     private fun createPet(
         name: String?, species: String?, birthday: String?, illness: String?,
         description: String?, breed: String?, color: String?, gender: String?,
-        profileId: Int
+        profile_id: Int
     ) {
 
-        val userProfile = UserProfileApi()
+        val profile = ProfileApi()
 
         try {
 
-            userProfile.getUserProfileByID(38) { profile,_, error ->
+            profile.getUserProfileByID(profile_id) { user, error ->
 
 
                 if (error != null) {
                     Log.e("AnimalProfileApi", "Error fetching: $error")
-                } else if (profile != null) {
+                } else if (user != null) {
                     animalProfile.createAnimalProfile(
-                        name, species, birthday!!, illness, description, breed, color, gender, profile
+                        name, species, birthday!!, illness, description, breed, color, gender, user
                     ) { profile, error ->
 
                         if (error != null) {
