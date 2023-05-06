@@ -28,7 +28,7 @@ import java.util.Date
  * @property discriminator "profile" for an user profile or "shelter" for an shelter profile, must not be null
  */
 data class ProfileData(
-    val profile_id: Int?,
+    val profile_id: Int? = null,
     val username: String?,
     val email: String,
     val phone_number: String?,
