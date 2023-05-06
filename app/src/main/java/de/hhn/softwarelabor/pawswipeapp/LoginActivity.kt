@@ -1,10 +1,18 @@
 package de.hhn.softwarelabor.pawswipeapp
 
+import android.content.ContentValues.TAG
+import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 
+private const val DISCRIMINATOR_SHELTER = "shelter"
+private const val DISCRIMINATOR_PROFILE = "profile"
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginUserButton: Button
     private lateinit var loginShelterButton: Button
@@ -12,11 +20,80 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginPasswordEditText: EditText
     private lateinit var loginRegisterButton: Button
     private lateinit var loginLoginButton: Button
+
+    private var isShelter = false
+    private var isUser = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         init()
+
+        loginUserButton.setOnClickListener {
+            loginUserButton.setBackgroundColor(Color.GREEN)
+            loginShelterButton.setBackgroundColor(resources.getColor(R.color.pawswipe_orange_700, null))
+            isUser = true
+            isShelter = false
+        }
+
+        loginShelterButton.setOnClickListener {
+            loginShelterButton.setBackgroundColor(Color.GREEN)
+            loginUserButton.setBackgroundColor(resources.getColor(R.color.pawswipe_orange_700,null))
+            isShelter = true
+            isUser = false
+        }
+
+        loginLoginButton.setOnClickListener {
+            val email: String = loginEmailEditText.text.toString()
+            val password = loginPasswordEditText.text.toString()
+            if(email.isNotEmpty() && password.isNotEmpty()){
+                if(isShelter){
+                    loginShelter(email, password)
+                }else if(isUser){
+                    //loginUser(email, password)
+                }else {
+                    runOnUiThread{
+                        Toast.makeText(this, "Geben Sie an ob Sie sich als Nutzer oder als Tierheim einloggen möchten", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            }else {
+                runOnUiThread{
+                    Toast.makeText(this, "Email oder Password angeben!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+
+
+    }
+
+    private fun loginShelter(email: String, password: String) {
+        val profile = ProfileApi()
+
+        profile.getUserProfileByEmail(email){ shelter, error ->
+            if(error != null){
+                runOnUiThread{
+                    Toast.makeText(this,"Es konnte kein Account mit dieser E-mail gefunden werden",Toast.LENGTH_SHORT).show()
+                }
+                Log.e(TAG, error.message.toString())
+            }else if(shelter != null && shelter.discriminator.equals(DISCRIMINATOR_SHELTER, ignoreCase = true)){
+                if (password == shelter.password){
+                    runOnUiThread{
+                        Toast.makeText(this,"Willkommen zurück ${shelter.username}",Toast.LENGTH_SHORT).show()
+                    }
+                }else {
+                    runOnUiThread{
+                        Toast.makeText(this,"Login fehlgeschlagen. Versuchen Sie es noch einmal",Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }else {
+                runOnUiThread{
+                    Toast.makeText(this,"Es wurde kein Tierheim Profil mit dieser E-mail gefunden!",Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
     }
 
     private fun init(){
