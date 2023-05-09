@@ -267,6 +267,7 @@
             android:layout_width="126dp"
             android:layout_height="59dp"
             android:text="@string/animalList_btn"
+            android:backgroundTint="?android:attr/colorPressedHighlight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.943"
