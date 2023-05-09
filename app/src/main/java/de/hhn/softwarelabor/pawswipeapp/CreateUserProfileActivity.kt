@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import okhttp3.internal.EMPTY_BYTE_ARRAY
 import java.io.ByteArrayOutputStream
 
 
@@ -61,9 +62,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
         var password : String = intent.getStringExtra("password").toString()
         var email : String = intent.getStringExtra("email").toString()
 
-        lateinit var imageArray : Array<Byte>
-
-                imageView = findViewById(R.id.pictureView)
+        imageView = findViewById(R.id.pictureView)
 
         done.setOnClickListener{
 
@@ -82,7 +81,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             else{
                 birthday = null.toString()
             }
-
+            var imageArray : Array<Byte>? = null
 
             if(imageView.drawable != null){
                 val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
