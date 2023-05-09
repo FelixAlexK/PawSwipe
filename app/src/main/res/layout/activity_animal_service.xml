@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/filterEdit_tv"
+        android:id="@+id/animalService_tv"
         android:layout_width="316dp"
         android:layout_height="74dp"
         android:text="@string/animalService_tv"

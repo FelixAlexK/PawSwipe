@@ -1,9 +1,12 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -18,6 +21,8 @@ class CreateUserProfileActivity : AppCompatActivity() {
     companion object {
         private const val PICK_IMAGE_REQUEST = 1
     }
+
+    private var newFragment: DatePickerFragment = DatePickerFragment()
 
     // This function will be called when the user clicks a button to select an image from the gallery
     private fun selectImageFromGallery() {
@@ -42,10 +47,12 @@ class CreateUserProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_user_profile)
 
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
         //Data Fields
         val prename : EditText = findViewById(R.id.prenameEditText)
         val name : EditText = findViewById(R.id.nameEditText)
-        val birthdate : EditText = findViewById(R.id.agesEditText)
+        val birthdate : Button = findViewById(R.id.userBirthdayButton)
         val address : EditText = findViewById(R.id.addressEditText)
         val done : Button = findViewById(R.id.doneUserButton)
         val cancel : Button = findViewById(R.id.clearUserButton)
@@ -98,13 +105,50 @@ class CreateUserProfileActivity : AppCompatActivity() {
             }
         }
         cancel.setOnClickListener {
-            val intent = Intent(this, RegisterUserAccountActivityNico::class.java)
-            startActivity(intent)
+            AlertDialog.Builder(this@CreateUserProfileActivity)
+                .setTitle(getString(R.string.cancelChanges_headerText))
+                .setMessage(getString(R.string.cancelChanges_messageText))
+                .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
+                    val intent = Intent(this@CreateUserProfileActivity, RegisterUserAccountActivityNico::class.java)
+                    startActivity(intent)
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.no_dialogText)) { dialog, _ ->
+                    dialog.dismiss()
+                }.show()
         }
 
         upload.setOnClickListener {
                 selectImageFromGallery()
             }
+
+        birthdate.text = getCurrentDate()
+
+        newFragment.setOnDatePickedListener { date ->
+            birthdate.text = date
+        }
+        birthdate.apply {
+
+            setOnClickListener {
+                showDatePickerDialog(this)
+            }
+        }
+    }
+
+    private fun showDatePickerDialog(v: View) {
+        newFragment.show(supportFragmentManager, "datePicker")
+    }
+
+    private fun getCurrentDate(): String {
+        var currentDateString = ""
+        try {
+            val currentDate = Calendar.getInstance().time
+            val formatter = SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault())
+            currentDateString = formatter.format(currentDate)
+        } catch (e: java.lang.NullPointerException) {
+            e.printStackTrace()
+        }
+        return currentDateString
     }
 
 }

@@ -84,5 +84,11 @@
     <string name="filterEdit_tv">Filter bearbeiten</string>
     <string name="filterRadius_et">Radius in km</string>
     <string name="resetFilter_btn">Zurücksetzen</string>
+    <string name="createAnimal_tv">Tier erstellen</string>
+    <string name="createUser_tv">Profil erstellen</string>
+    <string name="userName_hint">Nutzername</string>
+    <string name="postalCode_hint">Postleitzahl</string>
+    <string name="street_hint">Straße</string>
+    <string name="houseNumber_hint">Nummer</string>
     />
 </resources>
