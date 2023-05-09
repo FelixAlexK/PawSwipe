@@ -173,8 +173,8 @@ class PetProfileActivity : AppCompatActivity() {
 
             petNameEditText = findViewById(R.id.petNameEditText)
             speciesEditText = findViewById(R.id.petSpeciesEditText)
-            breedEditText = findViewById(R.id.petBreedsEditText)
-            petColorEditText = findViewById(R.id.petColorEditText)
+            breedEditText = findViewById(R.id.nameEditText)
+            petColorEditText = findViewById(R.id.addressEditText)
             petDescriptionText = findViewById(R.id.petDescriptionMultiLineText)
 
             petIllnessMultilineText = findViewById(R.id.petPreExistingIllnessMultiLineText)
