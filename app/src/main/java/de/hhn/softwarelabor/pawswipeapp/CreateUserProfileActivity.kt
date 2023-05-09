@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import de.hhn.softwarelabor.pawswipeapp.api.UserProfileApi
+import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 import java.text.SimpleDateFormat
 import java.util.*
 import android.graphics.Bitmap
@@ -63,7 +63,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
         var email : String = intent.getStringExtra("email").toString()
 
         imageView = findViewById(R.id.pictureView)
-
+/**
         done.setOnClickListener{
 
             val creationDate : Date = Calendar.getInstance().time
@@ -149,6 +149,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
             }
         }
+        */
         //Click Listener for the Cancel Button, returns to Registration Activity
         cancel.setOnClickListener {
             val intent = Intent(this, RegisterUserAccountActivityNico::class.java)

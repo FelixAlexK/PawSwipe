@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import de.hhn.softwarelabor.pawswipeapp.api.UserProfileApi
+import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 import java.util.*
 
 class CreateShelterActivity : AppCompatActivity() {
@@ -25,6 +25,7 @@ class CreateShelterActivity : AppCompatActivity() {
 
         val cancel : Button = findViewById(R.id.clearButton)
         val create : Button = findViewById(R.id.doneButton)
+/*
 
         create.setOnClickListener {
 
@@ -64,7 +65,7 @@ class CreateShelterActivity : AppCompatActivity() {
 
 
         }
-
+ */
         cancel.setOnClickListener {
             val intent = Intent(this, RegisterShelterAccountActivityNico::class.java)
             startActivity(intent)
