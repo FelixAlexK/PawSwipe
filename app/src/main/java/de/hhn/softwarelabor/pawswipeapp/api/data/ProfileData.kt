@@ -41,7 +41,7 @@ data class ProfileData(
     val street: String?,
     val country: String?,
     val city: String?,
-    val street_number: Int?,
+    val street_number: String?,
     val homepage: String?,
     val postal_code: String?,
     val firstname: String?,
@@ -81,7 +81,7 @@ data class ProfileData(
     }
 
     override fun hashCode(): Int {
-        var result = profile_id.hashCode()
+        var result = profile_id ?: 0
         result = 31 * result + (username?.hashCode() ?: 0)
         result = 31 * result + email.hashCode()
         result = 31 * result + (phone_number?.hashCode() ?: 0)
@@ -94,7 +94,7 @@ data class ProfileData(
         result = 31 * result + (street?.hashCode() ?: 0)
         result = 31 * result + (country?.hashCode() ?: 0)
         result = 31 * result + (city?.hashCode() ?: 0)
-        result = 31 * result + (street_number ?: 0)
+        result = 31 * result + (street_number?.hashCode() ?: 0)
         result = 31 * result + (homepage?.hashCode() ?: 0)
         result = 31 * result + (postal_code?.hashCode() ?: 0)
         result = 31 * result + (firstname?.hashCode() ?: 0)
@@ -102,4 +102,5 @@ data class ProfileData(
         result = 31 * result + discriminator.hashCode()
         return result
     }
+
 }

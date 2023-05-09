@@ -40,7 +40,7 @@ class ProfileApi : ProfileInterface {
         street: String?,
         country: String?,
         city: String?,
-        street_number: Int?,
+        street_number: String?,
         homepage: String?,
         postal_code: String?,
         firstname: String,
