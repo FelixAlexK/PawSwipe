@@ -51,10 +51,7 @@
             android:name=".CreateUserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterShelterAccountActivityNico"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterUserAccountActivityNico"
+            android:name=".RegisterAccountActivity"
             android:exported="false" />
         <activity
             android:name=".AnimalListActivityNico"
@@ -70,9 +67,6 @@
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CreateUserActivityNico"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
