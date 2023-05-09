@@ -1,9 +1,11 @@
-package de.hhn.softwarelabor.pawswipeapp.api
+package de.hhn.softwarelabor.pawswipeapp.api.animal
 
 import android.content.ContentValues
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import de.hhn.softwarelabor.pawswipeapp.api.data.AnimalProfileData
+import de.hhn.softwarelabor.pawswipeapp.api.data.ProfileData
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -16,55 +18,14 @@ import java.io.IOException
 /**
  * [AnimalProfileApi], provides functions to do http requests
  * @author Felix Kuhbier
- * @since 2023.04.19
+ * @since 2023.05.05
  */
-class AnimalProfileApi {
+private const val BASE_URL = "http://45.146.253.199:8080/animal"
+class AnimalProfileApi : AnimalProfileInterface {
 
     private var client: OkHttpClient = OkHttpClient()
-    private var baseUrl = "http://45.146.253.199:8080/animal"
     private var gson = Gson()
-
-
-    /**
-     * [AnimalProfile], holds data for an animal profile
-     *
-     * @property name
-     * @property species
-     * @property birthday
-     * @property illness
-     * @property description
-     * @property breed
-     * @property color
-     * @property gender
-     * @property profile
-     */
-    data class AnimalProfile(
-        val name: String?,
-        val species: String?,
-        val birthday: String?,
-        val illness: String?,
-        val description: String?,
-        val breed: String?,
-        val color: String?,
-        val gender: String?,
-        val profile: UserProfileApi.ShelterProfileData
-    )
-
-
-    /**
-     * Create animal profile
-     *
-     * @param [name] name of the animal
-     * @param [species] species of the animal
-     * @param [birthday] Birthday date of the animal
-     * @param [illness] Diseases of the animal
-     * @param [description] description of the animal
-     * @param [breed] breed of the animal
-     * @param [color] color of the animal
-     * @param [gender] gender of the animal
-     * @param [profile] shelter profile
-     */
-    fun createAnimalProfile(
+    override fun createAnimalProfile(
         name: String?,
         species: String?,
         birthday: String?,
@@ -73,24 +34,21 @@ class AnimalProfileApi {
         breed: String?,
         color: String?,
         gender: String?,
-        profile: UserProfileApi.ShelterProfileData?,
+        profile_id: ProfileData,
         callback: (Int?, Throwable?) -> Unit
     ) {
-
-
-        val animalProfile = AnimalProfile(
-            name, species, birthday, illness, description, breed, color, gender, profile!!
+        val animalProfileData = AnimalProfileData(
+            name, species, birthday, illness, description, breed, color, gender, profile_id
         )
 
 
-        val profileJson = gson.toJson(animalProfile)
-        val body = profileJson.toRequestBody("application/json; charset=utf-8".toMediaType())
+        val animalProfileJson = gson.toJson(animalProfileData)
+        val body = animalProfileJson.toRequestBody("application/json; charset=utf-8".toMediaType())
 
         val request = Request.Builder()
-            .url("$baseUrl/create")
+            .url("$BASE_URL/create")
             .post(body)
             .build()
-
 
         try {
             client.newCall(request).enqueue(object : Callback {
@@ -110,22 +68,16 @@ class AnimalProfileApi {
                 }
             })
         }catch (e: IllegalStateException){
-            e.printStackTrace()
+            throw IllegalStateException("An error has occurred: $e")
         }
-
 
     }
 
-    /**
-     * Get all animal profile ids
-     *
-     */
-    fun getAllAnimalProfileIDs(callback: (List<String>?, Throwable?) -> Unit) {
+    override fun getAllAnimalProfileIDs(callback: (List<String>?, Throwable?) -> Unit) {
         val request = Request.Builder()
-            .url("$baseUrl/all/ids")
+            .url("$BASE_URL/all/ids")
             .get()
             .build()
-
 
         try {
             client.newCall(request).enqueue(object : Callback {
@@ -146,25 +98,15 @@ class AnimalProfileApi {
                 }
             })
         }catch (e: IllegalStateException){
-            e.printStackTrace()
+            throw IllegalStateException("An error has occurred: $e")
         }
-
-
     }
 
-    /**
-     * Get animal profile by id
-     *
-     * @param id ID of the animal profile
-     */
-    fun getAnimalProfileByID(id: Int, callback: (JsonObject?, Throwable?) -> Unit) {
-
-
+    override fun getAnimalProfileByID(id: Int, callback: (JsonObject?, Throwable?) -> Unit) {
         val request = Request.Builder()
-            .url("$baseUrl/$id")
+            .url("$BASE_URL/id/$id")
             .get()
             .build()
-
 
         try {
             client.newCall(request).enqueue(object : Callback {
@@ -187,29 +129,24 @@ class AnimalProfileApi {
 
             })
         }catch (e: IllegalStateException){
-            e.printStackTrace()
+            throw IllegalStateException("An error has occurred: $e")
         }
 
     }
 
-    /**
-     * Update animal profile by id
-     *
-     * @param id ID of the animal profile
-     * @param map Map collection with the contents to be updated
-     */
-    fun updateAnimalProfileByID(id: Int, map: Map<String, String>, callback: (Int?, Throwable?) -> Unit) {
-
-
+    override fun updateAnimalProfileByID(
+        id: Int,
+        map: Map<String, String>,
+        callback: (Int?, Throwable?) -> Unit
+    ) {
         val updateJson = gson.toJson(map)
         val body = updateJson.toRequestBody("application/json; charset=utf-8".toMediaType())
 
         val request = Request.Builder()
-            .url("$baseUrl/update/$id")
+            .url("$BASE_URL/update/$id")
             .put(body)
             .build()
 
-
         try {
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
@@ -229,27 +166,16 @@ class AnimalProfileApi {
 
             })
         }catch (e: IllegalStateException){
-            e.printStackTrace()
+            throw IllegalStateException("An error has occurred: $e")
         }
-
-
-
     }
 
-    /**
-     * Delete user profile by id
-     *
-     * @param id ID of the animal profile
-     */
-    fun deleteUserProfileByID(id: Int, callback: (Int?, Throwable?) -> Unit) {
-
-
+    override fun deleteUserProfileByID(id: Int, callback: (Int?, Throwable?) -> Unit) {
         val request = Request.Builder()
-            .url("$baseUrl/$id")
+            .url("$BASE_URL/$id")
             .delete()
             .build()
 
-
         try {
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
@@ -270,11 +196,10 @@ class AnimalProfileApi {
 
             })
         }catch (e: IllegalStateException){
-            e.printStackTrace()
+            throw IllegalStateException("An error has occurred: $e")
         }
-
-
-
     }
+
+
 }
 
