@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="accountTypes">
-        <item>Bitte Accountart auswählen</item>
-        <item>normaler Nutzer</item>
-        <item>Tierheim</item>
-    </string-array>
-</resources>
