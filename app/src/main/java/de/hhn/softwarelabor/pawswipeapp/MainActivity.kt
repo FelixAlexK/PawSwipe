@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 
         // Inside the onClick method of a button or any other event listener
         val intent = Intent(this, LoginActivity::class.java)
+
         startActivity(intent)
 
     }

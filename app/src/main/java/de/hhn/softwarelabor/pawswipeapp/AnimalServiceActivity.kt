@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.Button
 
 class AnimalServiceActivity : AppCompatActivity() {
@@ -18,6 +19,8 @@ class AnimalServiceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_service)
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         chatBtn = findViewById(R.id.chat_btn4)
         chatBtn.setOnClickListener {
@@ -51,6 +54,21 @@ class AnimalServiceActivity : AppCompatActivity() {
             }
             R.id.menu_animalEdit -> {
                 val intent = Intent(this@AnimalServiceActivity, EditAnimalActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_animalCreate -> {
+                val intent = Intent(this@AnimalServiceActivity, PetProfileActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_logOut -> {
+                val intent = Intent(this@AnimalServiceActivity, LoginActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_filter -> {
+                val intent = Intent(this@AnimalServiceActivity, FilterActivity::class.java)
                 startActivity(intent)
                 true
             }

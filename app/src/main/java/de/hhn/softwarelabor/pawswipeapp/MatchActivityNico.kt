@@ -82,6 +82,21 @@ class MatchActivityNico : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+            R.id.menu_animalCreate -> {
+                val intent = Intent(this@MatchActivityNico, PetProfileActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_logOut -> {
+                val intent = Intent(this@MatchActivityNico, LoginActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_filter -> {
+                val intent = Intent(this@MatchActivityNico, FilterActivity::class.java)
+                startActivity(intent)
+                true
+            }
 
             else -> super.onOptionsItemSelected(item)
         }
