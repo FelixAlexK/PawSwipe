@@ -15,6 +15,10 @@
         android:title="Tier bearbeiten" />
 
     <item
+        android:id="@+id/menu_animalCreate"
+        android:title="Tier erstellen" />
+
+    <item
         android:id="@+id/menu_animalServices"
         android:title="Tierdienste" />
 
