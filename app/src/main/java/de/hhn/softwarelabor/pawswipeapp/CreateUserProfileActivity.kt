@@ -10,15 +10,10 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 import java.text.SimpleDateFormat
-import java.util.*
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import okhttp3.internal.EMPTY_BYTE_ARRAY
-import java.io.ByteArrayOutputStream
+import java.util.Calendar
+import java.util.Locale
 
 
 class CreateUserProfileActivity : AppCompatActivity() {
@@ -65,7 +60,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
         val username : EditText = findViewById(R.id.usernameEditText)
         val plz : EditText = findViewById(R.id.postalAddressEditText)
         val street : EditText = findViewById(R.id.streetEditText)
-        val streetNr : EditText = findViewById(R.id.streetNrEditText)
+        val streetNr : EditText = findViewById(R.id.houseNumberEditText)
         var password : String = intent.getStringExtra("password").toString()
         var email : String = intent.getStringExtra("email").toString()
 
@@ -163,7 +158,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.cancelChanges_headerText))
                 .setMessage(getString(R.string.cancelChanges_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    val intent = Intent(this@CreateUserProfileActivity, RegisterUserAccountActivityNico::class.java)
+                    val intent = Intent(this@CreateUserProfileActivity, RegisterAccountActivity::class.java)
                     startActivity(intent)
                     dialog.dismiss()
                 }
