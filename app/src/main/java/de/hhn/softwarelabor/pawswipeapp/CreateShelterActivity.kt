@@ -25,7 +25,10 @@ class CreateShelterActivity : AppCompatActivity() {
 
         val cancel : Button = findViewById(R.id.clearButton)
         val create : Button = findViewById(R.id.doneButton)
-/*
+
+        val email: String = intent.getStringExtra("email").toString()
+        val password : String = intent.getStringExtra("hashedPassword").toString()
+
 
         create.setOnClickListener {
 
@@ -41,13 +44,13 @@ class CreateShelterActivity : AppCompatActivity() {
             val shelterAddressString : String?= shelterAddress.text.toString().takeIf { it.isNotBlank() }
             val postalCodeString : String?= plz.text.toString().takeIf{it.isNotBlank()}
 
-            val userProfileApi = UserProfileApi()
+            val userProfileApi = ProfileApi()
 
-            userProfileApi.createUserProfile(shelterNameString, null,
-                null, "password123", creationDate, "email@mail.de",
-                null,null, phoneNumberString,
-                openingHrsString, shelterStreetString, "de", shelterAddressString,
-                shelterStreetNrString, homepageString, postalCodeString, "shelter")
+            userProfileApi.createUserProfile(null,shelterNameString, "email",
+                phoneNumberString, null, null, "password",
+                null,null, openingHrsString,
+                shelterStreetString, "de", shelterAddressString, shelterStreetNrString,
+                homepageString, postalCodeString, "shelterFN", "shelterLN","shelter")
             { profile, error ->
 
 
@@ -65,7 +68,7 @@ class CreateShelterActivity : AppCompatActivity() {
 
 
         }
- */
+
         cancel.setOnClickListener {
             val intent = Intent(this, RegisterAccountActivity::class.java)
             startActivity(intent)

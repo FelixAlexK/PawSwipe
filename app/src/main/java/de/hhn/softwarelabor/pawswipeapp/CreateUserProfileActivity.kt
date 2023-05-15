@@ -121,7 +121,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             // Creating instance of the UserProfileAPI
             val userProfileApi = ProfileApi()
 
-            userProfileApi.createUserProfile(12,usernameString,"email",null,imageArray,descriptionString,"password",
+            userProfileApi.createUserProfile(null,usernameString,"email",null,imageArray,descriptionString,"password",
             null,birthday,null,streetString,"de",cityString,streetNrString,null,postalCode,prenameString, lastNameString,"profile")
             { profile, error ->
 
