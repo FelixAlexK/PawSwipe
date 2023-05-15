@@ -1,6 +1,7 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -61,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
             if(email.isNotEmpty() && password.isNotEmpty()){
                 if(isShelter){
                     loginShelter(email, password)
+
                 }else if(isUser){
                     //loginUser(email, password)
                 }else {
