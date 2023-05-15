@@ -67,7 +67,9 @@ class CreateUserProfileActivity : AppCompatActivity() {
         val plz : EditText = findViewById(R.id.postalAddressEditText)
         val street : EditText = findViewById(R.id.streetEditText)
         val streetNr : EditText = findViewById(R.id.houseNumberEditText)
-        val password : String = intent.getStringExtra("password").toString()
+
+
+        val password : String = intent.getStringExtra("passwordHashed").toString()
         val email : String = intent.getStringExtra("email").toString()
 
         imageView = findViewById(R.id.pictureView)
@@ -120,7 +122,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             val userProfileApi = ProfileApi()
 
             userProfileApi.createUserProfile(12,usernameString,"email",null,imageArray,descriptionString,"password",
-            creationDate,birthday,null,streetString,"de",cityString,streetNrString,null,postalCode,prenameString, lastNameString,"profile")
+            null,birthday,null,streetString,"de",cityString,streetNrString,null,postalCode,prenameString, lastNameString,"profile")
             { profile, error ->
 
             if(error != null){

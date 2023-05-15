@@ -63,9 +63,9 @@
     <string name="loginRegister_button">Anmelden/Registrieren</string>
     <string name="cancel">Abbrechen</string>
     <string name="create">Erstellen</string>
-    <string name="lastname">Nachname</string>
+    <string name="lastname">Nachname*</string>
     <string name="address">Wohnort</string>
-    <string name="prename">Vorname</string>
+    <string name="prename">Vorname*</string>
     <string name="profileCreated">Profil erfolgreich angelegt</string>
 
     <string name="yes_dialogText">Ja</string>
@@ -76,8 +76,8 @@
     <string name="cancelChanges_messageText">Alle Änderungen gehen verloren</string>
     <string name="deleteProfile_headerText">Account löschen</string>
     <string name="deleteProfile_messageText">Wollen Sie das Profil löschen?</string>
-    <string name="firstName_tv">Vorname</string>
-    <string name="name_et">Nachname</string>
+    <string name="firstName_tv">Vorname*</string>
+    <string name="name_et">Nachname*</string>
     <string name="address_et">Wohnort</string>
     <string name="deleteProfile_btn">Profil löschen</string>
     <string name="editAnimal_tv">Tier bearbeiten</string>
@@ -88,7 +88,7 @@
     <string name="resetFilter_btn">Zurücksetzen</string>
     <string name="createAnimal_tv">Tier erstellen</string>
     <string name="createUser_tv">Profil erstellen</string>
-    <string name="userName_hint">Nutzername</string>
+    <string name="userName_hint">Nutzername*</string>
     <string name="postalCode_hint">Postleitzahl</string>
     <string name="street_hint">Straße</string>
     <string name="houseNumber_hint">Nummer</string>
