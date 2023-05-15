@@ -76,6 +76,8 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
         done.setOnClickListener{
 
+
+
             datePickerFragment.setOnDatePickedListener { date ->
                 birthdate.text = date
             }
@@ -85,6 +87,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
                     showDatePickerDialog(this)
                 }
             }
+
             var imageArray : Array<Byte>? = null
 
             if(imageView.drawable != null){
@@ -98,22 +101,34 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 // Convert the ByteArray to Array<Byte>
                 imageArray = byteArray.toTypedArray()
             }
-            val creationDate : Date? = Calendar.getInstance().time
+            val creationDate : Date? = getCreationDate()
+
 
             val streetString : String? = street.text.toString().takeIf { it.isNotBlank() }
 
             val streetNrString : String? = streetNr.text.toString().takeIf { it.isNotBlank() }
 
             val postalCode: String? = plz.text.toString().takeIf { it.isNotBlank() }
-
+            if (username.text.isEmpty()){
+                Toast.makeText(this,"Bitte alle mit * markierten Pflichtfelder ausfüllen.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val usernameString : String? = username.text.toString().takeIf { it.isNotBlank() }
 
             val cityString : String? = address.text.toString().takeIf { it.isNotBlank() }
 
             val descriptionString : String? = description.text.toString().takeIf { it.isNotBlank() }
 
+            if (prename.text.isEmpty()){
+                Toast.makeText(this,"Bitte alle mit * markierten Pflichtfelder ausfüllen.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val prenameString : String = prename.text.toString()
 
+            if (name.text.isEmpty()){
+                Toast.makeText(this,"Bitte alle mit * markierten Pflichtfelder ausfüllen.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val lastNameString : String = name.text.toString()
 
             val birthday : String? = datePickerFragment.toString()
@@ -121,8 +136,8 @@ class CreateUserProfileActivity : AppCompatActivity() {
             // Creating instance of the UserProfileAPI
             val userProfileApi = ProfileApi()
 
-            userProfileApi.createUserProfile(null,usernameString,"email",null,imageArray,descriptionString,"password",
-            null,birthday,null,streetString,"de",cityString,streetNrString,null,postalCode,prenameString, lastNameString,"profile")
+            userProfileApi.createUserProfile(null,usernameString,email,null,imageArray,descriptionString,password,
+            null,null,null,streetString,"de",cityString,streetNrString,null,postalCode,prenameString, lastNameString,"profile")
             { profile, error ->
 
             if(error != null){
@@ -161,6 +176,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
         birthdate.text = getCurrentDate()
 
+
         newFragment.setOnDatePickedListener { date ->
             birthdate.text = date
         }
@@ -170,6 +186,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 showDatePickerDialog(this)
             }
         }
+
     }
 
     private fun showDatePickerDialog(v: View) {
@@ -186,5 +203,15 @@ class CreateUserProfileActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         return currentDateString
+    }
+
+    private fun getCreationDate(): Date? {
+        var currentDate: Date? = null
+        try {
+            currentDate = Calendar.getInstance().time
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
+        return currentDate
     }
 }
