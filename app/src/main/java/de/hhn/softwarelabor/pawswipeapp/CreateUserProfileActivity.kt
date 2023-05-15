@@ -65,12 +65,12 @@ class CreateUserProfileActivity : AppCompatActivity() {
         val username : EditText = findViewById(R.id.usernameEditText)
         val plz : EditText = findViewById(R.id.postalAddressEditText)
         val street : EditText = findViewById(R.id.streetEditText)
-        val streetNr : EditText = findViewById(R.id.streetNrEditText)
+        val streetNr : EditText = findViewById(R.id.houseNumberEditText)
         var password : String = intent.getStringExtra("password").toString()
         var email : String = intent.getStringExtra("email").toString()
 
         imageView = findViewById(R.id.pictureView)
-/**
+
         done.setOnClickListener{
 
             val creationDate : Date = Calendar.getInstance().time
@@ -113,14 +113,15 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
             val descriptionString : String? = description.text.toString().takeIf { it.isNotBlank() }
 
-            // Creating instance of the UserProfileAPI
-            val userProfileApi = UserProfileApi()
+            val prenameString : String = prename.text.toString()
 
-            userProfileApi.createUserProfile(usernameString, imageArray,
-            descriptionString, "password", creationDate, "email@mail.de",
-            null, birthday, null,
-            null, streetString, "de", cityString,
-            streetNrString, null, postalCode, "profile")
+            val lastNameString : String = name.text.toString()
+
+            // Creating instance of the UserProfileAPI
+            val userProfileApi = ProfileApi()
+
+            userProfileApi.createUserProfile(null,usernameString,email,null,imageArray,descriptionString,password,
+            creationDate,birthday,null,streetString,"de",cityString,streetNrString,null,postalCode,prenameString, lastNameString,"profile")
             { profile, error ->
 
             if(error != null){
@@ -132,38 +133,19 @@ class CreateUserProfileActivity : AppCompatActivity() {
             }
             }
 
-            /**
-             *  TestRequest
-
-            userProfileApi.createUserProfile("Testrequest", null,
-                null, "password", creationDate, "email@mail.de",
-                null, null, null,
-                null, null, "de", null,
-                null, null, null, "profile")
-            { profile, error ->
-
-                if(error != null){
-
-
-                }
-                else if(profile != null){
-
-                }
-            }
-            */
             //Toast message if Registration was successful
             runOnUiThread {
                 Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
             }
         }
-        */
+
         //Click Listener for the Cancel Button, returns to Registration Activity
         cancel.setOnClickListener {
             AlertDialog.Builder(this@CreateUserProfileActivity)
                 .setTitle(getString(R.string.cancelChanges_headerText))
                 .setMessage(getString(R.string.cancelChanges_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    val intent = Intent(this@CreateUserProfileActivity, RegisterUserAccountActivityNico::class.java)
+                    val intent = Intent(this@CreateUserProfileActivity, RegisterAccountActivity::class.java)
                     startActivity(intent)
                     dialog.dismiss()
                 }
