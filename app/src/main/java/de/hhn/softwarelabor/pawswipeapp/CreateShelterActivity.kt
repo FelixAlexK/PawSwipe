@@ -33,7 +33,7 @@ class CreateShelterActivity : AppCompatActivity() {
         create.setOnClickListener {
 
 
-            val creationDate : Date = Calendar.getInstance().time
+            //val creationDate : Date = Calendar.getInstance().time
 
             val shelterStreetString : String?= street.text.toString().takeIf { it.isNotBlank() }
             val shelterStreetNrString : String? = streetNumber.text.toString().takeIf { it.isNotBlank() }
@@ -46,8 +46,8 @@ class CreateShelterActivity : AppCompatActivity() {
 
             val userProfileApi = ProfileApi()
 
-            userProfileApi.createUserProfile(null,shelterNameString, "email",
-                phoneNumberString, null, null, "password",
+            userProfileApi.createUserProfile(null,shelterNameString, email,
+                phoneNumberString, null, null, password,
                 null,null, openingHrsString,
                 shelterStreetString, "de", shelterAddressString, shelterStreetNrString,
                 homepageString, postalCodeString, "shelterFN", "shelterLN","shelter")
@@ -63,7 +63,7 @@ class CreateShelterActivity : AppCompatActivity() {
             }
 
             runOnUiThread {
-                   Toast.makeText(this@CreateShelterActivity, "Profil erfolgreich angelegt", Toast.LENGTH_SHORT).show()
+                   Toast.makeText(this@CreateShelterActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
             }
 
 

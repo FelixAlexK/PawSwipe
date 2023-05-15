@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import okhttp3.internal.EMPTY_BYTE_ARRAY
 import java.io.ByteArrayOutputStream
 
 
@@ -110,7 +109,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
             val postalCode: String? = plz.text.toString().takeIf { it.isNotBlank() }
             if (username.text.isEmpty()){
-                Toast.makeText(this,"Bitte alle mit * markierten Pflichtfelder ausfüllen.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val usernameString : String? = username.text.toString().takeIf { it.isNotBlank() }
@@ -120,13 +119,13 @@ class CreateUserProfileActivity : AppCompatActivity() {
             val descriptionString : String? = description.text.toString().takeIf { it.isNotBlank() }
 
             if (prename.text.isEmpty()){
-                Toast.makeText(this,"Bitte alle mit * markierten Pflichtfelder ausfüllen.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val prenameString : String = prename.text.toString()
 
             if (name.text.isEmpty()){
-                Toast.makeText(this,"Bitte alle mit * markierten Pflichtfelder ausfüllen.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val lastNameString : String = name.text.toString()

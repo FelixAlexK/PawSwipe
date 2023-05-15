@@ -92,5 +92,6 @@
     <string name="postalCode_hint">Postleitzahl</string>
     <string name="street_hint">Straße</string>
     <string name="houseNumber_hint">Nummer</string>
+    <string name="fillEditTexts">Bitte alle mit * markierten Pflichtfelder ausfüllen.</string>
     />
 </resources>
