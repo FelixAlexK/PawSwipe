@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
+import java.security.MessageDigest
 
 private const val DISCRIMINATOR_SHELTER = "shelter"
 private const val DISCRIMINATOR_PROFILE = "profile"
@@ -74,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginLoginButton.setOnClickListener {
             val email: String = loginEmailEditText.text.toString()
-            val password: String = loginPasswordEditText.text.toString()
+            val password: String = stringToSHA256(loginPasswordEditText.text.toString())
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 if (isShelter) {
                     loginShelter(email, password)
@@ -224,6 +225,13 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    private fun stringToSHA256(input: String): String {
+        val md = MessageDigest.getInstance("SHA-256")
+        val hashBytes = md.digest(input.toByteArray())
+        return hashBytes.joinToString("") { byte ->
+            "%02x".format(byte)
+        }
+    }
 
     /**
      * Initialize UI elements
