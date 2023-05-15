@@ -46,6 +46,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             imageView.setImageURI(imageUri)
         }
         }
+    private var datePickerFragment: DatePickerFragment = DatePickerFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,27 +67,21 @@ class CreateUserProfileActivity : AppCompatActivity() {
         val plz : EditText = findViewById(R.id.postalAddressEditText)
         val street : EditText = findViewById(R.id.streetEditText)
         val streetNr : EditText = findViewById(R.id.houseNumberEditText)
-        var password : String = intent.getStringExtra("password").toString()
-        var email : String = intent.getStringExtra("email").toString()
+        val password : String = intent.getStringExtra("password").toString()
+        val email : String = intent.getStringExtra("email").toString()
 
         imageView = findViewById(R.id.pictureView)
 
         done.setOnClickListener{
 
-            val creationDate : Date = Calendar.getInstance().time
-
-
-
-            lateinit var birthday : String
-            if(birthdate.text.toString().isNotEmpty()){
-                val inputDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val outPutDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-
-                val date = inputDateFormat.parse(birthdate.text.toString())
-                birthday  = outPutDateFormat.format(date)
+            datePickerFragment.setOnDatePickedListener { date ->
+                birthdate.text = date
             }
-            else{
-                birthday = null.toString()
+            birthdate.apply {
+
+                setOnClickListener {
+                    showDatePickerDialog(this)
+                }
             }
             var imageArray : Array<Byte>? = null
 
@@ -101,6 +96,8 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 // Convert the ByteArray to Array<Byte>
                 imageArray = byteArray.toTypedArray()
             }
+            val creationDate : Date? = Calendar.getInstance().time
+
             val streetString : String? = street.text.toString().takeIf { it.isNotBlank() }
 
             val streetNrString : String? = streetNr.text.toString().takeIf { it.isNotBlank() }
@@ -117,10 +114,12 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
             val lastNameString : String = name.text.toString()
 
+            val birthday : String? = datePickerFragment.toString()
+
             // Creating instance of the UserProfileAPI
             val userProfileApi = ProfileApi()
 
-            userProfileApi.createUserProfile(null,usernameString,email,null,imageArray,descriptionString,password,
+            userProfileApi.createUserProfile(12,usernameString,"email",null,imageArray,descriptionString,"password",
             creationDate,birthday,null,streetString,"de",cityString,streetNrString,null,postalCode,prenameString, lastNameString,"profile")
             { profile, error ->
 
