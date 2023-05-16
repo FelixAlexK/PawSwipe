@@ -149,7 +149,7 @@ class LoginActivity : AppCompatActivity() {
                     runOnUiThread {
                         Toast.makeText(
                             this,
-                            getString(R.string.login_unknown_error),
+                            getString(R.string.login_user_error),
                             Toast.LENGTH_SHORT
                         ).show()
 
@@ -209,7 +209,7 @@ class LoginActivity : AppCompatActivity() {
                     runOnUiThread {
                         Toast.makeText(
                             this,
-                            getString(R.string.login_unknown_error),
+                            getString(R.string.login_shelter_error),
                             Toast.LENGTH_SHORT
                         ).show()
 
