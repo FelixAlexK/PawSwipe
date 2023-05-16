@@ -22,7 +22,7 @@ import java.util.Date
  *  @since 2023.05.06
  */
 
-private const val BASE_URL = "http://45.146.253.199:8080/profile"
+private const val BASE_URL = "http://193.196.55.115:8081/profile"
 class ProfileApi : ProfileInterface {
     private var client: OkHttpClient = OkHttpClient()
     private var gson = Gson()
