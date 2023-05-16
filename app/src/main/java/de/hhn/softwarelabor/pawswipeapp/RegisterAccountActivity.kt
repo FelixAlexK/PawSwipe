@@ -107,6 +107,11 @@ open class RegisterAccountActivity : AppCompatActivity() {
             val intent = Intent(this, CreateShelterActivity::class.java)
             intent.putExtra("email", email)
             intent.putExtra("passwordHashed", passwordHashed)
+
+
+            val intent2 = Intent(this, CreateUserProfileActivity::class.java)
+            intent.putExtra("email", email)
+            intent.putExtra("passwordHashed", passwordHashed)
             // intent.putExtra("accountType", accountType)
             startActivity(intent)
         } catch(ex: Exception){

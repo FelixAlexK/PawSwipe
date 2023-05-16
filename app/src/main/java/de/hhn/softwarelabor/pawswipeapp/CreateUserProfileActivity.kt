@@ -10,10 +10,14 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import java.util.*
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import java.io.ByteArrayOutputStream
 
 
 class CreateUserProfileActivity : AppCompatActivity() {
@@ -41,6 +45,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             imageView.setImageURI(imageUri)
         }
         }
+    private var datePickerFragment: DatePickerFragment = DatePickerFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,28 +66,27 @@ class CreateUserProfileActivity : AppCompatActivity() {
         val plz : EditText = findViewById(R.id.postalAddressEditText)
         val street : EditText = findViewById(R.id.streetEditText)
         val streetNr : EditText = findViewById(R.id.houseNumberEditText)
-        var password : String = intent.getStringExtra("password").toString()
-        var email : String = intent.getStringExtra("email").toString()
+
+
+        val password : String = intent.getStringExtra("passwordHashed").toString()
+        val email : String = intent.getStringExtra("email").toString()
 
         imageView = findViewById(R.id.pictureView)
-/**
+
         done.setOnClickListener{
 
-            val creationDate : Date = Calendar.getInstance().time
 
 
-
-            lateinit var birthday : String
-            if(birthdate.text.toString().isNotEmpty()){
-                val inputDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val outPutDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-
-                val date = inputDateFormat.parse(birthdate.text.toString())
-                birthday  = outPutDateFormat.format(date)
+            datePickerFragment.setOnDatePickedListener { date ->
+                birthdate.text = date
             }
-            else{
-                birthday = null.toString()
+            birthdate.apply {
+
+                setOnClickListener {
+                    showDatePickerDialog(this)
+                }
             }
+
             var imageArray : Array<Byte>? = null
 
             if(imageView.drawable != null){
@@ -96,26 +100,43 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 // Convert the ByteArray to Array<Byte>
                 imageArray = byteArray.toTypedArray()
             }
+            val creationDate : Date? = getCreationDate()
+
+
             val streetString : String? = street.text.toString().takeIf { it.isNotBlank() }
 
             val streetNrString : String? = streetNr.text.toString().takeIf { it.isNotBlank() }
 
             val postalCode: String? = plz.text.toString().takeIf { it.isNotBlank() }
-
+            if (username.text.isEmpty()){
+                Toast.makeText(this,getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val usernameString : String? = username.text.toString().takeIf { it.isNotBlank() }
 
             val cityString : String? = address.text.toString().takeIf { it.isNotBlank() }
 
             val descriptionString : String? = description.text.toString().takeIf { it.isNotBlank() }
 
-            // Creating instance of the UserProfileAPI
-            val userProfileApi = UserProfileApi()
+            if (prename.text.isEmpty()){
+                Toast.makeText(this,getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val prenameString : String = prename.text.toString()
 
-            userProfileApi.createUserProfile(usernameString, imageArray,
-            descriptionString, "password", creationDate, "email@mail.de",
-            null, birthday, null,
-            null, streetString, "de", cityString,
-            streetNrString, null, postalCode, "profile")
+            if (name.text.isEmpty()){
+                Toast.makeText(this,getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val lastNameString : String = name.text.toString()
+
+            val birthday : String? = datePickerFragment.toString()
+
+            // Creating instance of the UserProfileAPI
+            val userProfileApi = ProfileApi()
+
+            userProfileApi.createUserProfile(null,usernameString,email,null,imageArray,descriptionString,password,
+            null,null,null,streetString,"de",cityString,streetNrString,null,postalCode,prenameString, lastNameString,"profile")
             { profile, error ->
 
             if(error != null){
@@ -127,31 +148,15 @@ class CreateUserProfileActivity : AppCompatActivity() {
             }
             }
 
-            /**
-             *  TestRequest
-
-            userProfileApi.createUserProfile("Testrequest", null,
-                null, "password", creationDate, "email@mail.de",
-                null, null, null,
-                null, null, "de", null,
-                null, null, null, "profile")
-            { profile, error ->
-
-                if(error != null){
-
-
-                }
-                else if(profile != null){
-
-                }
-            }
-            */
             //Toast message if Registration was successful
             runOnUiThread {
                 Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
             }
+            val intent = Intent(this@CreateUserProfileActivity,MatchActivityNico::class.java)
+            startActivity(intent)
+
         }
-        */
+
         //Click Listener for the Cancel Button, returns to Registration Activity
         cancel.setOnClickListener {
             AlertDialog.Builder(this@CreateUserProfileActivity)
@@ -173,6 +178,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
         birthdate.text = getCurrentDate()
 
+
         newFragment.setOnDatePickedListener { date ->
             birthdate.text = date
         }
@@ -182,6 +188,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 showDatePickerDialog(this)
             }
         }
+
     }
 
     private fun showDatePickerDialog(v: View) {
@@ -198,5 +205,15 @@ class CreateUserProfileActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         return currentDateString
+    }
+
+    private fun getCreationDate(): Date? {
+        var currentDate: Date? = null
+        try {
+            currentDate = Calendar.getInstance().time
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
+        return currentDate
     }
 }
