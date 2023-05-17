@@ -100,5 +100,6 @@
     <string name="login_user_error">Anmeldung als Nutzer nicht möglich.</string>
     <string name="login_shelter_or_user">Bitte wählen Sie aus, ob Sie sich als Nutzer oder Tierheim anmelden möchten.</string>
     <string name="login_valid_email_and_password">Bitte gib eine gültige E-Mail-Adresse und ein Passwort ein.</string>
-    />
+
+    <color name="paw_swipe_orange">#FF914D</color>
 </resources>
