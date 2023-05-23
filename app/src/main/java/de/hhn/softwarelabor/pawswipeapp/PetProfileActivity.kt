@@ -183,8 +183,6 @@ class PetProfileActivity : AppCompatActivity() {
             createPetButton = findViewById(R.id.save_btn)
 
             petBirthdayButton = findViewById(R.id.petBirthdayButton)
-            petBirthdayButton.text = getCurrentDate()
-
             petNameEditText = findViewById(R.id.petNameEditText)
             speciesEditText = findViewById(R.id.petSpeciesEditText)
             breedEditText = findViewById(R.id.nameEditText)
