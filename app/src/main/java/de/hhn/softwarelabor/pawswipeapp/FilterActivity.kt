@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Spinner
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,6 +20,12 @@ class FilterActivity : AppCompatActivity() {
     private lateinit var spinner: Spinner
     private var newFragment: DatePickerFragment = DatePickerFragment()
     private lateinit var petBirthdayButton: Button
+    private lateinit var resetFilterButton: Button
+    private lateinit var radiusEditText: EditText
+    private lateinit var petSpeciesEditText: EditText
+    private lateinit var petBreedEditText: EditText
+    private lateinit var petColorEditText: EditText
+    private lateinit var petIllnessEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +77,6 @@ class FilterActivity : AppCompatActivity() {
         }
 
         petBirthdayButton = findViewById(R.id.petBirthdayButton)
-        petBirthdayButton.text = getCurrentDate()
 
         newFragment.setOnDatePickedListener { date ->
             petBirthdayButton.text = date
@@ -81,6 +87,23 @@ class FilterActivity : AppCompatActivity() {
                 showDatePickerDialog(this)
             }
         }
+
+        radiusEditText = findViewById(R.id.radius_et)
+        petSpeciesEditText = findViewById(R.id.petSpeciesEditText)
+        petBreedEditText = findViewById(R.id.petBreedEditText)
+        petColorEditText = findViewById(R.id.petColorEditText)
+        petIllnessEditText = findViewById(R.id.petPreExistingIllnessMultiLineText)
+        resetFilterButton = findViewById(R.id.resetFilter_btn)
+
+        resetFilterButton.setOnClickListener {
+            radiusEditText.setText("")
+            petSpeciesEditText.setText("")
+            petBreedEditText.setText("")
+            petBirthdayButton.text = "Geburtstag"
+            petColorEditText.setText("")
+            petIllnessEditText.setText("")
+        }
+
     }
 
     private fun showDatePickerDialog(v: View) {

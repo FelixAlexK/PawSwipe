@@ -89,7 +89,6 @@ class EditAnimalActivity : AppCompatActivity() {
 
 
         petBirthdayButton = findViewById(R.id.petBirthdayButton)
-        petBirthdayButton.text = getCurrentDate()
 
         newFragment.setOnDatePickedListener { date ->
             petBirthdayButton.text = date

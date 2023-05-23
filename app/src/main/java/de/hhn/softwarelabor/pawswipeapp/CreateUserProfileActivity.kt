@@ -176,8 +176,6 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 selectImageFromGallery()
             }
 
-        birthdate.text = getCurrentDate()
-
 
         newFragment.setOnDatePickedListener { date ->
             birthdate.text = date
