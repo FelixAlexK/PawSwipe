@@ -152,6 +152,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             runOnUiThread {
                 Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
             }
+
             val intent = Intent(this@CreateUserProfileActivity,MatchActivityNico::class.java)
             startActivity(intent)
 
