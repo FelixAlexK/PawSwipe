@@ -111,17 +111,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/petSpeciesEditText"
+                <Spinner
+                    android:id="@+id/petSpeciesSpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:minWidth="210dp"
                     android:minHeight="48dp"
                     android:ems="10"
                     android:importantForAutofill="no"
-                    android:inputType="textPersonName"
-                    android:hint="@string/petSpecies_hint"
+                    android:spinnerMode="dropdown"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -132,17 +132,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/petBreedsEditText"
+                <Spinner
+                    android:id="@+id/petBreedsSpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:minHeight="48dp"
                     android:ems="10"
                     android:importantForAutofill="no"
-                    android:inputType="textPersonName"
-                    android:hint="@string/petBreed_hint"
+                    android:minWidth="210dp"
+                    android:minHeight="48dp"
+                    android:spinnerMode="dropdown"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

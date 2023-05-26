@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,13 +14,16 @@ class FilterActivity : AppCompatActivity() {
 
     private lateinit var cancelButton: Button
     private lateinit var saveButton: Button
-    private lateinit var spinner: Spinner
-    private var newFragment: DatePickerFragment = DatePickerFragment()
     private lateinit var petBirthdayButton: Button
     private lateinit var resetFilterButton: Button
+
+    private lateinit var genderSpinner: Spinner
+    private lateinit var speciesSpinner: Spinner
+    private lateinit var breedSpinner: Spinner
+
+    private var newFragment: DatePickerFragment = DatePickerFragment()
+
     private lateinit var radiusEditText: EditText
-    private lateinit var petSpeciesEditText: EditText
-    private lateinit var petBreedEditText: EditText
     private lateinit var petColorEditText: EditText
     private lateinit var petIllnessEditText: EditText
 
@@ -64,8 +64,7 @@ class FilterActivity : AppCompatActivity() {
                 }.show()
         }
 
-        spinner = findViewById(R.id.petGenderSpinner)
-
+        genderSpinner = findViewById(R.id.petGenderSpinner)
         ArrayAdapter.createFromResource(
             this,
             R.array.gender_array,
@@ -73,7 +72,7 @@ class FilterActivity : AppCompatActivity() {
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-            spinner.adapter = adapter
+            genderSpinner.adapter = adapter
         }
 
         petBirthdayButton = findViewById(R.id.petBirthdayButton)
@@ -89,16 +88,101 @@ class FilterActivity : AppCompatActivity() {
         }
 
         radiusEditText = findViewById(R.id.radius_et)
-        petSpeciesEditText = findViewById(R.id.petSpeciesEditText)
-        petBreedEditText = findViewById(R.id.petBreedEditText)
         petColorEditText = findViewById(R.id.petColorEditText)
         petIllnessEditText = findViewById(R.id.petPreExistingIllnessMultiLineText)
         resetFilterButton = findViewById(R.id.resetFilter_btn)
 
+        speciesSpinner = findViewById(R.id.petSpeciesFilter)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.species_array,
+            android.R.layout.simple_spinner_dropdown_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            speciesSpinner.adapter = adapter
+        }
+
+        speciesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                breedSpinner = findViewById(R.id.petBreedsFilter)
+                when (parent.getItemAtPosition(position).toString()) {
+                    "Hund" -> {
+                        ArrayAdapter.createFromResource(
+                            breedSpinner.context,
+                            R.array.dog_array,
+                            android.R.layout.simple_spinner_dropdown_item
+                        ).also { adapter ->
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            breedSpinner.adapter = adapter
+                        }
+                    }
+                    "Katze" -> {
+                        ArrayAdapter.createFromResource(
+                            breedSpinner.context,
+                            R.array.cat_array,
+                            android.R.layout.simple_spinner_dropdown_item
+                        ).also { adapter ->
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            breedSpinner.adapter = adapter
+                        }
+                    }
+                    "Vogel" -> {
+                        ArrayAdapter.createFromResource(
+                            breedSpinner.context,
+                            R.array.bird_array,
+                            android.R.layout.simple_spinner_dropdown_item
+                        ).also { adapter ->
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            breedSpinner.adapter = adapter
+                        }
+                    }
+                    "Kleintiere" -> {
+                        ArrayAdapter.createFromResource(
+                            breedSpinner.context,
+                            R.array.smallAnimal_array,
+                            android.R.layout.simple_spinner_dropdown_item
+                        ).also { adapter ->
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            breedSpinner.adapter = adapter
+                        }
+                    }
+                    "Reptilien" -> {
+                        ArrayAdapter.createFromResource(
+                            breedSpinner.context,
+                            R.array.reptile_array,
+                            android.R.layout.simple_spinner_dropdown_item
+                        ).also { adapter ->
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            breedSpinner.adapter = adapter
+                        }
+                    }
+                    else -> {
+                        ArrayAdapter.createFromResource(
+                            breedSpinner.context,
+                            R.array.breed_array,
+                            android.R.layout.simple_spinner_dropdown_item
+                        ).also { adapter ->
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            breedSpinner.adapter = adapter
+                        }
+                    }
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Handle the case where no item is selected
+            }
+        }
+
         resetFilterButton.setOnClickListener {
             radiusEditText.setText("")
-            petSpeciesEditText.setText("")
-            petBreedEditText.setText("")
+            speciesSpinner.setSelection(0)
+            breedSpinner.setSelection(0)
+            genderSpinner.setSelection(0)
             petBirthdayButton.text = "Geburtstag"
             petColorEditText.setText("")
             petIllnessEditText.setText("")

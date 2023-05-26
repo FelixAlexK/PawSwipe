@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dog_array">
+        <item>Rasse</item>
+        <item>Golden Retriever</item>
+        <item>Schäferhund</item>
+        <item>Mischling</item>
+        <item>Bulldogge</item>
+        <item>Chihuahua</item>
+    </string-array>
+</resources>

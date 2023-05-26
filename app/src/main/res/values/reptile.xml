@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="reptile_array">
+        <item>Rasse</item>
+        <item>Schildkröte</item>
+        <item>Schlange</item>
+        <item>Echsen</item>
+    </string-array>
+</resources>
