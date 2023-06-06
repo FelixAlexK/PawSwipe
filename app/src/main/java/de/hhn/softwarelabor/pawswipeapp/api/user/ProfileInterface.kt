@@ -1,7 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp.api.user
 
 import de.hhn.softwarelabor.pawswipeapp.api.data.ProfileData
-import java.util.Date
 
 /**
  * Profile interface
@@ -45,7 +44,7 @@ interface ProfileInterface {
         profile_picture: Array<Byte>?,
         description: String?,
         password: String,
-        creation_date: Date?,
+        creation_date: String?,
         birthday: String?,
         opening_hours: String?,
         street: String?,

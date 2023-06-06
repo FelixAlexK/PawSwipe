@@ -1,7 +1,5 @@
 package de.hhn.softwarelabor.pawswipeapp.api.data
 
-import java.util.Date
-
 /**
  * [ProfileData], holds data for an animal profile
  * @author Felix Kuhbier
@@ -35,7 +33,7 @@ data class ProfileData(
     val profile_picture: Array<Byte>?,
     val description: String?,
     val password: String,
-    val creation_date: Date?,
+    val creation_date: String?,
     val birthday: String?,
     val opening_hours: String?,
     val street: String?,
