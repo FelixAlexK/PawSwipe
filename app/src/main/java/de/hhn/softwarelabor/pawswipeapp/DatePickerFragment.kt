@@ -2,6 +2,7 @@ package de.hhn.softwarelabor.pawswipeapp
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.DatePicker
@@ -10,12 +11,12 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class DatePickerFragment(private var dateFormat: String, private val context: Context) :
+    DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private var pickedDayOfMonth: Int = 0
     private var pickedMonth: Int = 0
     private var pickedYear: Int = 0
-    private var dateFormat: String = ""
     private lateinit var onDatePickedListener: (String) -> Unit
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
@@ -24,8 +25,6 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-
-        dateFormat = getString(R.string.dateFormat)
 
         return DatePickerDialog(requireContext(),this,year,month,day)
     }
@@ -63,13 +62,22 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
 
             val format = SimpleDateFormat(dateFormat, Locale.getDefault())
             return format.format(date)
-        }catch (e: NullPointerException){
+        } catch (e: NullPointerException) {
             e.printStackTrace()
-        }catch (e: IllegalArgumentException){
+        } catch (e: IllegalArgumentException) {
             e.printStackTrace()
         }
 
         return ""
+    }
+
+    fun convertDateToServerCompatibleDate(dateString: String): String? {
+        val inputFormatter = SimpleDateFormat(dateFormat, Locale.getDefault())
+        val outputFormatter =
+            SimpleDateFormat(context.getString(R.string.en_dateFormat), Locale.getDefault())
+
+        val date = inputFormatter.parse(dateString)
+        return date?.let { outputFormatter.format(it) }
     }
 
 
@@ -78,7 +86,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
 
         if (pickedYear != 0 && pickedMonth != 0 && pickedDayOfMonth != 0) {
             onDatePickedListener(toString())
-        }else {
+        } else {
             val calendar = Calendar.getInstance()
 
             val currentDate = calendar.time
