@@ -29,7 +29,7 @@ import java.util.Date
  */
 data class ProfileData(
     val profile_id: Int? = null,
-    val username: String?,
+    val username: String,
     val email: String,
     val phone_number: String?,
     val profile_picture: Array<Byte>?,

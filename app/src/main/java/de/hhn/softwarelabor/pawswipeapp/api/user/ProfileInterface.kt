@@ -1,7 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp.api.user
 
 import de.hhn.softwarelabor.pawswipeapp.api.data.ProfileData
-import java.lang.IllegalStateException
 import java.util.Date
 
 /**
@@ -40,7 +39,7 @@ interface ProfileInterface {
      */
     fun createUserProfile(
         profile_id: Int? = null,
-        username: String?,
+        username: String,
         email: String,
         phone_number: String?,
         profile_picture: Array<Byte>?,

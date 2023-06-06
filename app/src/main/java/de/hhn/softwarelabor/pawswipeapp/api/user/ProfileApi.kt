@@ -28,7 +28,7 @@ class ProfileApi : ProfileInterface {
     private var gson = Gson()
     override fun createUserProfile(
         profile_id: Int?,
-        username: String?,
+        username: String,
         email: String,
         phone_number: String?,
         profile_picture: Array<Byte>?,

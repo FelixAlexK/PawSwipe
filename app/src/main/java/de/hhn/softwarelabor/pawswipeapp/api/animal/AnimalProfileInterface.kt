@@ -21,20 +21,26 @@ interface AnimalProfileInterface {
      * @param breed
      * @param color
      * @param gender
-     * @param profile
+     * @param profile_id
      * @param callback
-     * @receiver
      */
-    fun createAnimalProfile(name: String?,
-                            species: String?,
-                            birthday: String?,
-                            illness: String?,
-                            description: String?,
-                            breed: String?,
-                            color: String?,
-                            gender: String?,
-                            profile_id: ProfileData,
-                            callback: (Int?, Throwable?) -> Unit)
+    fun createAnimalProfile(
+        name: String?,
+        species: String?,
+        birthday: String?,
+        illness: String?,
+        description: String?,
+        breed: String?,
+        color: String?,
+        gender: String?,
+        picture_one: Array<Byte>?,
+        picture_two: Array<Byte>?,
+        picture_three: Array<Byte>?,
+        picture_four: Array<Byte>?,
+        picture_five: Array<Byte>?,
+        profile_id: ProfileData,
+        callback: (Int?, Throwable?) -> Unit
+    )
 
     /**
      * Get all animal profile ids
