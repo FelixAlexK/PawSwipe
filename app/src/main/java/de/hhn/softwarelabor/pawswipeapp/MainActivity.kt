@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity() {
 
     /** Duration of wait **/
-    private val SPLASH_DISPLAY_LENGTH = 3400
+    private val SPLASH_DISPLAY_LENGTH = 1700
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
