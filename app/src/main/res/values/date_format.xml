@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dateFormat">dd/MM/yyyy</string>
+    <string name="de_dateFormat">dd/MM/yyyy</string>
+    <string name="en_dateFormat">yyyy-MM-dd</string>
 </resources>
