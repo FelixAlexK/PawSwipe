@@ -2,8 +2,8 @@ package de.hhn.softwarelabor.pawswipeapp
 
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -37,24 +37,27 @@ class PetProfileActivity : AppCompatActivity() {
     private lateinit var petDescriptionText: EditText
 
 
-    private var datePickerFragment: DatePickerFragment = DatePickerFragment()
+    private lateinit var datePickerFragment: DatePickerFragment
     private var animalProfile: AnimalProfileApi = AnimalProfileApi()
     private var profileId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pet_profil)
-
+        datePickerFragment =
+            DatePickerFragment(this.getString(R.string.de_dateFormat), this@PetProfileActivity)
         init()
 
-        profileId = 11
+        profileId = 38
         createPetButton.setOnClickListener {
             if (petDescriptionText.length() <= MULTILINE_TEXT_LENGTH){
                 profileId?.let {
+                    val birthday =
+                        datePickerFragment.convertDateToServerCompatibleDate(petBirthdayButton.text.toString())
                     createPet(
                         petNameEditText.text.toString(),
                         speciesEditText.text.toString(),
-                        datePickerFragment.toString(),
+                        birthday,
                         petIllnessMultilineText.text.toString(),
                         petDescriptionText.text.toString(),
                         breedEditText.text.toString(),
@@ -129,7 +132,20 @@ class PetProfileActivity : AppCompatActivity() {
                 }
             } else if (user != null) {
                 animalProfile.createAnimalProfile(
-                    name, species, birthday, illness, description, breed, color, gender, user
+                    name,
+                    species,
+                    birthday,
+                    illness,
+                    description,
+                    breed,
+                    color,
+                    gender,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    user
                 ) { profile, error ->
 
                     if (error != null) {
@@ -165,7 +181,7 @@ class PetProfileActivity : AppCompatActivity() {
         var currentDateString = ""
         try {
             val currentDate = Calendar.getInstance().time
-            val formatter = SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault())
+            val formatter = SimpleDateFormat(getString(R.string.de_dateFormat), Locale.getDefault())
             currentDateString = formatter.format(currentDate)
         } catch (e: NullPointerException) {
             Log.e(TAG, e.message.toString())
@@ -185,8 +201,8 @@ class PetProfileActivity : AppCompatActivity() {
             petBirthdayButton = findViewById(R.id.petBirthdayButton)
             petNameEditText = findViewById(R.id.petNameEditText)
             speciesEditText = findViewById(R.id.petSpeciesEditText)
-            breedEditText = findViewById(R.id.nameEditText)
-            petColorEditText = findViewById(R.id.addressEditText)
+            breedEditText = findViewById(R.id.petBreedsEditText)
+            petColorEditText = findViewById(R.id.petColorEditText)
             petDescriptionText = findViewById(R.id.petDescriptionMultiLineText)
 
             petIllnessMultilineText = findViewById(R.id.petPreExistingIllnessMultiLineText)
