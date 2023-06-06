@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cat_array">
+        <item>Rasse</item>
+        <item>Kurzhaar-Katze</item>
+        <item>Siamkatze</item>
+        <item>Bengal-Katze</item>
+        <item>Maine-Coon</item>
+        <item>Perserkatze</item>
+    </string-array>
+</resources>
