@@ -1,7 +1,7 @@
 package de.hhn.softwarelabor.pawswipeapp.api.data
 
 /**
- * [AnimalProfile], holds data for an animal profile
+ * [AnimalProfileData], holds data for an animal profile
  * @author Felix Kuhbier
  * @since 2023.05.06
  *
@@ -24,7 +24,7 @@ data class AnimalProfileData(
     val breed: String?,
     val color: String?,
     val gender: String?,
-    val picture_one: Array<Byte>,
+    val picture_one: Array<Byte>?,
     val picture_two: Array<Byte>?,
     val picture_three: Array<Byte>?,
     val picture_four: Array<Byte>?,

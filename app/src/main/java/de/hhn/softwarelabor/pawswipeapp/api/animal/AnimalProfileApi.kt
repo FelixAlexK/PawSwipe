@@ -34,7 +34,7 @@ class AnimalProfileApi : AnimalProfileInterface {
         breed: String?,
         color: String?,
         gender: String?,
-        picture_one: Array<Byte>,
+        picture_one: Array<Byte>?,
         picture_two: Array<Byte>?,
         picture_three: Array<Byte>?,
         picture_four: Array<Byte>?,
