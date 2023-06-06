@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".CreateUserProfileActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -97,7 +97,7 @@
 
                 <EditText
                     android:id="@+id/usernameEditText"
-                    android:layout_width="250dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -118,7 +118,7 @@
 
                 <EditText
                     android:id="@+id/prenameEditText"
-                    android:layout_width="250dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -139,7 +139,7 @@
 
                 <EditText
                     android:id="@+id/nameEditText"
-                    android:layout_width="250dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -160,30 +160,22 @@
 
                 <Button
                     android:id="@+id/userBirthdayButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="108dp"
                     android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/white"
                     android:importantForAutofill="no"
                     android:minHeight="48dp"
-                    android:text="@string/birthdayButton_text"
+                    android:text="@string/birthday_tv"
+                    android:textAlignment="viewStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/material_dynamic_neutral40"
+                    android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <TextView
-                    android:id="@+id/birthdayTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Geburtstag:"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/userBirthdayButton"
-                    app:layout_constraintHorizontal_bias="0.737"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.644" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -192,7 +184,7 @@
 
                 <EditText
                     android:id="@+id/addressEditText"
-                    android:layout_width="250dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -229,10 +221,9 @@
 
                 <EditText
                     android:id="@+id/streetEditText"
-                    android:layout_width="250dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="8dp"
                     android:ems="10"
                     android:hint="@string/street_hint"
@@ -246,7 +237,7 @@
 
                 <EditText
                     android:id="@+id/houseNumberEditText"
-                    android:layout_width="105dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -267,16 +258,16 @@
 
                 <EditText
                     android:id="@+id/descriptionEditText"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:minHeight="48dp"
                     android:ems="10"
                     android:gravity="start|top"
-                    android:hint="@string/petDescription_hint"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine"
-                    android:minHeight="48dp"
+                    android:hint="@string/petDescription_hint"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

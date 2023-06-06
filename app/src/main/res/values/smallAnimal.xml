@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="smallAnimal_array">
+        <item>Rasse</item>
+        <item>Meerschweinchen</item>
+        <item>Kaninchen</item>
+        <item>Hamster</item>
+        <item>Ratte</item>
+        <item>Maus</item>
+    </string-array>
+</resources>
