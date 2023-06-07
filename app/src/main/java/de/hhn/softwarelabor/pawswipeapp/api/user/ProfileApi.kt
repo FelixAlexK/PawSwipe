@@ -46,7 +46,7 @@ class ProfileApi : ProfileInterface {
         firstname: String,
         lastname: String,
         discriminator: String,
-        callback: (Int?, Throwable?) -> Unit
+        callback: (ProfileData?, Throwable?) -> Unit
     ) {
         val userProfile = ProfileData(
             profile_id,
@@ -83,7 +83,9 @@ class ProfileApi : ProfileInterface {
                 override fun onResponse(call: Call, response: Response) {
                     val responseBody = response.body?.string()
                     if (response.isSuccessful && responseBody != null) {
-                        callback(response.code, null)
+                        val profileJson =
+                            gson.fromJson(responseBody, ProfileData::class.java)
+                        callback(profileJson, null)
                     } else {
                         callback(null, Exception("Error creating profile"))
                     }
