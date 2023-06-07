@@ -56,7 +56,7 @@ interface ProfileInterface {
         firstname: String,
         lastname: String,
         discriminator: String,
-        callback: (Int?, Throwable?) -> Unit
+        callback: (ProfileData?, Throwable?) -> Unit
     )
 
     /**
