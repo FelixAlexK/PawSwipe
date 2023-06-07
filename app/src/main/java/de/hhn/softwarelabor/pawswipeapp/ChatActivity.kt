@@ -1,13 +1,13 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 
 class ChatActivity : AppCompatActivity() {
 
@@ -21,7 +21,7 @@ class ChatActivity : AppCompatActivity() {
 
         matchBtn = findViewById(R.id.matching_btn)
         matchBtn.setOnClickListener {
-            val intent = Intent(this@ChatActivity, MatchActivityNico::class.java)
+            val intent = Intent(this@ChatActivity, MatchActivity::class.java)
             startActivity(intent)
         }
 
