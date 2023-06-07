@@ -60,7 +60,7 @@
     <string name="saveChanges_btn"> Speichern</string>
     <string name="petDescription_hint">Beschreibung</string>
     <string name="loginButton_Text">Anmelden</string>
-    <string name="loginRegister_button">Anmelden/Registrieren</string>
+    <string name="loginRegister_button">Registrieren</string>
     <string name="cancel">Abbrechen</string>
     <string name="create">Erstellen</string>
     <string name="lastname">Nachname*</string>
@@ -108,5 +108,6 @@
     <string name="phoneNumber_tv">Telefonnummer</string>
     <string name="editShelter_tv">Tierheim bearbeiten</string>
     <string name="deleteShelter_tv">Tierheim löschen</string>
+    <string name="create_shelter_error_text">Account mit angegebener e-Mail oder Tierheim name bereits vorhanden</string>
 
 </resources>
