@@ -142,7 +142,7 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            val intent = Intent(this@LoginActivity, MatchActivityNico::class.java)
+                            val intent = Intent(this@LoginActivity, MatchActivity::class.java)
                             intent.putExtra("id", user.profile_id)
                             startActivity(intent)
                         }
@@ -205,7 +205,8 @@ class LoginActivity : AppCompatActivity() {
                                 getString(R.string.login_success, shelter.username),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val intent = Intent(this@LoginActivity, MatchActivityNico::class.java)
+                            val intent = Intent(this@LoginActivity, MatchActivity::class.java)
+                            intent.putExtra("id", shelter.profile_id)
                             startActivity(intent)
                         }
                     } else {
