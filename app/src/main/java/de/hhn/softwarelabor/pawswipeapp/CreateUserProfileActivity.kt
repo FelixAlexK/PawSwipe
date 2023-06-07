@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
@@ -201,10 +202,11 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
             if (error != null) {
 
+                Log.e("PawSwipe", error.message.toString())
                 runOnUiThread {
                     Toast.makeText(
                         this@CreateUserProfileActivity,
-                        "Ein Fehler ist aufgetretten: ${error.message.toString()}",
+                        "${error.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -215,10 +217,11 @@ class CreateUserProfileActivity : AppCompatActivity() {
                         getString(R.string.profileCreated),
                         Toast.LENGTH_SHORT
                     ).show()
+                    val intent =
+                        Intent(this@CreateUserProfileActivity, LoginActivity::class.java)
+                    startActivity(intent)
                 }
-                val intent =
-                    Intent(this@CreateUserProfileActivity, MatchActivityNico::class.java)
-                startActivity(intent)
+
             }
 
         }

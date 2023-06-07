@@ -3,6 +3,7 @@ package de.hhn.softwarelabor.pawswipeapp
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
@@ -122,10 +123,11 @@ class CreateShelterActivity : AppCompatActivity() {
 
             if (error != null) {
 
+                Log.e("PawSwipe", error.message.toString())
                 runOnUiThread {
                     Toast.makeText(
                         this@CreateShelterActivity,
-                        getString(R.string.create_shelter_error_text),
+                        "${error.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -138,7 +140,7 @@ class CreateShelterActivity : AppCompatActivity() {
                     ).show()
                 }
                 val intent =
-                    Intent(this@CreateShelterActivity, MatchActivityNico::class.java)
+                    Intent(this@CreateShelterActivity, LoginActivity::class.java)
                 startActivity(intent)
             }
 
