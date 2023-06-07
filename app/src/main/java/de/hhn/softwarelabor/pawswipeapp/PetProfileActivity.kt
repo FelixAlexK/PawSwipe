@@ -16,9 +16,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class PetProfileActivity : AppCompatActivity() {
 
@@ -39,7 +36,7 @@ class PetProfileActivity : AppCompatActivity() {
 
     private lateinit var datePickerFragment: DatePickerFragment
     private var animalProfile: AnimalProfileApi = AnimalProfileApi()
-    private var profileId: Int? = null
+    private var id: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,30 +45,31 @@ class PetProfileActivity : AppCompatActivity() {
             DatePickerFragment(this.getString(R.string.de_dateFormat), this@PetProfileActivity)
         init()
 
-        profileId = 38
+        id = intent.getIntExtra("id", 0)
         createPetButton.setOnClickListener {
-            if (petDescriptionText.length() <= MULTILINE_TEXT_LENGTH){
-                profileId?.let {
-                    val birthday =
-                        datePickerFragment.convertDateToServerCompatibleDate(petBirthdayButton.text.toString())
-                    createPet(
-                        petNameEditText.text.toString(),
-                        speciesEditText.text.toString(),
-                        birthday,
-                        petIllnessMultilineText.text.toString(),
-                        petDescriptionText.text.toString(),
-                        breedEditText.text.toString(),
-                        petColorEditText.text.toString(),
-                        spinner.selectedItem.toString(),
-                        it
-                    )
-                }?: run {
-                    Toast.makeText(this, "Die ID des Benutzerprofils ist ungültig. Bitte versuchen Sie es erneut.", Toast.LENGTH_SHORT).show()
-                    Log.e(TAG, "Profile ID is null")
-                }
-            }else {
-                runOnUiThread{
-                    Toast.makeText(this, "Beschreibung ist zu lang: ${petDescriptionText.length()}/50", Toast.LENGTH_SHORT).show()
+            if (petDescriptionText.length() <= MULTILINE_TEXT_LENGTH) {
+
+                val birthday =
+                    datePickerFragment.convertDateToServerCompatibleDate(petBirthdayButton.text.toString())
+                createPet(
+                    petNameEditText.text.toString(),
+                    speciesEditText.text.toString(),
+                    birthday,
+                    petIllnessMultilineText.text.toString(),
+                    petDescriptionText.text.toString(),
+                    breedEditText.text.toString(),
+                    petColorEditText.text.toString(),
+                    spinner.selectedItem.toString(),
+                    id
+                )
+
+            } else {
+                runOnUiThread {
+                    Toast.makeText(
+                        this,
+                        "Beschreibung ist zu lang: ${petDescriptionText.length()}/50",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
@@ -89,7 +87,8 @@ class PetProfileActivity : AppCompatActivity() {
                     petDescriptionText.setText("")
                     breedEditText.setText("")
                     petColorEditText.setText("")
-                    val intent = Intent(this@PetProfileActivity, ChatActivity::class.java)
+                    val intent = Intent(this@PetProfileActivity, MatchActivity::class.java)
+                    intent.putExtra("id", id)
                     startActivity(intent)
                     dialog.dismiss()
                 }
@@ -127,8 +126,12 @@ class PetProfileActivity : AppCompatActivity() {
 
             if (error != null) {
                 Log.e(TAG, error.message.toString())
-                runOnUiThread{
-                    Toast.makeText(this, "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.", Toast.LENGTH_SHORT).show()
+                runOnUiThread {
+                    Toast.makeText(
+                        this,
+                        "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } else if (user != null) {
                 animalProfile.createAnimalProfile(
@@ -150,14 +153,25 @@ class PetProfileActivity : AppCompatActivity() {
 
                     if (error != null) {
                         Log.e(TAG, error.message.toString())
-                        runOnUiThread{
-                            Toast.makeText(this, "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.", Toast.LENGTH_SHORT).show()
+                        runOnUiThread {
+                            Toast.makeText(
+                                this,
+                                "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     } else if (profile != null) {
                         Log.d(TAG, "Successful: $profile")
-                        runOnUiThread{
-                            Toast.makeText(this, "Profil für $name wurde erfolgreich erstellt!", Toast.LENGTH_SHORT).show()
+                        runOnUiThread {
+                            Toast.makeText(
+                                this,
+                                "Profil für $name wurde erfolgreich erstellt!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
+                        val intent = Intent(this@PetProfileActivity, MatchActivity::class.java)
+                        intent.putExtra("id", id)
+                        startActivity(intent)
                     }
                 }
             }
@@ -172,23 +186,6 @@ class PetProfileActivity : AppCompatActivity() {
 
     }
 
-
-    private fun createToast(message: String) {
-        Toast.makeText(this@PetProfileActivity, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun getCurrentDate(): String {
-        var currentDateString = ""
-        try {
-            val currentDate = Calendar.getInstance().time
-            val formatter = SimpleDateFormat(getString(R.string.de_dateFormat), Locale.getDefault())
-            currentDateString = formatter.format(currentDate)
-        } catch (e: NullPointerException) {
-            Log.e(TAG, e.message.toString())
-            e.printStackTrace()
-        }
-        return currentDateString
-    }
 
     private fun init() {
         try {
