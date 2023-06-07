@@ -88,7 +88,7 @@ class SettingsActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.cancelChanges_headerText))
                 .setMessage(getString(R.string.cancelChanges_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    val intent = Intent(this@SettingsActivity, MatchActivityNico::class.java)
+                    val intent = Intent(this@SettingsActivity, MatchActivity::class.java)
                     intent.putExtra("id", id)
                     startActivity(intent)
                     dialog.dismiss()
@@ -149,7 +149,7 @@ class SettingsActivity : AppCompatActivity() {
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
 
                     updateUser()
-                    val intent = Intent(this@SettingsActivity, MatchActivityNico::class.java)
+                    val intent = Intent(this@SettingsActivity, MatchActivity::class.java)
                     intent.putExtra("id", id)
                     startActivity(intent)
                     dialog.dismiss()
