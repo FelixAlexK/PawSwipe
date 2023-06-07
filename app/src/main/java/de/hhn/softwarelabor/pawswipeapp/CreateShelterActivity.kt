@@ -125,7 +125,7 @@ class CreateShelterActivity : AppCompatActivity() {
                 runOnUiThread {
                     Toast.makeText(
                         this@CreateShelterActivity,
-                        "Wohl möglich ist ein Account mit der E-Mail: $email bereits vorhanden",
+                        getString(R.string.create_shelter_error_text),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
