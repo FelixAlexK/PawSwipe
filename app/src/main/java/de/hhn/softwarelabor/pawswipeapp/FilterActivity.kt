@@ -11,9 +11,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class FilterActivity : AppCompatActivity() {
 
@@ -26,8 +23,7 @@ class FilterActivity : AppCompatActivity() {
     private lateinit var speciesSpinner: Spinner
     private lateinit var breedSpinner: Spinner
 
-    private var newFragment: DatePickerFragment =
-        DatePickerFragment(this.getString(R.string.de_dateFormat), this)
+    private lateinit var datePickerFragment: DatePickerFragment
 
     private lateinit var radiusEditText: EditText
     private lateinit var petColorEditText: EditText
@@ -38,6 +34,8 @@ class FilterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_filter)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        datePickerFragment =
+            DatePickerFragment(this.getString(R.string.de_dateFormat), this)
 
         cancelButton = findViewById(R.id.cancel_btn2)
         cancelButton.setOnClickListener {
@@ -83,7 +81,7 @@ class FilterActivity : AppCompatActivity() {
 
         petBirthdayButton = findViewById(R.id.petBirthdayButton)
 
-        newFragment.setOnDatePickedListener { date ->
+        datePickerFragment.setOnDatePickedListener { date ->
             petBirthdayButton.text = date
         }
         petBirthdayButton.apply {
@@ -197,18 +195,7 @@ class FilterActivity : AppCompatActivity() {
     }
 
     private fun showDatePickerDialog(v: View) {
-        newFragment.show(supportFragmentManager, "datePicker")
+        datePickerFragment.show(supportFragmentManager, "datePicker")
     }
 
-    private fun getCurrentDate(): String {
-        var currentDateString = ""
-        try {
-            val currentDate = Calendar.getInstance().time
-            val formatter = SimpleDateFormat(getString(R.string.de_dateFormat), Locale.getDefault())
-            currentDateString = formatter.format(currentDate)
-        } catch (e: java.lang.NullPointerException) {
-            e.printStackTrace()
-        }
-        return currentDateString
-    }
 }
