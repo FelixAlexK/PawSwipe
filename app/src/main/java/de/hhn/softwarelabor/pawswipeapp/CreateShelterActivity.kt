@@ -11,6 +11,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 
+private const val DISCRIMINATOR = "shelter"
+private const val COUNTRY = "de"
+
 class CreateShelterActivity : AppCompatActivity() {
 
     private lateinit var profileApi: ProfileApi
@@ -76,7 +79,7 @@ class CreateShelterActivity : AppCompatActivity() {
 
             createShelterProfile(
                 shelterNameString, email, phoneNumberString, password,
-                openingHrsString, shelterStreetString, "de", shelterCityString,
+                openingHrsString, shelterStreetString, COUNTRY, shelterCityString,
                 shelterStreetNrString, homepageString, postalCodeString
             )
 
@@ -117,34 +120,41 @@ class CreateShelterActivity : AppCompatActivity() {
         profileApi.createUserProfile(
             null, username, email, phone_number,
             null, null, password, null, null, opening_hours,
-            street, country, city, street_number, homepage, postal_code, "Shelter",
-            "Shelter", "shelter"
-        ) { response, error ->
+            street, country, city, street_number, homepage, postal_code, "",
+            "", DISCRIMINATOR
+        ) { _, error ->
 
-            if (error != null) {
+            runOnUiThread {
+                if (error != null) {
 
-                Log.e("PawSwipe", error.message.toString())
-                runOnUiThread {
+                    Log.e("PawSwipe", error.message.toString())
+
                     Toast.makeText(
                         this@CreateShelterActivity,
                         "${error.message}",
                         Toast.LENGTH_SHORT
                     ).show()
-                }
-            } else if (response != null) {
-                runOnUiThread {
+
+                } else {
+
+
                     Toast.makeText(
                         this@CreateShelterActivity,
                         getString(R.string.profileCreated),
                         Toast.LENGTH_SHORT
                     ).show()
+
+                    val intent =
+                        Intent(this@CreateShelterActivity, LoginActivity::class.java)
+                    startActivity(intent)
+
+
                 }
-                val intent =
-                    Intent(this@CreateShelterActivity, LoginActivity::class.java)
-                startActivity(intent)
             }
+
 
         }
     }
+
 
 }

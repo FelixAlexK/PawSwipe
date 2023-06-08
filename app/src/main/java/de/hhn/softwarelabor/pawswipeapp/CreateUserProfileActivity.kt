@@ -21,7 +21,7 @@ import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 import java.io.ByteArrayOutputStream
 
 private const val PICK_IMAGE_REQUEST = 1
-
+private const val DISCRIMINATOR = "profile"
 class CreateUserProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
@@ -197,31 +197,35 @@ class CreateUserProfileActivity : AppCompatActivity() {
             null, username, email, null,
             profile_picture, description, password, null, birthday, null,
             street, country, city, street_number, null, postal_code, firstname,
-            lastname, "profile"
+            lastname, DISCRIMINATOR
         ) { response, error ->
 
-            if (error != null) {
+            runOnUiThread {
+                if (error != null) {
 
-                Log.e("PawSwipe", error.message.toString())
-                runOnUiThread {
+                    Log.e("PawSwipe", error.message.toString())
+
                     Toast.makeText(
                         this@CreateUserProfileActivity,
                         "${error.message}",
                         Toast.LENGTH_SHORT
                     ).show()
-                }
-            } else if (response != null) {
-                runOnUiThread {
+
+                } else {
+
+
                     Toast.makeText(
                         this@CreateUserProfileActivity,
                         getString(R.string.profileCreated),
                         Toast.LENGTH_SHORT
                     ).show()
+
                     val intent =
                         Intent(this@CreateUserProfileActivity, LoginActivity::class.java)
                     startActivity(intent)
-                }
 
+
+                }
             }
 
         }
