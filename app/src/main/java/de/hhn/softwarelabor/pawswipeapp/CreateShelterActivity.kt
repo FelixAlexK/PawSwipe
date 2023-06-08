@@ -1,15 +1,22 @@
 package de.hhn.softwarelabor.pawswipeapp
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
+import java.io.ByteArrayOutputStream
 
 private const val DISCRIMINATOR = "shelter"
 private const val COUNTRY = "de"
@@ -25,6 +32,22 @@ class CreateShelterActivity : AppCompatActivity() {
     private lateinit var openingHoursEditText: EditText
     private lateinit var streetEditText: EditText
     private lateinit var streetNumberEditText: EditText
+    private lateinit var imageView: ImageView
+    private lateinit var uploadImageButton: Button
+
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageUri = result.data?.data
+            imageView.setImageURI(imageUri)
+        }
+    }
+
+    private fun selectImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        pickImageLauncher.launch(intent)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +64,8 @@ class CreateShelterActivity : AppCompatActivity() {
         openingHoursEditText = findViewById(R.id.openingHoursEditText)
         streetEditText = findViewById(R.id.shelterStreetEditText)
         streetNumberEditText = findViewById(R.id.streetNumberEditText)
+        imageView = findViewById(R.id.pictureView)
+        uploadImageButton = findViewById(R.id.uploadPictureButton)
 
         val cancelButton: Button = findViewById(R.id.clearButton)
         val createButton: Button = findViewById(R.id.doneButton)
@@ -50,6 +75,20 @@ class CreateShelterActivity : AppCompatActivity() {
 
 
         createButton.setOnClickListener {
+
+            var imageArray: Array<Byte>? = null
+
+            if (imageView.drawable != null) {
+                val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
+
+                // Convert Bitmap to byte array
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                val byteArray: ByteArray = stream.toByteArray()
+
+                // Convert the ByteArray to Array<Byte>
+                imageArray = byteArray.toTypedArray()
+            }
 
 
             val shelterStreetString: String? =
@@ -78,12 +117,17 @@ class CreateShelterActivity : AppCompatActivity() {
 
 
             createShelterProfile(
-                shelterNameString, email, phoneNumberString, password,
+                shelterNameString, email, phoneNumberString, imageArray, password,
                 openingHrsString, shelterStreetString, COUNTRY, shelterCityString,
                 shelterStreetNrString, homepageString, postalCodeString
             )
 
 
+        }
+
+        //Click Listener for uploadPicture Button
+        uploadImageButton.setOnClickListener {
+            selectImageFromGallery()
         }
 
         cancelButton.setOnClickListener {
@@ -106,6 +150,7 @@ class CreateShelterActivity : AppCompatActivity() {
         username: String,
         email: String,
         phone_number: String?,
+        profile_picture: Array<Byte>?,
         password: String,
         opening_hours: String?,
         street: String?,
@@ -119,7 +164,7 @@ class CreateShelterActivity : AppCompatActivity() {
 
         profileApi.createUserProfile(
             null, username, email, phone_number,
-            null, null, password, null, null, opening_hours,
+            profile_picture, null, password, null, null, opening_hours,
             street, country, city, street_number, homepage, postal_code, "",
             "", DISCRIMINATOR
         ) { _, error ->
