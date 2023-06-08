@@ -10,9 +10,6 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class EditAnimalActivity : AppCompatActivity() {
 
@@ -20,8 +17,7 @@ class EditAnimalActivity : AppCompatActivity() {
     private lateinit var speciesSpinner: Spinner
     private lateinit var breedSpinner: Spinner
 
-    private var newFragment: DatePickerFragment =
-        DatePickerFragment(this.getString(R.string.de_dateFormat), this)
+    private lateinit var datePickerFragment: DatePickerFragment
 
     private lateinit var cancelButton: Button
     private lateinit var saveButton: Button
@@ -36,6 +32,8 @@ class EditAnimalActivity : AppCompatActivity() {
 
         genderSpinner = findViewById(R.id.petGenderSpinner)
 
+        datePickerFragment =
+            DatePickerFragment(this.getString(R.string.de_dateFormat), this)
         ArrayAdapter.createFromResource(
             this,
             R.array.gender_array,
@@ -182,7 +180,7 @@ class EditAnimalActivity : AppCompatActivity() {
 
         petBirthdayButton = findViewById(R.id.petBirthdayButton)
 
-        newFragment.setOnDatePickedListener { date ->
+        datePickerFragment.setOnDatePickedListener { date ->
             petBirthdayButton.text = date
         }
         petBirthdayButton.apply {
@@ -194,18 +192,7 @@ class EditAnimalActivity : AppCompatActivity() {
     }
 
     private fun showDatePickerDialog(v: View) {
-        newFragment.show(supportFragmentManager, "datePicker")
+        datePickerFragment.show(supportFragmentManager, "datePicker")
     }
 
-    private fun getCurrentDate(): String {
-        var currentDateString = ""
-        try {
-            val currentDate = Calendar.getInstance().time
-            val formatter = SimpleDateFormat(getString(R.string.de_dateFormat), Locale.getDefault())
-            currentDateString = formatter.format(currentDate)
-        } catch (e: java.lang.NullPointerException) {
-            e.printStackTrace()
-        }
-        return currentDateString
-    }
 }
