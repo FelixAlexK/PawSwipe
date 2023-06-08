@@ -1,16 +1,16 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 
-class MatchActivityNico : AppCompatActivity() {
+class MatchActivity : AppCompatActivity() {
 
     private lateinit var chatBtn: Button
     private lateinit var animalListBtn: Button
@@ -19,20 +19,23 @@ class MatchActivityNico : AppCompatActivity() {
     private lateinit var viewPager: ViewPager
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var imageList: List<Int>
+    private var id: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
 
+        id = intent.getIntExtra("id", 0)
+
         chatBtn = findViewById(R.id.chat_btn2)
         chatBtn.setOnClickListener {
-            val intent = Intent(this@MatchActivityNico, ChatActivity::class.java)
+            val intent = Intent(this@MatchActivity, ChatActivity::class.java)
             startActivity(intent)
         }
 
         animalListBtn = findViewById(R.id.animalList_btn2)
         animalListBtn.setOnClickListener {
-            val intent = Intent(this@MatchActivityNico, AnimalListActivityNico::class.java)
+            val intent = Intent(this@MatchActivity, AnimalListActivityNico::class.java)
             startActivity(intent)
         }
 
@@ -54,7 +57,7 @@ class MatchActivityNico : AppCompatActivity() {
         imageList = imageList + R.drawable.heart_liked_small
         imageList = imageList + R.drawable.dislike_x
 
-        viewPagerAdapter = ViewPagerAdapter(this@MatchActivityNico, imageList)
+        viewPagerAdapter = ViewPagerAdapter(this@MatchActivity, imageList)
 
         viewPager.adapter = viewPagerAdapter
     }
@@ -68,32 +71,34 @@ class MatchActivityNico : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {
-                val intent = Intent(this@MatchActivityNico, SettingsActivity::class.java)
+                val intent = Intent(this@MatchActivity, SettingsActivity::class.java)
+                intent.putExtra("id", id)
                 startActivity(intent)
                 true
             }
             R.id.menu_animalServices -> {
-                val intent = Intent(this@MatchActivityNico, AnimalServiceActivity::class.java)
+                val intent = Intent(this@MatchActivity, AnimalServiceActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_animalEdit -> {
-                val intent = Intent(this@MatchActivityNico, EditAnimalActivity::class.java)
+                val intent = Intent(this@MatchActivity, EditAnimalActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_animalCreate -> {
-                val intent = Intent(this@MatchActivityNico, PetProfileActivity::class.java)
+                val intent = Intent(this@MatchActivity, PetProfileActivity::class.java)
+                intent.putExtra("id", id)
                 startActivity(intent)
                 true
             }
             R.id.menu_logOut -> {
-                val intent = Intent(this@MatchActivityNico, LoginActivity::class.java)
+                val intent = Intent(this@MatchActivity, LoginActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_filter -> {
-                val intent = Intent(this@MatchActivityNico, FilterActivity::class.java)
+                val intent = Intent(this@MatchActivity, FilterActivity::class.java)
                 startActivity(intent)
                 true
             }

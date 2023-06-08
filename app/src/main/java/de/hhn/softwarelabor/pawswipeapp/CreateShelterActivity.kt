@@ -1,81 +1,142 @@
 package de.hhn.softwarelabor.pawswipeapp
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
-import java.util.*
+import java.io.ByteArrayOutputStream
+
+private const val DISCRIMINATOR = "shelter"
+private const val COUNTRY = "de"
 
 class CreateShelterActivity : AppCompatActivity() {
+
+    private lateinit var profileApi: ProfileApi
+    private lateinit var shelterNameEditText: EditText
+    private lateinit var homepageEditText: EditText
+    private lateinit var postalCodeEditText: EditText
+    private lateinit var shelterCityEditText: EditText
+    private lateinit var phoneNumberEditText: EditText
+    private lateinit var openingHoursEditText: EditText
+    private lateinit var streetEditText: EditText
+    private lateinit var streetNumberEditText: EditText
+    private lateinit var imageView: ImageView
+    private lateinit var uploadImageButton: Button
+
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageUri = result.data?.data
+            imageView.setImageURI(imageUri)
+        }
+    }
+
+    private fun selectImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        pickImageLauncher.launch(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_shelter)
 
-        val shelterName : EditText = findViewById(R.id.shelterEditText)
-        val homepage : EditText = findViewById(R.id.homepageEditText)
-        val plz : EditText = findViewById(R.id.plzEditText)
-        val shelterAddress : EditText = findViewById(R.id.shelterAddressEditText)
-        val phoneNumber : EditText = findViewById(R.id.phoneNumberEditText)
-        val openingHours: EditText = findViewById(R.id.openingHoursEditText)
-        val street : EditText = findViewById(R.id.shelterStreetEditText)
-        val streetNumber : EditText = findViewById(R.id.streetNumberEditText)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        profileApi = ProfileApi()
 
-        val cancel : Button = findViewById(R.id.clearButton)
-        val create : Button = findViewById(R.id.doneButton)
+        shelterNameEditText = findViewById(R.id.shelterEditText)
+        homepageEditText = findViewById(R.id.homepageEditText)
+        postalCodeEditText = findViewById(R.id.plzEditText)
+        shelterCityEditText = findViewById(R.id.shelterAddressEditText)
+        phoneNumberEditText = findViewById(R.id.phoneNumberEditText)
+        openingHoursEditText = findViewById(R.id.openingHoursEditText)
+        streetEditText = findViewById(R.id.shelterStreetEditText)
+        streetNumberEditText = findViewById(R.id.streetNumberEditText)
+        imageView = findViewById(R.id.pictureView)
+        uploadImageButton = findViewById(R.id.uploadPictureButton)
+
+        val cancelButton: Button = findViewById(R.id.clearButton)
+        val createButton: Button = findViewById(R.id.doneButton)
 
         val email: String = intent.getStringExtra("email").toString()
-        val password : String = intent.getStringExtra("hashedPassword").toString()
+        val password: String = intent.getStringExtra("passwordHashed").toString()
 
 
-        create.setOnClickListener {
+        createButton.setOnClickListener {
 
+            var imageArray: Array<Byte>? = null
 
-            //val creationDate : Date = Calendar.getInstance().time
+            if (imageView.drawable != null) {
+                val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
 
-            val shelterStreetString : String?= street.text.toString().takeIf { it.isNotBlank() }
-            val shelterStreetNrString : String? = streetNumber.text.toString().takeIf { it.isNotBlank() }
-            val shelterNameString : String? = shelterName.text.toString().takeIf { it.isNotBlank() }
-            val phoneNumberString : String? = phoneNumber.text.toString().takeIf { it.isNotBlank() }
-            val openingHrsString : String?= openingHours.text.toString().takeIf { it.isNotBlank() }
-            val homepageString : String? = homepage.text.toString().takeIf { it.isNotBlank() }
-            val shelterAddressString : String?= shelterAddress.text.toString().takeIf { it.isNotBlank() }
-            val postalCodeString : String?= plz.text.toString().takeIf{it.isNotBlank()}
+                // Convert Bitmap to byte array
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                val byteArray: ByteArray = stream.toByteArray()
 
-            val userProfileApi = ProfileApi()
-
-            userProfileApi.createUserProfile(null,shelterNameString, email,
-                phoneNumberString, null, null, password,
-                null,null, openingHrsString,
-                shelterStreetString, "de", shelterAddressString, shelterStreetNrString,
-                homepageString, postalCodeString, "shelterFN", "shelterLN","shelter")
-            { profile, error ->
-
-
-                if(error != null){
-
-                }
-                else if(profile != null){
-
-                }
+                // Convert the ByteArray to Array<Byte>
+                imageArray = byteArray.toTypedArray()
             }
 
-            runOnUiThread {
-                   Toast.makeText(this@CreateShelterActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
-            }
+
+            val shelterStreetString: String? =
+                streetEditText.text.toString().takeIf { it.isNotBlank() }
+
+            val shelterStreetNrString: String? =
+                streetNumberEditText.text.toString().takeIf { it.isNotBlank() }
+
+            val shelterNameString: String =
+                shelterNameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
+
+            val phoneNumberString: String? =
+                phoneNumberEditText.text.toString().takeIf { it.isNotBlank() }
+
+            val openingHrsString: String? =
+                openingHoursEditText.text.toString().takeIf { it.isNotBlank() }
+
+            val homepageString: String? =
+                homepageEditText.text.toString().takeIf { it.isNotBlank() }
+
+            val shelterCityString: String? =
+                shelterCityEditText.text.toString().takeIf { it.isNotBlank() }
+
+            val postalCodeString: String? =
+                postalCodeEditText.text.toString().takeIf { it.isNotBlank() }
+
+
+            createShelterProfile(
+                shelterNameString, email, phoneNumberString, imageArray, password,
+                openingHrsString, shelterStreetString, COUNTRY, shelterCityString,
+                shelterStreetNrString, homepageString, postalCodeString
+            )
 
 
         }
 
-        cancel.setOnClickListener {
+        //Click Listener for uploadPicture Button
+        uploadImageButton.setOnClickListener {
+            selectImageFromGallery()
+        }
+
+        cancelButton.setOnClickListener {
             AlertDialog.Builder(this@CreateShelterActivity)
                 .setTitle(getString(R.string.cancelChanges_headerText))
                 .setMessage(getString(R.string.cancelChanges_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    val intent = Intent(this@CreateShelterActivity, RegisterAccountActivity::class.java)
+                    val intent =
+                        Intent(this@CreateShelterActivity, RegisterAccountActivity::class.java)
                     startActivity(intent)
                     dialog.dismiss()
                 }
@@ -84,4 +145,61 @@ class CreateShelterActivity : AppCompatActivity() {
                 }.show()
         }
     }
+
+    private fun createShelterProfile(
+        username: String,
+        email: String,
+        phone_number: String?,
+        profile_picture: Array<Byte>?,
+        password: String,
+        opening_hours: String?,
+        street: String?,
+        country: String?,
+        city: String?,
+        street_number: String?,
+        homepage: String?,
+        postal_code: String?,
+    ) {
+
+
+        profileApi.createUserProfile(
+            null, username, email, phone_number,
+            profile_picture, null, password, null, null, opening_hours,
+            street, country, city, street_number, homepage, postal_code, "",
+            "", DISCRIMINATOR
+        ) { _, error ->
+
+            runOnUiThread {
+                if (error != null) {
+
+                    Log.e("PawSwipe", error.message.toString())
+
+                    Toast.makeText(
+                        this@CreateShelterActivity,
+                        "${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else {
+
+
+                    Toast.makeText(
+                        this@CreateShelterActivity,
+                        getString(R.string.profileCreated),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    val intent =
+                        Intent(this@CreateShelterActivity, LoginActivity::class.java)
+                    startActivity(intent)
+
+
+                }
+            }
+
+
+        }
+    }
+
+
 }

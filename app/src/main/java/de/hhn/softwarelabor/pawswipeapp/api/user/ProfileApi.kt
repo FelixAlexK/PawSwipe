@@ -13,7 +13,6 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import java.io.IOException
-import java.util.Date
 
 
 /**
@@ -23,6 +22,7 @@ import java.util.Date
  */
 
 private const val BASE_URL = "http://193.196.55.115:8081/profile"
+//private const val BASE_URL = "http://45.146.253.199:8080/profile"
 class ProfileApi : ProfileInterface {
     private var client: OkHttpClient = OkHttpClient()
     private var gson = Gson()
@@ -34,7 +34,7 @@ class ProfileApi : ProfileInterface {
         profile_picture: Array<Byte>?,
         description: String?,
         password: String,
-        creation_date: Date?,
+        creation_date: String?,
         birthday: String?,
         opening_hours: String?,
         street: String?,
@@ -46,7 +46,7 @@ class ProfileApi : ProfileInterface {
         firstname: String,
         lastname: String,
         discriminator: String,
-        callback: (Int?, Throwable?) -> Unit
+        callback: (ProfileData?, Throwable?) -> Unit
     ) {
         val userProfile = ProfileData(
             profile_id,
@@ -83,7 +83,9 @@ class ProfileApi : ProfileInterface {
                 override fun onResponse(call: Call, response: Response) {
                     val responseBody = response.body?.string()
                     if (response.isSuccessful && responseBody != null) {
-                        callback(response.code, null)
+                        val profileJson =
+                            gson.fromJson(responseBody, ProfileData::class.java)
+                        callback(profileJson, null)
                     } else {
                         callback(null, Exception("Error creating profile"))
                     }

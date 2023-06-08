@@ -108,11 +108,6 @@ open class RegisterAccountActivity : AppCompatActivity() {
             intent.putExtra("email", email)
             intent.putExtra("passwordHashed", passwordHashed)
 
-
-            val intent2 = Intent(this, CreateUserProfileActivity::class.java)
-            intent.putExtra("email", email)
-            intent.putExtra("passwordHashed", passwordHashed)
-            // intent.putExtra("accountType", accountType)
             startActivity(intent)
         } catch(ex: Exception){
             println(ex.message)

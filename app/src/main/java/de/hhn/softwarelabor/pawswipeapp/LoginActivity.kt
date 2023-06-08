@@ -1,6 +1,7 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -102,6 +103,11 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+        loginRegisterButton.setOnClickListener {
+            val intent = Intent(this@LoginActivity, RegisterAccountActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 
@@ -132,9 +138,13 @@ class LoginActivity : AppCompatActivity() {
                         runOnUiThread {
                             Toast.makeText(
                                 this,
-                                getString(R.string.login_success,user.username),
+                                getString(R.string.login_success, user.username),
                                 Toast.LENGTH_SHORT
                             ).show()
+
+                            val intent = Intent(this@LoginActivity, MatchActivity::class.java)
+                            intent.putExtra("id", user.profile_id)
+                            startActivity(intent)
                         }
                     } else {
                         runOnUiThread {
@@ -192,9 +202,12 @@ class LoginActivity : AppCompatActivity() {
                         runOnUiThread {
                             Toast.makeText(
                                 this,
-                                getString(R.string.login_success,shelter.username),
+                                getString(R.string.login_success, shelter.username),
                                 Toast.LENGTH_SHORT
                             ).show()
+                            val intent = Intent(this@LoginActivity, MatchActivity::class.java)
+                            intent.putExtra("id", shelter.profile_id)
+                            startActivity(intent)
                         }
                     } else {
                         runOnUiThread {

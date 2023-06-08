@@ -2,7 +2,6 @@ package de.hhn.softwarelabor.pawswipeapp
 
 import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -10,9 +9,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
-import androidx.core.view.get
+import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 class EditAnimalActivity : AppCompatActivity() {
 
@@ -20,7 +20,8 @@ class EditAnimalActivity : AppCompatActivity() {
     private lateinit var speciesSpinner: Spinner
     private lateinit var breedSpinner: Spinner
 
-    private var newFragment: DatePickerFragment = DatePickerFragment()
+    private var newFragment: DatePickerFragment =
+        DatePickerFragment(this.getString(R.string.de_dateFormat), this)
 
     private lateinit var cancelButton: Button
     private lateinit var saveButton: Button
@@ -200,7 +201,7 @@ class EditAnimalActivity : AppCompatActivity() {
         var currentDateString = ""
         try {
             val currentDate = Calendar.getInstance().time
-            val formatter = SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault())
+            val formatter = SimpleDateFormat(getString(R.string.de_dateFormat), Locale.getDefault())
             currentDateString = formatter.format(currentDate)
         } catch (e: java.lang.NullPointerException) {
             e.printStackTrace()

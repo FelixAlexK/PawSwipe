@@ -1,13 +1,13 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 
 class AnimalServiceActivity : AppCompatActivity() {
 
@@ -29,7 +29,7 @@ class AnimalServiceActivity : AppCompatActivity() {
         }
         matchBtn = findViewById(R.id.matching_btn4)
         matchBtn.setOnClickListener {
-            val intent = Intent(this@AnimalServiceActivity, MatchActivityNico::class.java)
+            val intent = Intent(this@AnimalServiceActivity, MatchActivity::class.java)
             startActivity(intent)
         }
         animalListBtn = findViewById(R.id.animalList_btn4)

@@ -60,7 +60,7 @@
     <string name="saveChanges_btn"> Speichern</string>
     <string name="petDescription_hint">Beschreibung</string>
     <string name="loginButton_Text">Anmelden</string>
-    <string name="loginRegister_button">Anmelden/Registrieren</string>
+    <string name="loginRegister_button">Registrieren</string>
     <string name="cancel">Abbrechen</string>
     <string name="create">Erstellen</string>
     <string name="lastname">Nachname*</string>
@@ -94,8 +94,8 @@
     <string name="houseNumber_hint">Nummer</string>
     <string name="fillEditTexts">Bitte alle mit * markierten Pflichtfelder ausfüllen.</string>
     <string name="login_no_account_found_with_email">Es wurde kein Account mit dieser E-Mail-Adresse gefunden.</string>
-    <string name="login_success">Willkommen zurück, %s Sie haben sich erfolgreich angemeldet.</string>
-    <string name="login_error">Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre E-Mail-Adresse und Ihr Passwort.</string>
+    <string name="login_success">Willkommen zurück, %s.</string>
+    <string name="login_error">Bitte überprüfen Sie Ihre E-Mail-Adresse und Ihr Passwort.</string>
     <string name="login_shelter_error">Anmeldung als Tierheim nicht möglich.</string>
     <string name="login_user_error">Anmeldung als Nutzer nicht möglich.</string>
     <string name="login_shelter_or_user">Bitte wählen Sie aus, ob Sie sich als Nutzer oder Tierheim anmelden möchten.</string>
@@ -108,5 +108,6 @@
     <string name="phoneNumber_tv">Telefonnummer</string>
     <string name="editShelter_tv">Tierheim bearbeiten</string>
     <string name="deleteShelter_tv">Tierheim löschen</string>
+    <string name="create_error_text">Account mit angegebener e-Mail oder Tierheim name bereits vorhanden</string>
 
 </resources>

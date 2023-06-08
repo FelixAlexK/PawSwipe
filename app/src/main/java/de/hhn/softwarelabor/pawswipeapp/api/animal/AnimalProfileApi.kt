@@ -21,6 +21,7 @@ import java.io.IOException
  * @since 2023.05.05
  */
 private const val BASE_URL = "http://193.196.55.115:8081/animal"
+//private const val BASE_URL = "http://45.146.253.199:8080/animal"
 class AnimalProfileApi : AnimalProfileInterface {
 
     private var client: OkHttpClient = OkHttpClient()

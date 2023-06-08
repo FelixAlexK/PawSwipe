@@ -1,51 +1,61 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
-import java.text.SimpleDateFormat
-import java.util.*
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import java.io.ByteArrayOutputStream
 
-
+private const val PICK_IMAGE_REQUEST = 1
+private const val DISCRIMINATOR = "profile"
 class CreateUserProfileActivity : AppCompatActivity() {
-    companion object {
-        private const val PICK_IMAGE_REQUEST = 1
-    }
-    private lateinit var imageView :ImageView
 
-    private var newFragment: DatePickerFragment = DatePickerFragment()
+    private lateinit var imageView: ImageView
 
-    // This function will be called when the user clicks a button to select an image from the gallery
-    private fun selectImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
-    }
+    private lateinit var datePickerFragment: DatePickerFragment
 
-    // This function will be called after the user selects an image from the gallery
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private lateinit var profileApi: ProfileApi
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
-            val imageUri = data.data
+    private lateinit var firstNameEditText: EditText
+    private lateinit var nameEditText: EditText
+    private lateinit var birthdateButton: Button
+    private lateinit var addressEditText: EditText
+    private lateinit var doneButton: Button
+    private lateinit var cancelButton: Button
+    private lateinit var uploadButton: Button
+    private lateinit var descriptionEditText: EditText
+    private lateinit var usernameEditText: EditText
+    private lateinit var plzEditText: EditText
+    private lateinit var streetEditText: EditText
+    private lateinit var streetNrEditText: EditText
 
-            // Display the selected image in an ImageView
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageUri = result.data?.data
             imageView.setImageURI(imageUri)
         }
-        }
-    private var datePickerFragment: DatePickerFragment = DatePickerFragment()
+    }
+
+    private fun selectImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        pickImageLauncher.launch(intent)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,43 +63,44 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
-        //Data Fields
-        val prename : EditText = findViewById(R.id.prenameEditText)
-        val name : EditText = findViewById(R.id.nameEditText)
-        val birthdate : Button = findViewById(R.id.userBirthdayButton)
-        val address : EditText = findViewById(R.id.addressEditText)
-        val done : Button = findViewById(R.id.doneUserButton)
-        val cancel : Button = findViewById(R.id.clearUserButton)
-        val upload : Button = findViewById(R.id.uploadPictureButton)
-        val description : EditText= findViewById(R.id.descriptionEditText)
-        val username : EditText = findViewById(R.id.usernameEditText)
-        val plz : EditText = findViewById(R.id.postalAddressEditText)
-        val street : EditText = findViewById(R.id.streetEditText)
-        val streetNr : EditText = findViewById(R.id.houseNumberEditText)
+        datePickerFragment = DatePickerFragment(this.getString(R.string.de_dateFormat), this)
+        profileApi = ProfileApi()
 
-
-        val password : String = intent.getStringExtra("passwordHashed").toString()
-        val email : String = intent.getStringExtra("email").toString()
-
+        firstNameEditText = findViewById(R.id.prenameEditText)
+        nameEditText = findViewById(R.id.nameEditText)
+        birthdateButton = findViewById(R.id.userBirthdayButton)
+        addressEditText = findViewById(R.id.addressEditText)
+        doneButton = findViewById(R.id.doneUserButton)
+        cancelButton = findViewById(R.id.clearUserButton)
+        uploadButton = findViewById(R.id.uploadPictureButton)
+        descriptionEditText = findViewById(R.id.descriptionEditText)
+        usernameEditText = findViewById(R.id.usernameEditText)
+        plzEditText = findViewById(R.id.postalAddressEditText)
+        streetEditText = findViewById(R.id.streetEditText)
+        streetNrEditText = findViewById(R.id.houseNumberEditText)
         imageView = findViewById(R.id.pictureView)
 
-        done.setOnClickListener{
+        val password: String = intent.getStringExtra("passwordHashed").toString()
+        val email: String = intent.getStringExtra("email").toString()
 
 
+        datePickerFragment.setOnDatePickedListener { date ->
+            birthdateButton.text = date
+        }
 
-            datePickerFragment.setOnDatePickedListener { date ->
-                birthdate.text = date
+        birthdateButton.apply {
+
+            setOnClickListener {
+                showDatePickerDialog(this)
             }
-            birthdate.apply {
+        }
 
-                setOnClickListener {
-                    showDatePickerDialog(this)
-                }
-            }
+        doneButton.setOnClickListener {
 
-            var imageArray : Array<Byte>? = null
 
-            if(imageView.drawable != null){
+            var imageArray: Array<Byte>? = null
+
+            if (imageView.drawable != null) {
                 val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
 
                 // Convert Bitmap to byte array
@@ -100,70 +111,71 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 // Convert the ByteArray to Array<Byte>
                 imageArray = byteArray.toTypedArray()
             }
-            val creationDate : Date? = getCreationDate()
 
 
-            val streetString : String? = street.text.toString().takeIf { it.isNotBlank() }
+            val streetString: String? = streetEditText.text.toString().takeIf { it.isNotBlank() }
 
-            val streetNrString : String? = streetNr.text.toString().takeIf { it.isNotBlank() }
+            val streetNrString: String? =
+                streetNrEditText.text.toString().takeIf { it.isNotBlank() }
 
-            val postalCode: String? = plz.text.toString().takeIf { it.isNotBlank() }
-            if (username.text.isEmpty()){
-                Toast.makeText(this,getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+            val postalCode: String? = plzEditText.text.toString().takeIf { it.isNotBlank() }
+
+            if (usernameEditText.text.isEmpty()) {
+                Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val usernameString : String? = username.text.toString().takeIf { it.isNotBlank() }
 
-            val cityString : String? = address.text.toString().takeIf { it.isNotBlank() }
+            val usernameString: String =
+                usernameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
 
-            val descriptionString : String? = description.text.toString().takeIf { it.isNotBlank() }
+            val cityString: String? = addressEditText.text.toString().takeIf { it.isNotBlank() }
 
-            if (prename.text.isEmpty()){
-                Toast.makeText(this,getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+            val descriptionString: String? =
+                descriptionEditText.text.toString().takeIf { it.isNotBlank() }
+
+            if (firstNameEditText.text.isEmpty()) {
+                Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val prenameString : String = prename.text.toString()
+            val firstNameString: String = firstNameEditText.text.toString()
 
-            if (name.text.isEmpty()){
-                Toast.makeText(this,getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+            if (nameEditText.text.isEmpty()) {
+                Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val lastNameString : String = name.text.toString()
+            val lastNameString: String = nameEditText.text.toString()
 
-            val birthday : String? = datePickerFragment.toString()
-
-            // Creating instance of the UserProfileAPI
-            val userProfileApi = ProfileApi()
-
-            userProfileApi.createUserProfile(null,usernameString,email,null,imageArray,descriptionString,password,
-            null,null,null,streetString,"de",cityString,streetNrString,null,postalCode,prenameString, lastNameString,"profile")
-            { profile, error ->
-
-            if(error != null){
+            val birthday: String? =
+                datePickerFragment.convertDateToServerCompatibleDate(birthdateButton.text.toString())
 
 
-            }
-            else if(profile != null){
-
-            }
-            }
-
-            //Toast message if Registration was successful
-            runOnUiThread {
-                Toast.makeText(this@CreateUserProfileActivity, getString(R.string.profileCreated), Toast.LENGTH_SHORT).show()
-            }
-            val intent = Intent(this@CreateUserProfileActivity,MatchActivityNico::class.java)
-            startActivity(intent)
+            createUserProfile(
+                usernameString,
+                email,
+                imageArray,
+                descriptionString,
+                password,
+                birthday,
+                streetString,
+                "de",
+                cityString,
+                streetNrString,
+                postalCode,
+                firstNameString,
+                lastNameString
+            )
 
         }
 
+
         //Click Listener for the Cancel Button, returns to Registration Activity
-        cancel.setOnClickListener {
+        cancelButton.setOnClickListener {
             AlertDialog.Builder(this@CreateUserProfileActivity)
                 .setTitle(getString(R.string.cancelChanges_headerText))
                 .setMessage(getString(R.string.cancelChanges_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    val intent = Intent(this@CreateUserProfileActivity, RegisterAccountActivity::class.java)
+                    val intent =
+                        Intent(this@CreateUserProfileActivity, RegisterAccountActivity::class.java)
                     startActivity(intent)
                     dialog.dismiss()
                 }
@@ -172,46 +184,70 @@ class CreateUserProfileActivity : AppCompatActivity() {
                 }.show()
         }
         //Click Listener for uploadPicture Button
-        upload.setOnClickListener {
-                selectImageFromGallery()
+        uploadButton.setOnClickListener {
+            selectImageFromGallery()
+        }
+
+    }
+
+    private fun createUserProfile(
+        username: String,
+        email: String,
+        profile_picture: Array<Byte>?,
+        description: String?,
+        password: String,
+        birthday: String?,
+        street: String?,
+        country: String?,
+        city: String?,
+        street_number: String?,
+        postal_code: String?,
+        firstname: String,
+        lastname: String,
+    ) {
+
+        profileApi.createUserProfile(
+            null, username, email, null,
+            profile_picture, description, password, null, birthday, null,
+            street, country, city, street_number, null, postal_code, firstname,
+            lastname, DISCRIMINATOR
+        ) { response, error ->
+
+            runOnUiThread {
+                if (error != null) {
+
+                    Log.e("PawSwipe", error.message.toString())
+
+                    Toast.makeText(
+                        this@CreateUserProfileActivity,
+                        "${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else {
+
+
+                    Toast.makeText(
+                        this@CreateUserProfileActivity,
+                        getString(R.string.profileCreated),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    val intent =
+                        Intent(this@CreateUserProfileActivity, LoginActivity::class.java)
+                    startActivity(intent)
+
+
+                }
             }
 
-
-        newFragment.setOnDatePickedListener { date ->
-            birthdate.text = date
         }
-        birthdate.apply {
 
-            setOnClickListener {
-                showDatePickerDialog(this)
-            }
-        }
 
     }
 
     private fun showDatePickerDialog(v: View) {
-        newFragment.show(supportFragmentManager, "datePicker")
+        datePickerFragment.show(supportFragmentManager, "datePicker")
     }
 
-    private fun getCurrentDate(): String {
-        var currentDateString = ""
-        try {
-            val currentDate = Calendar.getInstance().time
-            val formatter = SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault())
-            currentDateString = formatter.format(currentDate)
-        } catch (e: java.lang.NullPointerException) {
-            e.printStackTrace()
-        }
-        return currentDateString
-    }
-
-    private fun getCreationDate(): Date? {
-        var currentDate: Date? = null
-        try {
-            currentDate = Calendar.getInstance().time
-        } catch (e: NullPointerException) {
-            e.printStackTrace()
-        }
-        return currentDate
-    }
 }
