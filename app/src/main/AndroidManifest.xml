@@ -26,7 +26,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".EditAnimalActivity"
             android:exported="false" />
@@ -38,7 +38,7 @@
             android:exported="false" />
         <activity
             android:name=".CreateUserProfileActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".RegisterAccountActivity"
             android:exported="false" />
@@ -46,17 +46,17 @@
             android:name=".AnimalListActivityNico"
             android:exported="false" />
         <activity
-            android:name=".MatchActivityNico"
+            android:name=".MatchActivity"
             android:exported="false" />
         <activity
             android:name=".ChatActivity"
             android:exported="false" />
         <activity
             android:name=".PetProfileActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".SettingsActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
