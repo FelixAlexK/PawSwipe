@@ -30,6 +30,19 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
     private lateinit var profileApi: ProfileApi
 
+    private lateinit var firstNameEditText: EditText
+    private lateinit var nameEditText: EditText
+    private lateinit var birthdateButton: Button
+    private lateinit var addressEditText: EditText
+    private lateinit var doneButton: Button
+    private lateinit var cancelButton: Button
+    private lateinit var uploadButton: Button
+    private lateinit var descriptionEditText: EditText
+    private lateinit var usernameEditText: EditText
+    private lateinit var plzEditText: EditText
+    private lateinit var streetEditText: EditText
+    private lateinit var streetNrEditText: EditText
+
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -53,23 +66,23 @@ class CreateUserProfileActivity : AppCompatActivity() {
         datePickerFragment = DatePickerFragment(this.getString(R.string.de_dateFormat), this)
         profileApi = ProfileApi()
 
-        val firstNameEditText: EditText = findViewById(R.id.prenameEditText)
-        val nameEditText: EditText = findViewById(R.id.nameEditText)
-        val birthdateButton: Button = findViewById(R.id.userBirthdayButton)
-        val addressEditText: EditText = findViewById(R.id.addressEditText)
-        val doneButton: Button = findViewById(R.id.doneUserButton)
-        val cancelButton: Button = findViewById(R.id.clearUserButton)
-        val uploadButton: Button = findViewById(R.id.uploadPictureButton)
-        val descriptionEditText: EditText = findViewById(R.id.descriptionEditText)
-        val usernameEditText: EditText = findViewById(R.id.usernameEditText)
-        val plzEditText: EditText = findViewById(R.id.postalAddressEditText)
-        val streetEditText: EditText = findViewById(R.id.streetEditText)
-        val streetNrEditText: EditText = findViewById(R.id.houseNumberEditText)
+        firstNameEditText = findViewById(R.id.prenameEditText)
+        nameEditText = findViewById(R.id.nameEditText)
+        birthdateButton = findViewById(R.id.userBirthdayButton)
+        addressEditText = findViewById(R.id.addressEditText)
+        doneButton = findViewById(R.id.doneUserButton)
+        cancelButton = findViewById(R.id.clearUserButton)
+        uploadButton = findViewById(R.id.uploadPictureButton)
+        descriptionEditText = findViewById(R.id.descriptionEditText)
+        usernameEditText = findViewById(R.id.usernameEditText)
+        plzEditText = findViewById(R.id.postalAddressEditText)
+        streetEditText = findViewById(R.id.streetEditText)
+        streetNrEditText = findViewById(R.id.houseNumberEditText)
+        imageView = findViewById(R.id.pictureView)
 
         val password: String = intent.getStringExtra("passwordHashed").toString()
         val email: String = intent.getStringExtra("email").toString()
 
-        imageView = findViewById(R.id.pictureView)
 
         datePickerFragment.setOnDatePickedListener { date ->
             birthdateButton.text = date
