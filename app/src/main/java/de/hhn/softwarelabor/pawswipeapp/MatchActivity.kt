@@ -20,6 +20,7 @@ class MatchActivity : AppCompatActivity() {
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var imageList: List<Int>
     private var id: Int = 0
+    private var isLiked = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +37,20 @@ class MatchActivity : AppCompatActivity() {
         animalListBtn = findViewById(R.id.animalList_btn2)
         animalListBtn.setOnClickListener {
             val intent = Intent(this@MatchActivity, AnimalListActivityNico::class.java)
+            intent.putExtra("id", id)
             startActivity(intent)
         }
 
         likeBtn = findViewById(R.id.like_btn)
         likeBtn.setOnClickListener {
-            likeBtn.setImageResource(R.drawable.heart_liked_small)
+            isLiked = if (!isLiked) {
+                likeBtn.setImageResource(R.drawable.heart_liked_small)
+                true
+            } else {
+                likeBtn.setImageResource(R.drawable.heart_unliked_small)
+                false
+            }
+
         }
 
         dislikeBtn = findViewById(R.id.dislike_btn)
