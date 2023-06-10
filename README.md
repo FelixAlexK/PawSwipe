@@ -1,6 +1,10 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/FelixAlexK/PawSwipe?color=orange&style=badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/FelixAlexK/PawSwipe?color=orange&style=badge)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/FelixAlexK/PawSwipe?color=orange&style=badge)
+![](https://img.shields.io/badge/Kotlin-0095D5?color=orange&style=badge&logo=kotlin&logoColor=white)
+![](https://img.shields.io/badge/MariaDB-003545?color=orange&style=badge&logo=mariadb&logoColor=white)
+![](https://img.shields.io/badge/Android_Studio-3DDC84?color=orange&style=badge&logo=android-studio&logoColor=white)
+
 # PawSwipe
 
 Development of an app for human-animal mediation, which is being developed as part of the "Software Lab" event at [Heilbronn University](https://www.hs-heilbronn.de/de).
