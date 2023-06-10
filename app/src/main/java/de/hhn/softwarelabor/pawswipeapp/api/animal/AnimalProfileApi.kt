@@ -3,7 +3,6 @@ package de.hhn.softwarelabor.pawswipeapp.api.animal
 import android.content.ContentValues
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import de.hhn.softwarelabor.pawswipeapp.api.data.AnimalProfileData
 import de.hhn.softwarelabor.pawswipeapp.api.data.ProfileData
 import okhttp3.Call
@@ -109,7 +108,7 @@ class AnimalProfileApi : AnimalProfileInterface {
         }
     }
 
-    override fun getAnimalProfileByID(id: Int, callback: (JsonObject?, Throwable?) -> Unit) {
+    override fun getAnimalProfileByID(id: Int, callback: (AnimalProfileData?, Throwable?) -> Unit) {
         val request = Request.Builder()
             .url("$BASE_URL/id/$id")
             .get()
@@ -126,7 +125,8 @@ class AnimalProfileApi : AnimalProfileInterface {
                     val responseBody = response.body?.string()
                     if(response.isSuccessful && responseBody != null){
 
-                        val jsonObject = Gson().fromJson(responseBody, JsonObject::class.java)
+                        val jsonObject =
+                            Gson().fromJson(responseBody, AnimalProfileData::class.java)
                         callback(jsonObject, null)
                     }else {
                         callback(null, Exception("Error fetching IDs"))
