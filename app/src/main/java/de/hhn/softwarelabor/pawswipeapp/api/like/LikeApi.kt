@@ -99,7 +99,7 @@ class LikeApi : LikeInterface {
 
 
         val request = Request.Builder()
-            .url("$BASE_URL/unlike")
+            .url("$BASE_URL/dislike")
             .delete(body)
             .build()
 
