@@ -28,7 +28,7 @@ class MatchActivity : AppCompatActivity() {
     private lateinit var imageList: List<Int>
 
     private var profileId: Int = 0
-    private var isLiked = false;
+    private var isLiked = false
     private var likeApi: LikeApi = LikeApi()
     private var animalId: Int = 4
 
