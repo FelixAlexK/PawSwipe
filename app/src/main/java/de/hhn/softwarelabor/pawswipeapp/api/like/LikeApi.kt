@@ -42,7 +42,7 @@ class LikeApi : LikeInterface {
     override fun likeAnimal(
         profile_id: Int,
         animal_id: Int,
-        callback: (String?, Throwable?) -> Unit
+        callback: (Response?, Throwable?) -> Unit
     ) {
 
         val likeData = LikeData(profile_id, animal_id)
@@ -61,11 +61,11 @@ class LikeApi : LikeInterface {
                     val responseBody = response.body?.string()
                     if (response.isSuccessful && responseBody != null) {
 
-                        callback(responseBody, null)
+                        callback(response, null)
                     } else {
                         callback(null, Exception("Error: ${response.code}"))
                     }
-                    Log.d("response", response.code.toString())
+                    Log.d("PawSwipe", "Liked: ${response.code}")
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
@@ -91,7 +91,7 @@ class LikeApi : LikeInterface {
     override fun dislikeAnimal(
         profile_id: Int,
         animal_id: Int,
-        callback: (String?, Throwable?) -> Unit
+        callback: (Response?, Throwable?) -> Unit
     ) {
         val likeData = LikeData(profile_id, animal_id)
         val json = gson.toJson(likeData)
@@ -109,11 +109,11 @@ class LikeApi : LikeInterface {
                     val responseBody = response.body?.string()
                     if (response.isSuccessful && responseBody != null) {
 
-                        callback(responseBody, null)
+                        callback(response, null)
                     } else {
                         callback(null, Exception("Error: ${response.code}"))
                     }
-                    Log.d("response", response.code.toString())
+                    Log.d("PawSwipe", "Disliked: ${response.code}")
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
@@ -152,7 +152,7 @@ class LikeApi : LikeInterface {
                     } else {
                         callback(null, Exception("Error: ${response.code}"))
                     }
-                    Log.d("response", response.code.toString())
+                    Log.d("PawSwipe", "Get liked: ${response.code}")
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
