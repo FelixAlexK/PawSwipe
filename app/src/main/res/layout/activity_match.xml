@@ -47,14 +47,15 @@
         android:id="@+id/like_btn"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/heart_unliked_small"
         android:backgroundTint="@color/white"
+        android:src="@drawable/heart_unliked_small"
+        android:contentDescription="@string/like_dislike_button_description"
         app:layout_constraintBottom_toBottomOf="@+id/matching_btn2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.845" />
+        app:layout_constraintTop_toBottomOf="@+id/idViewPager"
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/matchingText"
@@ -79,19 +80,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.365"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp">
 
-    <ImageButton
-        android:id="@+id/dislike_btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    </androidx.viewpager.widget.ViewPager>
+
+    <Space
+        android:layout_width="48dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/like_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.824"
-        android:backgroundTint="@color/white"
-        android:src="@drawable/dislike_x"/>
+        app:layout_constraintTop_toBottomOf="@+id/idViewPager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
