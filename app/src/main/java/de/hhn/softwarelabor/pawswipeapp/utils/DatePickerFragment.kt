@@ -1,4 +1,4 @@
-package de.hhn.softwarelabor.pawswipeapp
+package de.hhn.softwarelabor.pawswipeapp.utils
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
+import de.hhn.softwarelabor.pawswipeapp.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

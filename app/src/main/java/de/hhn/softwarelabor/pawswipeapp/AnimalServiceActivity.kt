@@ -34,7 +34,7 @@ class AnimalServiceActivity : AppCompatActivity() {
         }
         animalListBtn = findViewById(R.id.animalList_btn4)
         animalListBtn.setOnClickListener {
-            val intent = Intent(this@AnimalServiceActivity, AnimalListActivityNico::class.java)
+            val intent = Intent(this@AnimalServiceActivity, AnimalListActivity::class.java)
             startActivity(intent)
         }
     }

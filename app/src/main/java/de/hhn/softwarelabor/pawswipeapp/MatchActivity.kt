@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
+import de.hhn.softwarelabor.pawswipeapp.utils.ViewPagerAdapter
 
 /**
  * Match activity is an activity for displaying and interacting with animal profiles.
@@ -51,7 +52,7 @@ class MatchActivity : AppCompatActivity() {
         }
 
         animalListBtn.setOnClickListener {
-            val intent = Intent(this@MatchActivity, AnimalListActivityNico::class.java)
+            val intent = Intent(this@MatchActivity, AnimalListActivity::class.java)
             intent.putExtra("id", profileId)
             startActivity(intent)
         }

@@ -9,7 +9,7 @@ import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
-class AnimalListActivityNico : AppCompatActivity() {
+class AnimalListActivity : AppCompatActivity() {
 
     private lateinit var matchBtn: Button
     private lateinit var chatBtn: Button
@@ -21,13 +21,13 @@ class AnimalListActivityNico : AppCompatActivity() {
 
         matchBtn = findViewById(R.id.matching_btn3)
         matchBtn.setOnClickListener {
-            val intent = Intent(this@AnimalListActivityNico, MatchActivity::class.java)
+            val intent = Intent(this@AnimalListActivity, MatchActivity::class.java)
             startActivity(intent)
         }
 
         chatBtn = findViewById(R.id.chat_btn3)
         chatBtn.setOnClickListener {
-            val intent = Intent(this@AnimalListActivityNico, ChatActivity::class.java)
+            val intent = Intent(this@AnimalListActivity, ChatActivity::class.java)
             startActivity(intent)
         }
     }
@@ -41,32 +41,32 @@ class AnimalListActivityNico : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {
-                val intent = Intent(this@AnimalListActivityNico, SettingsActivity::class.java)
+                val intent = Intent(this@AnimalListActivity, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_animalServices -> {
-                val intent = Intent(this@AnimalListActivityNico, AnimalServiceActivity::class.java)
+                val intent = Intent(this@AnimalListActivity, AnimalServiceActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_animalEdit -> {
-                val intent = Intent(this@AnimalListActivityNico, EditAnimalActivity::class.java)
+                val intent = Intent(this@AnimalListActivity, EditAnimalActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_animalCreate -> {
-                val intent = Intent(this@AnimalListActivityNico, PetProfileActivity::class.java)
+                val intent = Intent(this@AnimalListActivity, PetProfileActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_logOut -> {
-                val intent = Intent(this@AnimalListActivityNico, LoginActivity::class.java)
+                val intent = Intent(this@AnimalListActivity, LoginActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_filter -> {
-                val intent = Intent(this@AnimalListActivityNico, FilterActivity::class.java)
+                val intent = Intent(this@AnimalListActivity, FilterActivity::class.java)
                 startActivity(intent)
                 true
             }

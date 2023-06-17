@@ -1,4 +1,4 @@
-package de.hhn.softwarelabor.pawswipeapp
+package de.hhn.softwarelabor.pawswipeapp.utils
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.viewpager.widget.PagerAdapter
 import de.hhn.softwarelabor.pawswipeapp.R
-import java.util.*
+import java.util.Objects
 
 class ViewPagerAdapter(val context: Context, private val imageList: List<Int>) : PagerAdapter() {
 
