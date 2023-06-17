@@ -110,5 +110,10 @@
     <string name="deleteShelter_tv">Tierheim löschen</string>
     <string name="create_error_text">Account mit angegebener e-Mail oder Tierheim name bereits vorhanden</string>
     <string name="like_dislike_button_description">like/dislike_button</string>
+    <string name="animal_image_content_description">animal image</string>
+    <string name="animal_item_name_placeholder">Max</string>
+    <string name="animal_item_species_placeholder">Katze</string>
+    <string name="animal_item_breed_placeholder">Britisch Kurzhaar</string>
+    <string name="animal_list_empty_text">Es wurden noch keine Tiere geliked</string>
 
 </resources>
