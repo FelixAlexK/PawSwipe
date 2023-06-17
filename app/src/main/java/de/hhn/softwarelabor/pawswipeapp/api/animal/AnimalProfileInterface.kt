@@ -33,11 +33,11 @@ interface AnimalProfileInterface {
         breed: String?,
         color: String?,
         gender: String?,
-        picture_one: Array<Byte>?,
-        picture_two: Array<Byte>?,
-        picture_three: Array<Byte>?,
-        picture_four: Array<Byte>?,
-        picture_five: Array<Byte>?,
+        picture_one: String?,
+        picture_two: String?,
+        picture_three: String?,
+        picture_four: String?,
+        picture_five: String?,
         profile_id: ProfileData,
         callback: (Int?, Throwable?) -> Unit
     )
