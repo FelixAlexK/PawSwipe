@@ -34,6 +34,8 @@ import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
  */
 
 private const val BITMAP_WIDTH = 250
+private const val BITMAP_HEIGHT = 250
+
 class AnimalListActivity : AppCompatActivity() {
 
     private lateinit var matchBtn: Button
@@ -53,6 +55,7 @@ class AnimalListActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         profileId = intent.getIntExtra("id", 0)
+        getAnimalItemsFromAnimalIds(profileId)
         recyclerView = findViewById(R.id.animal_list_recyclerView)
         animalAdapter = AnimalAdapter(animalItems)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -72,7 +75,6 @@ class AnimalListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        getAnimalItemsFromAnimalIds(profileId)
         updateEmptyTextViewVisibility()
     }
 
@@ -110,6 +112,7 @@ class AnimalListActivity : AppCompatActivity() {
 
             R.id.menu_animalCreate -> {
                 val intent = Intent(this@AnimalListActivity, PetProfileActivity::class.java)
+                intent.putExtra("id", profileId)
                 startActivity(intent)
                 true
             }
@@ -180,6 +183,11 @@ class AnimalListActivity : AppCompatActivity() {
                                         BitmapScaler.scaleToFitWidth(
                                             Base64Utils.decode(it),
                                             BITMAP_WIDTH
+                                        )
+
+                                        BitmapScaler.scaleToFitHeight(
+                                            Base64Utils.decode(it),
+                                            BITMAP_HEIGHT
                                         )
                                     },
                                     response?.name,
