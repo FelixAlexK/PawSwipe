@@ -166,7 +166,7 @@
                     android:backgroundTint="@color/white"
                     android:importantForAutofill="no"
                     android:minHeight="48dp"
-                    android:text="@string/birthday_tv"
+                    android:text="@string/birthday_text"
                     android:textAlignment="viewStart"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/material_dynamic_neutral40"
