@@ -96,7 +96,7 @@ class SettingsActivity : AppCompatActivity() {
 
         saveButton.setOnClickListener {
 
-            if (userBirthdayButton.text != this.getString(R.string.birthday_tv)) {
+            if (userBirthdayButton.text != this.getString(R.string.birthday_text)) {
                 val birthDayString =
                     datePickerFragment.convertDateToServerCompatibleDate(userBirthdayButton.text.toString())
                 birthDayString?.let { setMap("birthday", it) }
