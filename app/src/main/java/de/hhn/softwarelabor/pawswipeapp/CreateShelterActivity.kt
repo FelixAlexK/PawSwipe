@@ -18,9 +18,13 @@ import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
 
+
 private const val DISCRIMINATOR = "shelter"
 private const val COUNTRY = "de"
-
+/**
+ * This activity allows the user to create a new shelter profile.
+ * @author Felix Kuhbier & Simon Remm
+ */
 class CreateShelterActivity : AppCompatActivity() {
 
     private lateinit var profileApi: ProfileApi
@@ -36,6 +40,11 @@ class CreateShelterActivity : AppCompatActivity() {
     private lateinit var uploadImageButton: Button
 
 
+    /**
+     * On create
+     *
+     * @param savedInstanceState
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_shelter)
@@ -102,7 +111,6 @@ class CreateShelterActivity : AppCompatActivity() {
                 shelterStreetNrString, homepageString, postalCodeString
             )
 
-
         }
 
         //Click Listener for uploadPicture Button
@@ -127,6 +135,9 @@ class CreateShelterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Activity result launcher for picking an image from the gallery.
+     */
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -136,6 +147,22 @@ class CreateShelterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Creates a shelter profile with the provided information.
+     *
+     * @param username Shelter's name.
+     * @param email Shelter's email address.
+     * @param phone_number Shelter's phone number.
+     * @param profile_picture Shelter's profile picture in Base64 format.
+     * @param password Shelter's hashed password.
+     * @param opening_hours Shelter's opening hours.
+     * @param street Shelter's street address.
+     * @param country Shelter's country.
+     * @param city Shelter's city.
+     * @param street_number Shelter's street number.
+     * @param homepage Shelter's homepage URL.
+     * @param postal_code Shelter's postal code.
+     */
     private fun createShelterProfile(
         username: String,
         email: String,

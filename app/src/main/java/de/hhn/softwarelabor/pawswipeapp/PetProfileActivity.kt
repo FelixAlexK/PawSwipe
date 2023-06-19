@@ -26,11 +26,18 @@ import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
 import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
 
+private const val MULTILINE_TEXT_LENGTH = 255
+
+/**
+ * The PetProfileActivity class handles the user interface for creating and managing pet profiles.
+ * It provides functionality to input pet details, upload images, and save or cancel changes.
+ * @author Felix Kuhbier
+ */
 class PetProfileActivity : AppCompatActivity() {
 
     private lateinit var spinner: Spinner
 
-    private lateinit var addPictureButton: Button
+    private lateinit var uploadPictureButton: Button
     private lateinit var cancelPetButton: Button
     private lateinit var createPetButton: Button
 
@@ -43,8 +50,8 @@ class PetProfileActivity : AppCompatActivity() {
     private lateinit var petDescriptionText: EditText
     private lateinit var petProfileImageView: ImageView
 
-
     private lateinit var datePickerFragment: DatePickerFragment
+
     private var animalProfile: AnimalProfileApi = AnimalProfileApi()
     private var id: Int = 0
 
@@ -53,22 +60,27 @@ class PetProfileActivity : AppCompatActivity() {
     private var pictureThree: String? = null
     private var pictureFour: String? = null
     private var pictureFive: String? = null
+    private var birthday: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pet_profil)
+        init()
+        id = intent.getIntExtra("id", 0)
+
         datePickerFragment =
             DatePickerFragment(this.getString(R.string.de_dateFormat), this@PetProfileActivity)
-        init()
 
-        id = intent.getIntExtra("id", 0)
         createPetButton.setOnClickListener {
             if (petDescriptionText.length() <= MULTILINE_TEXT_LENGTH) {
 
 
-                val birthday =
-                    datePickerFragment.convertDateToServerCompatibleDate(petBirthdayButton.text.toString())
+                if (petBirthdayButton.text != getString(R.string.birthday_text)) {
+                    birthday =
+                        datePickerFragment.convertDateToServerCompatibleDate(petBirthdayButton.text.toString())
+                }
+
                 createPet(
                     petNameEditText.text.toString(),
                     speciesEditText.text.toString(),
@@ -132,7 +144,7 @@ class PetProfileActivity : AppCompatActivity() {
             }
         }
 
-        addPictureButton.setOnClickListener {
+        uploadPictureButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             pickImageLauncher.launch(intent)
@@ -140,6 +152,11 @@ class PetProfileActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * The pickImageLauncher is used to launch an intent for selecting images from the device's gallery.
+     * It handles the result of the image selection and stores the selected images as Base64 encoded strings.
+     * It also sets the first selected image as the pet's profile picture.
+     */
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -167,6 +184,24 @@ class PetProfileActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Creates a new pet profile with the provided details.
+     *
+     * @param name Pet's name.
+     * @param species Pet's species.
+     * @param birthday Pet's birthday.
+     * @param illness Pet's pre-existing illness.
+     * @param description Pet's description.
+     * @param breed Pet's breed.
+     * @param color Pet's color.
+     * @param gender Pet's gender.
+     * @param picture_one Base64 encoded string of the first pet image.
+     * @param picture_two Base64 encoded string of the second pet image.
+     * @param picture_three Base64 encoded string of the third pet image.
+     * @param picture_four Base64 encoded string of the fourth pet image.
+     * @param picture_five Base64 encoded string of the fifth pet image.
+     * @param profile_id User's profile ID.
+     */
     private fun createPet(
         name: String?,
         species: String?,
@@ -248,17 +283,25 @@ class PetProfileActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * Shows the date picker dialog for selecting the pet's birthday.
+     *
+     * @param v The view that triggered this method.
+     */
     private fun showDatePickerDialog(v: View) {
         datePickerFragment.show(supportFragmentManager, "datePicker")
 
     }
 
 
+    /**
+     * Initializes UI components and sets up event listeners.
+     */
     private fun init() {
         try {
             spinner = findViewById(R.id.petGenderSpinner)
 
-            addPictureButton = findViewById(R.id.addPetProfileImageButton)
+            uploadPictureButton = findViewById(R.id.addPetProfileImageButton)
             cancelPetButton = findViewById(R.id.cancel_btn)
             createPetButton = findViewById(R.id.save_btn)
 
@@ -289,17 +332,17 @@ class PetProfileActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Converts the given Uri into a Bitmap.
+     *
+     * @param uri The Uri of the image to convert.
+     * @return The Bitmap representation of the image.
+     */
     private fun getBitmapFromUri(uri: Uri): Bitmap {
         val inputStream = contentResolver.openInputStream(uri)
         val bitmap = BitmapFactory.decodeStream(inputStream)
         inputStream?.close()
         return bitmap
-    }
-
-
-    companion object {
-        private const val EDIT_TEXT_LENGTH = 20
-        private const val MULTILINE_TEXT_LENGTH = 255
     }
 
 

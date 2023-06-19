@@ -23,13 +23,20 @@ import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
 
 private const val PICK_IMAGE_REQUEST = 1
 private const val DISCRIMINATOR = "profile"
+
+/**
+ * This activity allows the user to create a new user profile with various information.
+ * It includes fields for personal details, address, and an optional profile picture.
+ *
+ * @author Felix Kuhbier & Leo Kalmbach & Simon Remm
+ */
 class CreateUserProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
 
     private lateinit var datePickerFragment: DatePickerFragment
 
-    private lateinit var profileApi: ProfileApi
+    private var profileApi: ProfileApi = ProfileApi()
 
     private lateinit var firstNameEditText: EditText
     private lateinit var nameEditText: EditText
@@ -45,16 +52,23 @@ class CreateUserProfileActivity : AppCompatActivity() {
     private lateinit var streetNrEditText: EditText
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_user_profile)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
-        datePickerFragment = DatePickerFragment(this.getString(R.string.de_dateFormat), this)
-        profileApi = ProfileApi()
+        val password: String = intent.getStringExtra("passwordHashed").toString()
+        val email: String = intent.getStringExtra("email").toString()
+
+        datePickerFragment = DatePickerFragment(
+            this.getString(R.string.de_dateFormat),
+            this@CreateUserProfileActivity
+        )
+
+        datePickerFragment.setOnDatePickedListener { date ->
+            birthdateButton.text = date
+        }
 
         firstNameEditText = findViewById(R.id.prenameEditText)
         nameEditText = findViewById(R.id.nameEditText)
@@ -70,13 +84,6 @@ class CreateUserProfileActivity : AppCompatActivity() {
         streetNrEditText = findViewById(R.id.houseNumberEditText)
         imageView = findViewById(R.id.pictureView)
 
-        val password: String = intent.getStringExtra("passwordHashed").toString()
-        val email: String = intent.getStringExtra("email").toString()
-
-
-        datePickerFragment.setOnDatePickedListener { date ->
-            birthdateButton.text = date
-        }
 
         birthdateButton.apply {
 
@@ -175,6 +182,10 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Handles the result of the image picker activity.
+     * Sets the picked image to the imageView.
+     */
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -184,6 +195,23 @@ class CreateUserProfileActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Creates a new user profile with the provided information and sends it to the server.
+     *
+     * @param username The user's chosen username.
+     * @param email The user's email address.
+     * @param profile_picture The user's profile picture encoded as a Base64 string (optional).
+     * @param description The user's description (optional).
+     * @param password The user's hashed password.
+     * @param birthday The user's birthdate in server-compatible format (optional).
+     * @param street The user's street name (optional).
+     * @param country The user's country code (optional).
+     * @param city The user's city (optional).
+     * @param street_number The user's street number (optional).
+     * @param postal_code The user's postal code (optional).
+     * @param firstname The user's first name.
+     * @param lastname The user's last name.
+     */
     private fun createUserProfile(
         username: String,
         email: String,
@@ -240,6 +268,11 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Displays a date picker dialog for the user to choose their birthdate.
+     *
+     * @param v The view that triggers the date picker dialog.
+     */
     private fun showDatePickerDialog(v: View) {
         datePickerFragment.show(supportFragmentManager, "datePicker")
     }
