@@ -18,6 +18,7 @@ import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AnimalAdapter
 import de.hhn.softwarelabor.pawswipeapp.utils.AnimalItem
 import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
+import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
 
 
 /**
@@ -175,7 +176,12 @@ class AnimalListActivity : AppCompatActivity() {
 
 
                                 val item = AnimalItem(
-                                    response?.picture_one?.let { Base64Utils.decode(it) },
+                                    response?.picture_one?.let {
+                                        BitmapScaler.scaleToFitWidth(
+                                            Base64Utils.decode(it),
+                                            250
+                                        )
+                                    },
                                     response?.name,
                                     response?.species,
                                     response?.breed
