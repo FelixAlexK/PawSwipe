@@ -17,6 +17,7 @@ import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AnimalAdapter
 import de.hhn.softwarelabor.pawswipeapp.utils.AnimalItem
+import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
 
 
 /**
@@ -174,8 +175,10 @@ class AnimalListActivity : AppCompatActivity() {
 
 
                                 val item = AnimalItem(
-                                    R.drawable.pixabay_cute_cat, response?.name,
-                                    response?.species, response?.breed
+                                    response?.picture_one?.let { Base64Utils.decode(it) },
+                                    response?.name,
+                                    response?.species,
+                                    response?.breed
                                 )
                                 animalAdapter.addItem(item)
                                 updateEmptyTextViewVisibility()
