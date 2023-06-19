@@ -94,6 +94,7 @@ class AnimalListActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menu_settings -> {
                 val intent = Intent(this@AnimalListActivity, SettingsActivity::class.java)
+                intent.putExtra("id", profileId)
                 startActivity(intent)
                 true
             }
