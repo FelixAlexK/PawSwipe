@@ -102,7 +102,7 @@ class PetProfileActivity : AppCompatActivity() {
                 runOnUiThread {
                     Toast.makeText(
                         this,
-                        "Beschreibung ist zu lang: ${petDescriptionText.length()}/50",
+                        "Beschreibung ist zu lang: ${petDescriptionText.length()}/${MULTILINE_TEXT_LENGTH}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
