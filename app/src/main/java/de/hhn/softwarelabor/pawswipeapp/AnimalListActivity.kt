@@ -32,6 +32,8 @@ import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
  * @property animalItems ArrayList of AnimalItem objects representing the liked animals.
  * @property profileId Integer representing the profile ID of the current user.
  */
+
+private const val BITMAP_WIDTH = 250
 class AnimalListActivity : AppCompatActivity() {
 
     private lateinit var matchBtn: Button
@@ -51,28 +53,26 @@ class AnimalListActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         profileId = intent.getIntExtra("id", 0)
-
-        getAnimalItemsFromAnimalIds(profileId)
-        animalAdapter = AnimalAdapter(animalItems)
-
-
         recyclerView = findViewById(R.id.animal_list_recyclerView)
+        animalAdapter = AnimalAdapter(animalItems)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = animalAdapter
-
         matchBtn = findViewById(R.id.matching_btn3)
+        chatBtn = findViewById(R.id.chat_btn3)
+
+
         matchBtn.setOnClickListener {
             val intent = Intent(this@AnimalListActivity, MatchActivity::class.java)
             intent.putExtra("id", profileId)
             startActivity(intent)
         }
 
-        chatBtn = findViewById(R.id.chat_btn3)
         chatBtn.setOnClickListener {
             val intent = Intent(this@AnimalListActivity, ChatActivity::class.java)
             startActivity(intent)
         }
 
+        getAnimalItemsFromAnimalIds(profileId)
         updateEmptyTextViewVisibility()
     }
 
@@ -179,7 +179,7 @@ class AnimalListActivity : AppCompatActivity() {
                                     response?.picture_one?.let {
                                         BitmapScaler.scaleToFitWidth(
                                             Base64Utils.decode(it),
-                                            250
+                                            BITMAP_WIDTH
                                         )
                                     },
                                     response?.name,
