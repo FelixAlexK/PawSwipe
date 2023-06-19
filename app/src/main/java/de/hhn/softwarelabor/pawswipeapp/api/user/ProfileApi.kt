@@ -31,7 +31,7 @@ class ProfileApi : ProfileInterface {
         username: String,
         email: String,
         phone_number: String?,
-        profile_picture: Array<Byte>?,
+        profile_picture: String?,
         description: String?,
         password: String,
         creation_date: String?,
