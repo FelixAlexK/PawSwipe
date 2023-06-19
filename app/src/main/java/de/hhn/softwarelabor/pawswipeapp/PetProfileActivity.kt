@@ -1,21 +1,29 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
+import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
 import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
 
 class PetProfileActivity : AppCompatActivity() {
@@ -33,11 +41,19 @@ class PetProfileActivity : AppCompatActivity() {
     private lateinit var petColorEditText: EditText
     private lateinit var petIllnessMultilineText: EditText
     private lateinit var petDescriptionText: EditText
+    private lateinit var petProfileImageView: ImageView
 
 
     private lateinit var datePickerFragment: DatePickerFragment
     private var animalProfile: AnimalProfileApi = AnimalProfileApi()
     private var id: Int = 0
+
+    private var pictureOne: String? = null
+    private var pictureTwo: String? = null
+    private var pictureThree: String? = null
+    private var pictureFour: String? = null
+    private var pictureFive: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +66,7 @@ class PetProfileActivity : AppCompatActivity() {
         createPetButton.setOnClickListener {
             if (petDescriptionText.length() <= MULTILINE_TEXT_LENGTH) {
 
+
                 val birthday =
                     datePickerFragment.convertDateToServerCompatibleDate(petBirthdayButton.text.toString())
                 createPet(
@@ -61,6 +78,11 @@ class PetProfileActivity : AppCompatActivity() {
                     breedEditText.text.toString(),
                     petColorEditText.text.toString(),
                     spinner.selectedItem.toString(),
+                    pictureOne,
+                    pictureTwo,
+                    pictureThree,
+                    pictureFour,
+                    pictureFive,
                     id
                 )
 
@@ -110,11 +132,50 @@ class PetProfileActivity : AppCompatActivity() {
             }
         }
 
+        addPictureButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            pickImageLauncher.launch(intent)
+        }
+
+    }
+
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val selectedImages = mutableListOf<Uri>()
+            val clipData = result.data?.clipData
+
+            if (clipData != null) {
+                for (i in 0 until clipData.itemCount) {
+                    val uri = clipData.getItemAt(i).uri
+                    selectedImages.add(uri)
+                }
+            }
+            petProfileImageView.setImageURI(selectedImages[0])
+            pictureOne = Base64Utils.encode(getBitmapFromUri(selectedImages[0]))
+            pictureTwo = Base64Utils.encode(getBitmapFromUri(selectedImages[1]))
+            pictureThree = Base64Utils.encode(getBitmapFromUri(selectedImages[2]))
+            pictureFour = Base64Utils.encode(getBitmapFromUri(selectedImages[3]))
+            pictureFive = Base64Utils.encode(getBitmapFromUri(selectedImages[4]))
+        }
     }
 
     private fun createPet(
-        name: String?, species: String?, birthday: String?, illness: String?,
-        description: String?, breed: String?, color: String?, gender: String?,
+        name: String?,
+        species: String?,
+        birthday: String?,
+        illness: String?,
+        description: String?,
+        breed: String?,
+        color: String?,
+        gender: String?,
+        picture_one: String?,
+        picture_two: String?,
+        picture_three: String?,
+        picture_four: String?,
+        picture_five: String?,
         profile_id: Int
     ) {
 
@@ -144,11 +205,11 @@ class PetProfileActivity : AppCompatActivity() {
                     breed,
                     color,
                     gender,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
+                    picture_one,
+                    picture_two,
+                    picture_three,
+                    picture_four,
+                    picture_five,
                     user
                 ) { profile, error ->
 
@@ -205,6 +266,8 @@ class PetProfileActivity : AppCompatActivity() {
 
             petIllnessMultilineText = findViewById(R.id.petPreExistingIllnessMultiLineText)
 
+            petProfileImageView = findViewById(R.id.petProfileImageView)
+
             ArrayAdapter.createFromResource(
                 this, R.array.gender_array, android.R.layout.simple_spinner_dropdown_item
             ).also { adapter ->
@@ -219,6 +282,13 @@ class PetProfileActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
+    }
+
+    private fun getBitmapFromUri(uri: Uri): Bitmap {
+        val inputStream = contentResolver.openInputStream(uri)
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        inputStream?.close()
+        return bitmap
     }
 
 
