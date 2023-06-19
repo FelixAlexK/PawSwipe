@@ -18,8 +18,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
+import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
 import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
-import java.io.ByteArrayOutputStream
 
 private const val PICK_IMAGE_REQUEST = 1
 private const val DISCRIMINATOR = "profile"
@@ -44,19 +44,8 @@ class CreateUserProfileActivity : AppCompatActivity() {
     private lateinit var streetEditText: EditText
     private lateinit var streetNrEditText: EditText
 
-    private val pickImageLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val imageUri = result.data?.data
-            imageView.setImageURI(imageUri)
-        }
-    }
 
-    private fun selectImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        pickImageLauncher.launch(intent)
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,18 +88,12 @@ class CreateUserProfileActivity : AppCompatActivity() {
         doneButton.setOnClickListener {
 
 
-            var imageArray: Array<Byte>? = null
+            var imageString: String? = null
 
             if (imageView.drawable != null) {
                 val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
 
-                // Convert Bitmap to byte array
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                val byteArray: ByteArray = stream.toByteArray()
-
-                // Convert the ByteArray to Array<Byte>
-                imageArray = byteArray.toTypedArray()
+                imageString = Base64Utils.encode(bitmap)
             }
 
 
@@ -153,7 +136,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             createUserProfile(
                 usernameString,
                 email,
-                imageArray,
+                imageString,
                 descriptionString,
                 password,
                 birthday,
@@ -186,15 +169,25 @@ class CreateUserProfileActivity : AppCompatActivity() {
         }
         //Click Listener for uploadPicture Button
         uploadButton.setOnClickListener {
-            selectImageFromGallery()
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            pickImageLauncher.launch(intent)
         }
 
+    }
+
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageUri = result.data?.data
+            imageView.setImageURI(imageUri)
+        }
     }
 
     private fun createUserProfile(
         username: String,
         email: String,
-        profile_picture: Array<Byte>?,
+        profile_picture: String?,
         description: String?,
         password: String,
         birthday: String?,
