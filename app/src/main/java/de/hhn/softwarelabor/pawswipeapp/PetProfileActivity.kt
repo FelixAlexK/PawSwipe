@@ -154,11 +154,16 @@ class PetProfileActivity : AppCompatActivity() {
                 }
             }
             petProfileImageView.setImageURI(selectedImages[0])
-            pictureOne = Base64Utils.encode(getBitmapFromUri(selectedImages[0]))
-            pictureTwo = Base64Utils.encode(getBitmapFromUri(selectedImages[1]))
-            pictureThree = Base64Utils.encode(getBitmapFromUri(selectedImages[2]))
-            pictureFour = Base64Utils.encode(getBitmapFromUri(selectedImages[3]))
-            pictureFive = Base64Utils.encode(getBitmapFromUri(selectedImages[4]))
+            pictureOne =
+                if (selectedImages.size > 0) Base64Utils.encode(getBitmapFromUri(selectedImages[0])) else null
+            pictureTwo =
+                if (selectedImages.size > 1) Base64Utils.encode(getBitmapFromUri(selectedImages[1])) else null
+            pictureThree =
+                if (selectedImages.size > 2) Base64Utils.encode(getBitmapFromUri(selectedImages[2])) else null
+            pictureFour =
+                if (selectedImages.size > 3) Base64Utils.encode(getBitmapFromUri(selectedImages[3])) else null
+            pictureFive =
+                if (selectedImages.size > 4) Base64Utils.encode(getBitmapFromUri(selectedImages[4])) else null
         }
     }
 
