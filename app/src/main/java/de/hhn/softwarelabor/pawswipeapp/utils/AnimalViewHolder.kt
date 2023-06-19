@@ -13,7 +13,7 @@ class AnimalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val speciesTextView: TextView = itemView.findViewById(R.id.animal_item_species_textView)
 
     fun bind(item: AnimalItem) {
-        item.imageResId?.let { imageView.setImageResource(it) }
+        item.imageResId?.let { imageView.setImageBitmap(it) }
         nameTextView.text = item.animalName
         breedTextView.text = item.animalBreed
         speciesTextView.text = item.animalSpecies
