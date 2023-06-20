@@ -109,5 +109,6 @@
     <string name="editShelter_tv">Tierheim bearbeiten</string>
     <string name="deleteShelter_tv">Tierheim löschen</string>
     <string name="create_error_text">Account mit angegebener e-Mail oder Tierheim name bereits vorhanden</string>
+    <string name="pflichtfelder">* Pflichtfelder</string>
 
 </resources>
