@@ -30,7 +30,7 @@ data class ProfileData(
     val username: String,
     val email: String,
     val phone_number: String?,
-    val profile_picture: Array<Byte>?,
+    val profile_picture: String?,
     val description: String?,
     val password: String,
     val creation_date: String?,
@@ -47,60 +47,5 @@ data class ProfileData(
     val lat: Double?,
     val lon: Double?,
     val discriminator: String,
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+) 
 
-        other as ProfileData
-
-        if (profile_id != other.profile_id) return false
-        if (username != other.username) return false
-        if (email != other.email) return false
-        if (phone_number != other.phone_number) return false
-        if (profile_picture != null) {
-            if (other.profile_picture == null) return false
-            if (!profile_picture.contentEquals(other.profile_picture)) return false
-        } else if (other.profile_picture != null) return false
-        if (description != other.description) return false
-        if (password != other.password) return false
-        if (creation_date != other.creation_date) return false
-        if (birthday != other.birthday) return false
-        if (opening_hours != other.opening_hours) return false
-        if (street != other.street) return false
-        if (country != other.country) return false
-        if (city != other.city) return false
-        if (street_number != other.street_number) return false
-        if (homepage != other.homepage) return false
-        if (postal_code != other.postal_code) return false
-        if (firstname != other.firstname) return false
-        if (lastname != other.lastname) return false
-        if (discriminator != other.discriminator) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = profile_id ?: 0
-        result = 31 * result + (username?.hashCode() ?: 0)
-        result = 31 * result + email.hashCode()
-        result = 31 * result + (phone_number?.hashCode() ?: 0)
-        result = 31 * result + (profile_picture?.contentHashCode() ?: 0)
-        result = 31 * result + (description?.hashCode() ?: 0)
-        result = 31 * result + password.hashCode()
-        result = 31 * result + (creation_date?.hashCode() ?: 0)
-        result = 31 * result + (birthday?.hashCode() ?: 0)
-        result = 31 * result + (opening_hours?.hashCode() ?: 0)
-        result = 31 * result + (street?.hashCode() ?: 0)
-        result = 31 * result + (country?.hashCode() ?: 0)
-        result = 31 * result + (city?.hashCode() ?: 0)
-        result = 31 * result + (street_number?.hashCode() ?: 0)
-        result = 31 * result + (homepage?.hashCode() ?: 0)
-        result = 31 * result + (postal_code?.hashCode() ?: 0)
-        result = 31 * result + (firstname?.hashCode() ?: 0)
-        result = 31 * result + (lastname?.hashCode() ?: 0)
-        result = 31 * result + discriminator.hashCode()
-        return result
-    }
-
-}

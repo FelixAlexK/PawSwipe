@@ -16,11 +16,15 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
-import java.io.ByteArrayOutputStream
+import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
+
 
 private const val DISCRIMINATOR = "shelter"
 private const val COUNTRY = "de"
-
+/**
+ * This activity allows the user to create a new shelter profile.
+ * @author Felix Kuhbier & Simon Remm
+ */
 class CreateShelterActivity : AppCompatActivity() {
 
     private lateinit var profileApi: ProfileApi
@@ -37,20 +41,12 @@ class CreateShelterActivity : AppCompatActivity() {
     private var lat: Double = 0.0
     private var lon: Double = 0.0
 
-    private val pickImageLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val imageUri = result.data?.data
-            imageView.setImageURI(imageUri)
-        }
-    }
 
-    private fun selectImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        pickImageLauncher.launch(intent)
-    }
-
+    /**
+     * On create
+     *
+     * @param savedInstanceState
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_shelter)
@@ -77,6 +73,7 @@ class CreateShelterActivity : AppCompatActivity() {
 
 
         createButton.setOnClickListener {
+
             
             if ( // Check if the required Fields are empty
                 checkEmpty(shelterNameEditText.text.toString()) ||
@@ -93,19 +90,13 @@ class CreateShelterActivity : AppCompatActivity() {
                 ).show()
             } else {
     
-                var imageArray: Array<Byte>? = null
-    
-                if (imageView.drawable != null) {
-                    val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
-        
-                    // Convert Bitmap to byte array
-                    val stream = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                    val byteArray: ByteArray = stream.toByteArray()
-        
-                    // Convert the ByteArray to Array<Byte>
-                    imageArray = byteArray.toTypedArray()
-                }
+                var imageString: String? = null
+
+            if (imageView.drawable != null) {
+                val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
+
+                imageString = Base64Utils.encode(bitmap)
+            }
     
     
                 val shelterStreetString: String? =
@@ -134,7 +125,7 @@ class CreateShelterActivity : AppCompatActivity() {
     
     
                 createShelterProfile(
-                    shelterNameString, email, phoneNumberString, imageArray, password,
+                    shelterNameString, email, phoneNumberString, imageString, password,
                     openingHrsString, shelterStreetString, COUNTRY, shelterCityString,
                     shelterStreetNrString, homepageString, postalCodeString, lat, lon
                 )
@@ -147,7 +138,8 @@ class CreateShelterActivity : AppCompatActivity() {
 
         //Click Listener for uploadPicture Button
         uploadImageButton.setOnClickListener {
-            selectImageFromGallery()
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            pickImageLauncher.launch(intent)
         }
 
         cancelButton.setOnClickListener {
@@ -165,6 +157,35 @@ class CreateShelterActivity : AppCompatActivity() {
                 }.show()
         }
     }
+
+    /**
+     * Activity result launcher for picking an image from the gallery.
+     */
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageUri = result.data?.data
+            imageView.setImageURI(imageUri)
+        }
+    }
+
+    /**
+     * Creates a shelter profile with the provided information.
+     *
+     * @param username Shelter's name.
+     * @param email Shelter's email address.
+     * @param phone_number Shelter's phone number.
+     * @param profile_picture Shelter's profile picture in Base64 format.
+     * @param password Shelter's hashed password.
+     * @param opening_hours Shelter's opening hours.
+     * @param street Shelter's street address.
+     * @param country Shelter's country.
+     * @param city Shelter's city.
+     * @param street_number Shelter's street number.
+     * @param homepage Shelter's homepage URL.
+     * @param postal_code Shelter's postal code.
+     */
     
     // Checks if the given String is empty or only spaces.
     private fun checkEmpty(string: String) : Boolean {
@@ -178,7 +199,7 @@ class CreateShelterActivity : AppCompatActivity() {
         username: String,
         email: String,
         phone_number: String?,
-        profile_picture: Array<Byte>?,
+        profile_picture: String?,
         password: String,
         opening_hours: String?,
         street: String?,
