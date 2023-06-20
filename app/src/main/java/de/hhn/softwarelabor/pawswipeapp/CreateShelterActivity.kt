@@ -72,44 +72,65 @@ class CreateShelterActivity : AppCompatActivity() {
 
         createButton.setOnClickListener {
 
-            var imageString: String? = null
+            
+            if ( // Check if the required Fields are empty
+                checkEmpty(shelterNameEditText.text.toString()) ||
+                checkEmpty(phoneNumberEditText.text.toString()) ||
+                checkEmpty(postalCodeEditText.text.toString()) ||
+                checkEmpty(shelterCityEditText.text.toString()) ||
+                checkEmpty(streetEditText.text.toString()) ||
+                checkEmpty(streetNumberEditText.text.toString())
+            ){
+                Toast.makeText(
+                    this@CreateShelterActivity,
+                    "Bitte alle Pflichtfelder ausfüllen.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+    
+                var imageString: String? = null
 
             if (imageView.drawable != null) {
                 val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
 
                 imageString = Base64Utils.encode(bitmap)
             }
-
-            val shelterStreetString: String? =
-                streetEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val shelterStreetNrString: String? =
-                streetNumberEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val shelterNameString: String =
-                shelterNameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
-
-            val phoneNumberString: String? =
-                phoneNumberEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val openingHrsString: String? =
-                openingHoursEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val homepageString: String? =
-                homepageEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val shelterCityString: String? =
-                shelterCityEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val postalCodeString: String? =
-                postalCodeEditText.text.toString().takeIf { it.isNotBlank() }
-
-
-            createShelterProfile(
-                shelterNameString, email, phoneNumberString, imageString, password,
-                openingHrsString, shelterStreetString, COUNTRY, shelterCityString,
-                shelterStreetNrString, homepageString, postalCodeString
-            )
+    
+    
+                val shelterStreetString: String? =
+                    streetEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val shelterStreetNrString: String? =
+                    streetNumberEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val shelterNameString: String =
+                    shelterNameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
+    
+                val phoneNumberString: String? =
+                    phoneNumberEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val openingHrsString: String? =
+                    openingHoursEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val homepageString: String? =
+                    homepageEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val shelterCityString: String? =
+                    shelterCityEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val postalCodeString: String? =
+                    postalCodeEditText.text.toString().takeIf { it.isNotBlank() }
+    
+    
+                createShelterProfile(
+                    shelterNameString, email, phoneNumberString, imageArray, password,
+                    openingHrsString, shelterStreetString, COUNTRY, shelterCityString,
+                    shelterStreetNrString, homepageString, postalCodeString
+                )
+    
+    
+            }
+            
 
         }
 
@@ -163,6 +184,15 @@ class CreateShelterActivity : AppCompatActivity() {
      * @param homepage Shelter's homepage URL.
      * @param postal_code Shelter's postal code.
      */
+    
+    // Checks if the given String is empty or only spaces.
+    private fun checkEmpty(string: String) : Boolean {
+        val newString = string.replace(" ", "")
+        if (newString == "")
+            return true
+        return false
+    }
+    
     private fun createShelterProfile(
         username: String,
         email: String,
