@@ -45,6 +45,8 @@ class ProfileApi : ProfileInterface {
         postal_code: String?,
         firstname: String,
         lastname: String,
+        lat: Double?,
+        lon: Double?,
         discriminator: String,
         callback: (ProfileData?, Throwable?) -> Unit
     ) {
@@ -67,6 +69,8 @@ class ProfileApi : ProfileInterface {
             postal_code,
             firstname,
             lastname,
+            lat,
+            lon,
             discriminator
         )
 

@@ -44,7 +44,9 @@ data class ProfileData(
     val postal_code: String?,
     val firstname: String?,
     val lastname: String?,
-    val discriminator: String
+    val lat: Double?,
+    val lon: Double?,
+    val discriminator: String,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
