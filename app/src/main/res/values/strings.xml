@@ -63,9 +63,9 @@
     <string name="loginRegister_button">Registrieren</string>
     <string name="cancel">Abbrechen</string>
     <string name="create">Erstellen</string>
-    <string name="lastname">Nachname*</string>
+    <string name="lastname">Nachname</string>
     <string name="address">Wohnort</string>
-    <string name="prename">Vorname*</string>
+    <string name="prename">Vorname</string>
     <string name="profileCreated">Profil erfolgreich angelegt</string>
 
     <string name="yes_dialogText">Ja</string>
@@ -76,8 +76,8 @@
     <string name="cancelChanges_messageText">Alle Änderungen gehen verloren</string>
     <string name="deleteProfile_headerText">Account löschen</string>
     <string name="deleteProfile_messageText">Wollen Sie das Profil löschen?</string>
-    <string name="firstName_tv">Vorname*</string>
-    <string name="name_et">Nachname*</string>
+    <string name="firstName_tv">Vorname</string>
+    <string name="name_et">Nachname</string>
     <string name="address_et">Wohnort</string>
     <string name="deleteProfile_btn">Profil löschen</string>
     <string name="editAnimal_tv">Tier bearbeiten</string>
@@ -88,7 +88,7 @@
     <string name="resetFilter_btn">Zurücksetzen</string>
     <string name="createAnimal_tv">Tier erstellen</string>
     <string name="createUser_tv">Profil erstellen</string>
-    <string name="userName_hint">Nutzername*</string>
+    <string name="userName_hint">Nutzername</string>
     <string name="postalCode_hint">Postleitzahl</string>
     <string name="street_hint">Straße</string>
     <string name="houseNumber_hint">Nummer</string>
@@ -100,7 +100,7 @@
     <string name="login_user_error">Anmeldung als Nutzer nicht möglich.</string>
     <string name="login_shelter_or_user">Bitte wählen Sie aus, ob Sie sich als Nutzer oder Tierheim anmelden möchten.</string>
     <string name="login_valid_email_and_password">Bitte gib eine gültige E-Mail-Adresse und ein Passwort ein.</string>
-    <string name="birthday_tv">Geburtstag</string>
+    <string name="birthday_text">Geburtstag</string>
     <string name="shelterProfile_tv">Tierheim erstellen</string>
     <string name="shelterName_tv">Name des Tierheims</string>
     <string name="openingHours_tv">Öffnungszeiten</string>
@@ -109,5 +109,13 @@
     <string name="editShelter_tv">Tierheim bearbeiten</string>
     <string name="deleteShelter_tv">Tierheim löschen</string>
     <string name="create_error_text">Account mit angegebener e-Mail oder Tierheim name bereits vorhanden</string>
+    <string name="like_dislike_button_description">like/dislike_button</string>
+    <string name="animal_image_content_description">animal image</string>
+    <string name="animal_item_name_placeholder">Max</string>
+    <string name="animal_item_species_placeholder">Katze</string>
+    <string name="animal_item_breed_placeholder">Britisch Kurzhaar</string>
+    <string name="animal_list_empty_text">Es wurden noch keine Tiere geliked</string>
+    <string name="pflichtfelder">* Pflichtfelder</string>
+    <string name="like_error_text">Aktion konnte nicht ausgeführt werden</string>
 
 </resources>

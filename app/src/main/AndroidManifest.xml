@@ -46,11 +46,11 @@
             android:name=".RegisterAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".AnimalListActivityNico"
-            android:exported="false" />
+            android:name=".AnimalListActivity"
+            android:exported="true" />
         <activity
             android:name=".MatchActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ChatActivity"
             android:exported="false" />

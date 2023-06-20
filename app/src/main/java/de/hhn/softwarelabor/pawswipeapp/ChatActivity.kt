@@ -27,7 +27,7 @@ class ChatActivity : AppCompatActivity() {
 
         animalListBtn = findViewById(R.id.animalList_btn)
         animalListBtn.setOnClickListener {
-            val intent = Intent(this@ChatActivity, AnimalListActivityNico::class.java)
+            val intent = Intent(this@ChatActivity, AnimalListActivity::class.java)
             startActivity(intent)
         }
     }

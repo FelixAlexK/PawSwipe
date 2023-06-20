@@ -6,6 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".RegisterAccountActivity">
 
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordConfirmInputField"
+        app:layout_constraintEnd_toStartOf="@+id/passwordConfirmInputField"
+        app:layout_constraintTop_toTopOf="@+id/passwordConfirmInputField"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordInputField"
+        app:layout_constraintEnd_toStartOf="@+id/passwordInputField"
+        app:layout_constraintTop_toTopOf="@+id/passwordInputField"
+        app:layout_constraintVertical_bias="0.511"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/emailInputField"
+        app:layout_constraintEnd_toStartOf="@+id/emailInputField"
+        app:layout_constraintTop_toTopOf="@+id/emailInputField"
+        app:layout_constraintVertical_bias="0.511"
+        tools:ignore="HardcodedText" />
+
     <Button
         android:id="@+id/registerAsUserButton"
         android:layout_width="148dp"
@@ -22,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/pawSwipeTitle"
-        android:textSize="48dp"
+        android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

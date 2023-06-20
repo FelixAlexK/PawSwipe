@@ -18,17 +18,25 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
-import java.io.ByteArrayOutputStream
+import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
+import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
 
 private const val PICK_IMAGE_REQUEST = 1
 private const val DISCRIMINATOR = "profile"
+
+/**
+ * This activity allows the user to create a new user profile with various information.
+ * It includes fields for personal details, address, and an optional profile picture.
+ *
+ * @author Felix Kuhbier & Leo Kalmbach & Simon Remm
+ */
 class CreateUserProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
 
     private lateinit var datePickerFragment: DatePickerFragment
 
-    private lateinit var profileApi: ProfileApi
+    private var profileApi: ProfileApi = ProfileApi()
 
     private lateinit var firstNameEditText: EditText
     private lateinit var nameEditText: EditText
@@ -43,18 +51,11 @@ class CreateUserProfileActivity : AppCompatActivity() {
     private lateinit var streetEditText: EditText
     private lateinit var streetNrEditText: EditText
 
-    private val pickImageLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val imageUri = result.data?.data
-            imageView.setImageURI(imageUri)
-        }
-    }
-
-    private fun selectImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        pickImageLauncher.launch(intent)
+    private fun checkEmpty(string: String): Boolean {
+        val newString = string.replace(" ", "")
+        if (newString == "")
+            return true
+        return false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,8 +64,17 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
-        datePickerFragment = DatePickerFragment(this.getString(R.string.de_dateFormat), this)
-        profileApi = ProfileApi()
+        val password: String = intent.getStringExtra("passwordHashed").toString()
+        val email: String = intent.getStringExtra("email").toString()
+
+        datePickerFragment = DatePickerFragment(
+            this.getString(R.string.de_dateFormat),
+            this@CreateUserProfileActivity
+        )
+
+        datePickerFragment.setOnDatePickedListener { date ->
+            birthdateButton.text = date
+        }
 
         firstNameEditText = findViewById(R.id.prenameEditText)
         nameEditText = findViewById(R.id.nameEditText)
@@ -80,13 +90,6 @@ class CreateUserProfileActivity : AppCompatActivity() {
         streetNrEditText = findViewById(R.id.houseNumberEditText)
         imageView = findViewById(R.id.pictureView)
 
-        val password: String = intent.getStringExtra("passwordHashed").toString()
-        val email: String = intent.getStringExtra("email").toString()
-
-
-        datePickerFragment.setOnDatePickedListener { date ->
-            birthdateButton.text = date
-        }
 
         birthdateButton.apply {
 
@@ -98,72 +101,85 @@ class CreateUserProfileActivity : AppCompatActivity() {
         doneButton.setOnClickListener {
 
 
-            var imageArray: Array<Byte>? = null
+            if (
+                checkEmpty(usernameEditText.text.toString()) ||
+                checkEmpty(firstNameEditText.text.toString()) ||
+                checkEmpty(nameEditText.text.toString()) ||
+                birthdateButton.text.toString() == resources.getString(R.string.birthday_text)
+            ) {
+                Toast.makeText(
+                    this@CreateUserProfileActivity,
+                    "Bitte alle Pflichtfelder ausfüllen.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
 
-            if (imageView.drawable != null) {
-                val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
+                var imageString: String? = null
 
-                // Convert Bitmap to byte array
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                val byteArray: ByteArray = stream.toByteArray()
+                if (imageView.drawable != null) {
+                    val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
 
-                // Convert the ByteArray to Array<Byte>
-                imageArray = byteArray.toTypedArray()
+                    imageString = Base64Utils.encode(bitmap)
+                }
+
+
+                val streetString: String? =
+                    streetEditText.text.toString().takeIf { it.isNotBlank() }
+
+                val streetNrString: String? =
+                    streetNrEditText.text.toString().takeIf { it.isNotBlank() }
+
+                val postalCode: String? = plzEditText.text.toString().takeIf { it.isNotBlank() }
+
+                if (usernameEditText.text.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT)
+                        .show()
+                    return@setOnClickListener
+                }
+
+                val usernameString: String =
+                    usernameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
+
+                val cityString: String? = addressEditText.text.toString().takeIf { it.isNotBlank() }
+
+                val descriptionString: String? =
+                    descriptionEditText.text.toString().takeIf { it.isNotBlank() }
+
+                if (firstNameEditText.text.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT)
+                        .show()
+                    return@setOnClickListener
+                }
+                val firstNameString: String = firstNameEditText.text.toString()
+
+                if (nameEditText.text.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT)
+                        .show()
+                    return@setOnClickListener
+                }
+                val lastNameString: String = nameEditText.text.toString()
+
+                val birthday: String? =
+                    datePickerFragment.convertDateToServerCompatibleDate(birthdateButton.text.toString())
+
+
+                createUserProfile(
+                    usernameString,
+                    email,
+                    imageString,
+                    descriptionString,
+                    password,
+                    birthday,
+                    streetString,
+                    "de",
+                    cityString,
+                    streetNrString,
+                    postalCode,
+                    firstNameString,
+                    lastNameString
+                )
+
             }
-
-
-            val streetString: String? = streetEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val streetNrString: String? =
-                streetNrEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val postalCode: String? = plzEditText.text.toString().takeIf { it.isNotBlank() }
-
-            if (usernameEditText.text.isEmpty()) {
-                Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val usernameString: String =
-                usernameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
-
-            val cityString: String? = addressEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val descriptionString: String? =
-                descriptionEditText.text.toString().takeIf { it.isNotBlank() }
-
-            if (firstNameEditText.text.isEmpty()) {
-                Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val firstNameString: String = firstNameEditText.text.toString()
-
-            if (nameEditText.text.isEmpty()) {
-                Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val lastNameString: String = nameEditText.text.toString()
-
-            val birthday: String? =
-                datePickerFragment.convertDateToServerCompatibleDate(birthdateButton.text.toString())
-
-
-            createUserProfile(
-                usernameString,
-                email,
-                imageArray,
-                descriptionString,
-                password,
-                birthday,
-                streetString,
-                "de",
-                cityString,
-                streetNrString,
-                postalCode,
-                firstNameString,
-                lastNameString
-            )
 
         }
 
@@ -185,15 +201,46 @@ class CreateUserProfileActivity : AppCompatActivity() {
         }
         //Click Listener for uploadPicture Button
         uploadButton.setOnClickListener {
-            selectImageFromGallery()
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            pickImageLauncher.launch(intent)
         }
 
     }
 
+    /**
+     * Handles the result of the image picker activity.
+     * Sets the picked image to the imageView.
+     */
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageUri = result.data?.data
+            imageView.setImageURI(imageUri)
+        }
+    }
+
+    /**
+     * Creates a new user profile with the provided information and sends it to the server.
+     *
+     * @param username The user's chosen username.
+     * @param email The user's email address.
+     * @param profile_picture The user's profile picture encoded as a Base64 string (optional).
+     * @param description The user's description (optional).
+     * @param password The user's hashed password.
+     * @param birthday The user's birthdate in server-compatible format (optional).
+     * @param street The user's street name (optional).
+     * @param country The user's country code (optional).
+     * @param city The user's city (optional).
+     * @param street_number The user's street number (optional).
+     * @param postal_code The user's postal code (optional).
+     * @param firstname The user's first name.
+     * @param lastname The user's last name.
+     */
     private fun createUserProfile(
         username: String,
         email: String,
-        profile_picture: Array<Byte>?,
+        profile_picture: String?,
         description: String?,
         password: String,
         birthday: String?,
@@ -246,6 +293,11 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Displays a date picker dialog for the user to choose their birthdate.
+     *
+     * @param v The view that triggers the date picker dialog.
+     */
     private fun showDatePickerDialog(v: View) {
         datePickerFragment.show(supportFragmentManager, "datePicker")
     }

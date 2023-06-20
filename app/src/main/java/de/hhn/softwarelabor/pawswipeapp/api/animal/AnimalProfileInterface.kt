@@ -1,6 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp.api.animal
 
-import com.google.gson.JsonObject
+import de.hhn.softwarelabor.pawswipeapp.api.data.AnimalProfileData
 import de.hhn.softwarelabor.pawswipeapp.api.data.ProfileData
 
 /**
@@ -33,11 +33,11 @@ interface AnimalProfileInterface {
         breed: String?,
         color: String?,
         gender: String?,
-        picture_one: Array<Byte>?,
-        picture_two: Array<Byte>?,
-        picture_three: Array<Byte>?,
-        picture_four: Array<Byte>?,
-        picture_five: Array<Byte>?,
+        picture_one: String?,
+        picture_two: String?,
+        picture_three: String?,
+        picture_four: String?,
+        picture_five: String?,
         profile_id: ProfileData,
         callback: (Int?, Throwable?) -> Unit
     )
@@ -57,7 +57,7 @@ interface AnimalProfileInterface {
      * @param callback
      * @receiver
      */
-    fun getAnimalProfileByID(id: Int, callback: (JsonObject?, Throwable?) -> Unit)
+    fun getAnimalProfileByID(id: Int, callback: (AnimalProfileData?, Throwable?) -> Unit)
 
     /**
      * Update animal profile by id

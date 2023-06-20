@@ -1,5 +1,7 @@
 package de.hhn.softwarelabor.pawswipeapp.api.like
 
+import okhttp3.Response
+
 /**
  * LikeInterface defines the methods for liking, unliking, and fetching liked animals for a specific profile.
  *
@@ -18,7 +20,7 @@ interface LikeInterface {
      *                 2. A `Throwable?` representing the error that occurred, or `null` if the request was successful.
      * @receiver The instance of the class implementing this method.
      */
-    fun likeAnimal(profile_id: Int, animal_id: Int, callback: (String?, Throwable?) -> Unit)
+    fun likeAnimal(profile_id: Int, animal_id: Int, callback: (Response?, Throwable?) -> Unit)
 
     /**
      * Unlike an animal for a specific profile.
@@ -30,7 +32,7 @@ interface LikeInterface {
      *                 2. A `Throwable?` representing the error that occurred, or `null` if the request was successful.
      * @receiver The instance of the class implementing this method.
      */
-    fun dislikeAnimal(profile_id: Int, animal_id: Int, callback: (String?, Throwable?) -> Unit)
+    fun dislikeAnimal(profile_id: Int, animal_id: Int, callback: (Response?, Throwable?) -> Unit)
 
     /**
      * Get liked animals for a specific profile.
