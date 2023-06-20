@@ -56,7 +56,14 @@ class CreateUserProfileActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         pickImageLauncher.launch(intent)
     }
-
+    
+    private fun checkEmpty(string: String) : Boolean {
+        val newString = string.replace(" ", "")
+        if (newString == "")
+            return true
+        return false
+    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_user_profile)
@@ -96,74 +103,87 @@ class CreateUserProfileActivity : AppCompatActivity() {
         }
 
         doneButton.setOnClickListener {
-
-
-            var imageArray: Array<Byte>? = null
-
-            if (imageView.drawable != null) {
-                val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
-
-                // Convert Bitmap to byte array
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                val byteArray: ByteArray = stream.toByteArray()
-
-                // Convert the ByteArray to Array<Byte>
-                imageArray = byteArray.toTypedArray()
+            if (
+                checkEmpty(usernameEditText.text.toString()) ||
+                checkEmpty(firstNameEditText.text.toString()) ||
+                checkEmpty(nameEditText.text.toString()) ||
+                birthdateButton.text.toString() == resources.getString(R.string.birthday_tv)
+            ){
+                Toast.makeText(
+                    this@CreateUserProfileActivity,
+                    "Bitte alle Pflichtfelder ausfüllen.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+    
+                var imageArray: Array<Byte>? = null
+    
+                if (imageView.drawable != null) {
+                    val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
+        
+                    // Convert Bitmap to byte array
+                    val stream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                    val byteArray: ByteArray = stream.toByteArray()
+        
+                    // Convert the ByteArray to Array<Byte>
+                    imageArray = byteArray.toTypedArray()
+                }
+    
+    
+                val streetString: String? = streetEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val streetNrString: String? =
+                    streetNrEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val postalCode: String? = plzEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                if (usernameEditText.text.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+    
+                val usernameString: String =
+                    usernameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
+    
+                val cityString: String? = addressEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val descriptionString: String? =
+                    descriptionEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                if (firstNameEditText.text.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                val firstNameString: String = firstNameEditText.text.toString()
+    
+                if (nameEditText.text.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                val lastNameString: String = nameEditText.text.toString()
+    
+                val birthday: String? =
+                    datePickerFragment.convertDateToServerCompatibleDate(birthdateButton.text.toString())
+    
+    
+                createUserProfile(
+                    usernameString,
+                    email,
+                    imageArray,
+                    descriptionString,
+                    password,
+                    birthday,
+                    streetString,
+                    "de",
+                    cityString,
+                    streetNrString,
+                    postalCode,
+                    firstNameString,
+                    lastNameString
+                )
+    
             }
-
-
-            val streetString: String? = streetEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val streetNrString: String? =
-                streetNrEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val postalCode: String? = plzEditText.text.toString().takeIf { it.isNotBlank() }
-
-            if (usernameEditText.text.isEmpty()) {
-                Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val usernameString: String =
-                usernameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
-
-            val cityString: String? = addressEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val descriptionString: String? =
-                descriptionEditText.text.toString().takeIf { it.isNotBlank() }
-
-            if (firstNameEditText.text.isEmpty()) {
-                Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val firstNameString: String = firstNameEditText.text.toString()
-
-            if (nameEditText.text.isEmpty()) {
-                Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val lastNameString: String = nameEditText.text.toString()
-
-            val birthday: String? =
-                datePickerFragment.convertDateToServerCompatibleDate(birthdateButton.text.toString())
-
-
-            createUserProfile(
-                usernameString,
-                email,
-                imageArray,
-                descriptionString,
-                password,
-                birthday,
-                streetString,
-                "de",
-                cityString,
-                streetNrString,
-                postalCode,
-                firstNameString,
-                lastNameString
-            )
 
         }
 

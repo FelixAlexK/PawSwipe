@@ -75,53 +75,71 @@ class CreateShelterActivity : AppCompatActivity() {
 
 
         createButton.setOnClickListener {
-
-            var imageArray: Array<Byte>? = null
-
-            if (imageView.drawable != null) {
-                val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
-
-                // Convert Bitmap to byte array
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                val byteArray: ByteArray = stream.toByteArray()
-
-                // Convert the ByteArray to Array<Byte>
-                imageArray = byteArray.toTypedArray()
+            
+            if ( // Check if the required Fields are empty
+                checkEmpty(shelterNameEditText.text.toString()) ||
+                checkEmpty(phoneNumberEditText.text.toString()) ||
+                checkEmpty(postalCodeEditText.text.toString()) ||
+                checkEmpty(shelterCityEditText.text.toString()) ||
+                checkEmpty(streetEditText.text.toString()) ||
+                checkEmpty(streetNumberEditText.text.toString())
+            ){
+                Toast.makeText(
+                    this@CreateShelterActivity,
+                    "Bitte alle Pflichtfelder ausfüllen.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+    
+                var imageArray: Array<Byte>? = null
+    
+                if (imageView.drawable != null) {
+                    val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
+        
+                    // Convert Bitmap to byte array
+                    val stream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                    val byteArray: ByteArray = stream.toByteArray()
+        
+                    // Convert the ByteArray to Array<Byte>
+                    imageArray = byteArray.toTypedArray()
+                }
+    
+    
+                val shelterStreetString: String? =
+                    streetEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val shelterStreetNrString: String? =
+                    streetNumberEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val shelterNameString: String =
+                    shelterNameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
+    
+                val phoneNumberString: String? =
+                    phoneNumberEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val openingHrsString: String? =
+                    openingHoursEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val homepageString: String? =
+                    homepageEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val shelterCityString: String? =
+                    shelterCityEditText.text.toString().takeIf { it.isNotBlank() }
+    
+                val postalCodeString: String? =
+                    postalCodeEditText.text.toString().takeIf { it.isNotBlank() }
+    
+    
+                createShelterProfile(
+                    shelterNameString, email, phoneNumberString, imageArray, password,
+                    openingHrsString, shelterStreetString, COUNTRY, shelterCityString,
+                    shelterStreetNrString, homepageString, postalCodeString
+                )
+    
+    
             }
-
-
-            val shelterStreetString: String? =
-                streetEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val shelterStreetNrString: String? =
-                streetNumberEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val shelterNameString: String =
-                shelterNameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
-
-            val phoneNumberString: String? =
-                phoneNumberEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val openingHrsString: String? =
-                openingHoursEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val homepageString: String? =
-                homepageEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val shelterCityString: String? =
-                shelterCityEditText.text.toString().takeIf { it.isNotBlank() }
-
-            val postalCodeString: String? =
-                postalCodeEditText.text.toString().takeIf { it.isNotBlank() }
-
-
-            createShelterProfile(
-                shelterNameString, email, phoneNumberString, imageArray, password,
-                openingHrsString, shelterStreetString, COUNTRY, shelterCityString,
-                shelterStreetNrString, homepageString, postalCodeString
-            )
-
+            
 
         }
 
@@ -145,7 +163,15 @@ class CreateShelterActivity : AppCompatActivity() {
                 }.show()
         }
     }
-
+    
+    // Checks if the given String is empty or only spaces.
+    private fun checkEmpty(string: String) : Boolean {
+        val newString = string.replace(" ", "")
+        if (newString == "")
+            return true
+        return false
+    }
+    
     private fun createShelterProfile(
         username: String,
         email: String,

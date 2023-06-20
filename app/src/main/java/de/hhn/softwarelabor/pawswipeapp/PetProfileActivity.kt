@@ -33,7 +33,12 @@ class PetProfileActivity : AppCompatActivity() {
     private lateinit var datePickerFragment: DatePickerFragment
     private var animalProfile: AnimalProfileApi = AnimalProfileApi()
     private var id: Int = 0
-
+    private fun checkEmpty(string: String) : Boolean {
+        val newString = string.replace(" ", "")
+        if (newString == "")
+            return true
+        return false
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pet_profil)
@@ -43,33 +48,49 @@ class PetProfileActivity : AppCompatActivity() {
 
         id = intent.getIntExtra("id", 0)
         createPetButton.setOnClickListener {
-            if (petDescriptionText.length() <= MULTILINE_TEXT_LENGTH) {
-
-                val birthday =
-                    datePickerFragment.convertDateToServerCompatibleDate(petBirthdayButton.text.toString())
-                createPet(
-                    petNameEditText.text.toString(),
-                    speciesSpinner.selectedItem.toString(),
-                    birthday,
-                    petIllnessMultilineText.text.toString(),
-                    petDescriptionText.text.toString(),
-                    breedSpinner.selectedItem.toString(),
-                    petColorEditText.text.toString(),
-                    genderSpinner.selectedItem.toString(),
-                    id
-                )
-
+            if(
+                // TODO Check for ProfilePic, after implemented the upload function
+                speciesSpinner.selectedItem == speciesSpinner.getItemAtPosition(0)
+                || breedSpinner.selectedItem.toString() == breedSpinner.getItemAtPosition(0)
+                || genderSpinner.selectedItem.toString() == genderSpinner.getItemAtPosition(0)
+                || petBirthdayButton.text.toString() == resources.getString(R.string.birthday_tv)
+                || checkEmpty(petIllnessMultilineText.text.toString())
+            ) {
+                Toast.makeText(
+                    this@PetProfileActivity,
+                    "Bitte alle Pflichtfelder ausfüllen.",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                runOnUiThread {
-                    Toast.makeText(
-                        this,
-                        "Beschreibung ist zu lang: ${petDescriptionText.length()}/50",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                if (petDescriptionText.length() <= MULTILINE_TEXT_LENGTH) {
+        
+                    val birthday =
+                        datePickerFragment.convertDateToServerCompatibleDate(petBirthdayButton.text.toString())
+                    createPet(
+                        petNameEditText.text.toString(),
+                        speciesSpinner.selectedItem.toString(),
+                        birthday,
+                        petIllnessMultilineText.text.toString(),
+                        petDescriptionText.text.toString(),
+                        breedSpinner.selectedItem.toString(),
+                        petColorEditText.text.toString(),
+                        genderSpinner.selectedItem.toString(),
+                        id
+                    )
+        
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this,
+                            "Beschreibung ist zu lang: ${petDescriptionText.length()}/50",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
+                
             }
-
-
+            
+ 
         }
 
         cancelPetButton.setOnClickListener {

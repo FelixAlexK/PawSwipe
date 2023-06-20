@@ -29,7 +29,7 @@ open class RegisterAccountActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register_account)
 
         initGUIElements()
-
+        
         registerAsUserButton.setOnClickListener {
             proceedToUserProfileCreation()
         }
@@ -40,9 +40,8 @@ open class RegisterAccountActivity : AppCompatActivity() {
             goBackToLoginActivity()
         }
     }
-
-
-
+    
+    
     /** -------------------------Initialization of GUI elements ------------------------------- */
 
     private fun initGUIElements() {
