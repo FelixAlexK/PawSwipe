@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -34,6 +35,7 @@ private const val MULTILINE_TEXT_LENGTH = 255
  * @author Felix Kuhbier
  */
 class PetProfileActivity : AppCompatActivity() {
+
 
     private lateinit var genderSpinner: Spinner
     private lateinit var speciesSpinner: Spinner
@@ -89,13 +91,12 @@ class PetProfileActivity : AppCompatActivity() {
                     petDescriptionText.text.toString(),
                     breedSpinner.selectedItem.toString(),
                     petColorEditText.text.toString(),
-                    spinner.selectedItem.toString(),
+                    genderSpinner.selectedItem.toString(),
                     pictureOne,
                     pictureTwo,
                     pictureThree,
                     pictureFour,
                     pictureFive,
-
                     id
                 )
 
