@@ -255,11 +255,10 @@
 
                 <EditText
                     android:id="@+id/plzEditText"
-                    android:layout_width="105dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:ems="10"
                     android:hint="@string/postalCode_hint"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
@@ -314,11 +313,10 @@
 
                 <EditText
                     android:id="@+id/streetNumberEditText"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:ems="10"
                     android:hint="@string/houseNumber_hint"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
