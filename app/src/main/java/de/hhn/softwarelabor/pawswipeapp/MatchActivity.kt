@@ -24,12 +24,12 @@ class MatchActivity : AppCompatActivity() {
     private lateinit var chatBtn: Button
     private lateinit var animalListBtn: Button
     private lateinit var likeBtn: ImageButton
+    private lateinit var dislikeBtn: ImageButton
     private lateinit var viewPager: ViewPager
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var imageList: List<Int>
 
     private var profileId: Int = 0
-    private var isLiked = false
     private var likeApi: LikeApi = LikeApi()
     private var animalId: Int = 0
 
@@ -42,7 +42,8 @@ class MatchActivity : AppCompatActivity() {
 
         chatBtn = findViewById(R.id.chat_btn2)
         animalListBtn = findViewById(R.id.animalList_btn2)
-        likeBtn = findViewById(R.id.like_btn)
+        likeBtn = findViewById(R.id.like_button)
+        dislikeBtn = findViewById(R.id.dislike_button)
         viewPager = findViewById(R.id.idViewPager)
         imageList = ArrayList()
 
@@ -58,22 +59,21 @@ class MatchActivity : AppCompatActivity() {
         }
 
         likeBtn.setOnClickListener {
-            isLiked = if (!isLiked) {
-                likeBtn.setImageResource(R.drawable.heart_liked_small)
-                true
-            } else {
-                likeBtn.setImageResource(R.drawable.heart_unliked_small)
-                false
-            }
 
-            likeOrDislikeAnimal(profileId, animalId)
+
+            likeAnimal(profileId, animalId)
 
         }
 
+        dislikeBtn.setOnClickListener {
+            //TODO(Swipe action on click)
+        }
 
         imageList = imageList + R.drawable.pixabay_cute_cat
-        imageList = imageList + R.drawable.heart_liked_small
-        imageList = imageList + R.drawable.dislike_x
+        imageList = imageList + R.drawable.dislike
+        imageList = imageList + R.drawable.love
+        imageList = imageList + R.drawable.wf
+        imageList = imageList + R.drawable.paw_swipe_splash_screen
 
         viewPagerAdapter = ViewPagerAdapter(this@MatchActivity, imageList)
 
@@ -143,35 +143,28 @@ class MatchActivity : AppCompatActivity() {
     }
 
     /**
-     * Performs the like or dislike action for an animal.
+     * Performs the like action for an animal.
      * Calls the corresponding API method based on the like status.
      *
      * @param profileId The profile ID of the user performing the action.
      * @param animalId The animal ID that is being liked or disliked.
      */
-    private fun likeOrDislikeAnimal(profileId: Int, animalId: Int) {
-        if (isLiked) {
-            likeApi.likeAnimal(profileId, animalId) { response, error ->
-                runOnUiThread {
-                    if (error != null) {
-                        Toast.makeText(this@MatchActivity, error.message, Toast.LENGTH_SHORT).show()
-                    } else if (response?.isSuccessful == true) {
-                        Log.i("PawSwipe", "Successfully liked")
-                    }
+    private fun likeAnimal(profileId: Int, animalId: Int) {
+        likeApi.likeAnimal(profileId, animalId) { response, error ->
+            runOnUiThread {
+                if (error != null) {
+                    Toast.makeText(
+                        this@MatchActivity,
+                        getString(R.string.like_error_text),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else if (response?.isSuccessful == true) {
+                    Log.i("PawSwipe", "Successfully liked")
                 }
+            }
 
-            }
-        } else {
-            likeApi.dislikeAnimal(profileId, animalId) { response, error ->
-                runOnUiThread {
-                    if (error != null) {
-                        Toast.makeText(this@MatchActivity, error.message, Toast.LENGTH_SHORT).show()
-                    } else if (response?.isSuccessful == true) {
-                        Log.i("PawSwipe", "Successfully disliked")
-                    }
-                }
-            }
         }
+
     }
 }
 
