@@ -31,14 +31,14 @@ class MatchActivity : AppCompatActivity() {
     private var profileId: Int = 0
     private var isLiked = false
     private var likeApi: LikeApi = LikeApi()
-    private var animalId: Int = 4
+    private var animalId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
 
         profileId = intent.getIntExtra("id", 0)
-        //animalId = intent.getIntExtra("animal_id", 0)
+        animalId = intent.getIntExtra("animal_id", 0)
 
         chatBtn = findViewById(R.id.chat_btn2)
         animalListBtn = findViewById(R.id.animalList_btn2)
