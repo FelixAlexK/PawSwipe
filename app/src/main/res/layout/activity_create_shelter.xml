@@ -180,12 +180,13 @@
                     android:ems="10"
                     android:hint="@string/phoneNumber_tv"
                     android:importantForAutofill="no"
-                    android:inputType="phone"
+                    android:inputType="number"
                     android:minHeight="48dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TextFields" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -193,6 +194,17 @@
                     android:layout_height="wrap_content"
                     android:text="*"
                     android:textSize="30sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView11"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(+49)"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/phoneNumberEditText"
                     app:layout_constraintTop_toTopOf="parent"
