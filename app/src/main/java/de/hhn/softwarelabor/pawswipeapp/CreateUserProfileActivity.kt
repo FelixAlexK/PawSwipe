@@ -257,7 +257,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             null, username, email, null,
             profile_picture, description, password, null, birthday, null,
             street, country, city, street_number, null, postal_code, firstname,
-            lastname, DISCRIMINATOR
+            lastname, null, null, DISCRIMINATOR
         ) { response, error ->
 
             runOnUiThread {

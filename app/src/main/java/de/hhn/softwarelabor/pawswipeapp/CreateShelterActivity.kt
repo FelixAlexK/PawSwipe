@@ -38,6 +38,8 @@ class CreateShelterActivity : AppCompatActivity() {
     private lateinit var streetNumberEditText: EditText
     private lateinit var imageView: ImageView
     private lateinit var uploadImageButton: Button
+    private var lat: Double = 0.0
+    private var lon: Double = 0.0
 
 
     /**
@@ -125,7 +127,7 @@ class CreateShelterActivity : AppCompatActivity() {
                 createShelterProfile(
                     shelterNameString, email, phoneNumberString, imageString, password,
                     openingHrsString, shelterStreetString, COUNTRY, shelterCityString,
-                    shelterStreetNrString, homepageString, postalCodeString
+                    shelterStreetNrString, homepageString, postalCodeString, lat, lon
                 )
     
     
@@ -206,6 +208,8 @@ class CreateShelterActivity : AppCompatActivity() {
         street_number: String?,
         homepage: String?,
         postal_code: String?,
+        lat: Double,
+        lon: Double
     ) {
 
 
@@ -213,7 +217,7 @@ class CreateShelterActivity : AppCompatActivity() {
             null, username, email, phone_number,
             profile_picture, null, password, null, null, opening_hours,
             street, country, city, street_number, homepage, postal_code, "",
-            "", DISCRIMINATOR
+            "", lat, lon, DISCRIMINATOR
         ) { _, error ->
 
             runOnUiThread {

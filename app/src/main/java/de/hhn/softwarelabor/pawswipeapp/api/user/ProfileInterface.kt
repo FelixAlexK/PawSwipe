@@ -55,6 +55,8 @@ interface ProfileInterface {
         postal_code: String?,
         firstname: String,
         lastname: String,
+        lat: Double?,
+        lon: Double?,
         discriminator: String,
         callback: (ProfileData?, Throwable?) -> Unit
     )

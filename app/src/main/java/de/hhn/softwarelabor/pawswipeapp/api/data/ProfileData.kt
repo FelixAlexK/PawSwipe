@@ -44,6 +44,8 @@ data class ProfileData(
     val postal_code: String?,
     val firstname: String?,
     val lastname: String?,
-    val discriminator: String
-)
+    val lat: Double?,
+    val lon: Double?,
+    val discriminator: String,
+) 
 
