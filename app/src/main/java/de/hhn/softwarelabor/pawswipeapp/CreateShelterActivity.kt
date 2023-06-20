@@ -123,7 +123,7 @@ class CreateShelterActivity : AppCompatActivity() {
     
     
                 createShelterProfile(
-                    shelterNameString, email, phoneNumberString, imageArray, password,
+                    shelterNameString, email, phoneNumberString, imageString, password,
                     openingHrsString, shelterStreetString, COUNTRY, shelterCityString,
                     shelterStreetNrString, homepageString, postalCodeString
                 )

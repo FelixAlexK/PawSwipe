@@ -86,7 +86,7 @@ class PetProfileActivity : AppCompatActivity() {
                 speciesSpinner.selectedItem == speciesSpinner.getItemAtPosition(0)
                 || breedSpinner.selectedItem.toString() == breedSpinner.getItemAtPosition(0)
                 || genderSpinner.selectedItem.toString() == genderSpinner.getItemAtPosition(0)
-                || petBirthdayButton.text.toString() == resources.getString(R.string.birthday_tv)
+                || petBirthdayButton.text.toString() == resources.getString(R.string.birthday_text)
                 || checkEmpty(petIllnessMultilineText.text.toString())
             ) {
                 Toast.makeText(

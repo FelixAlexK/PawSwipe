@@ -51,13 +51,13 @@ class CreateUserProfileActivity : AppCompatActivity() {
     private lateinit var streetEditText: EditText
     private lateinit var streetNrEditText: EditText
 
-    private fun checkEmpty(string: String) : Boolean {
+    private fun checkEmpty(string: String): Boolean {
         val newString = string.replace(" ", "")
         if (newString == "")
             return true
         return false
     }
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_user_profile)
@@ -101,84 +101,72 @@ class CreateUserProfileActivity : AppCompatActivity() {
         doneButton.setOnClickListener {
 
 
-            createUserProfile(
-                usernameString,
-                email,
-                imageString,
-                descriptionString,
-                password,
-                birthday,
-                streetString,
-                "de",
-                cityString,
-                streetNrString,
-                postalCode,
-                firstNameString,
-                lastNameString
-            )
-
             if (
                 checkEmpty(usernameEditText.text.toString()) ||
                 checkEmpty(firstNameEditText.text.toString()) ||
                 checkEmpty(nameEditText.text.toString()) ||
-                birthdateButton.text.toString() == resources.getString(R.string.birthday_tv)
-            ){
+                birthdateButton.text.toString() == resources.getString(R.string.birthday_text)
+            ) {
                 Toast.makeText(
                     this@CreateUserProfileActivity,
                     "Bitte alle Pflichtfelder ausfüllen.",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-    
+
                 var imageString: String? = null
 
-            if (imageView.drawable != null) {
-                val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
+                if (imageView.drawable != null) {
+                    val bitmap: Bitmap = (imageView.drawable as BitmapDrawable).bitmap
 
-                imageString = Base64Utils.encode(bitmap)
-            }
-    
-    
-                val streetString: String? = streetEditText.text.toString().takeIf { it.isNotBlank() }
-    
+                    imageString = Base64Utils.encode(bitmap)
+                }
+
+
+                val streetString: String? =
+                    streetEditText.text.toString().takeIf { it.isNotBlank() }
+
                 val streetNrString: String? =
                     streetNrEditText.text.toString().takeIf { it.isNotBlank() }
-    
+
                 val postalCode: String? = plzEditText.text.toString().takeIf { it.isNotBlank() }
-    
+
                 if (usernameEditText.text.isEmpty()) {
-                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT)
+                        .show()
                     return@setOnClickListener
                 }
-    
+
                 val usernameString: String =
                     usernameEditText.text.toString().takeIf { it.isNotBlank() }.toString()
-    
+
                 val cityString: String? = addressEditText.text.toString().takeIf { it.isNotBlank() }
-    
+
                 val descriptionString: String? =
                     descriptionEditText.text.toString().takeIf { it.isNotBlank() }
-    
+
                 if (firstNameEditText.text.isEmpty()) {
-                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT)
+                        .show()
                     return@setOnClickListener
                 }
                 val firstNameString: String = firstNameEditText.text.toString()
-    
+
                 if (nameEditText.text.isEmpty()) {
-                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.fillEditTexts), Toast.LENGTH_SHORT)
+                        .show()
                     return@setOnClickListener
                 }
                 val lastNameString: String = nameEditText.text.toString()
-    
+
                 val birthday: String? =
                     datePickerFragment.convertDateToServerCompatibleDate(birthdateButton.text.toString())
-    
-    
+
+
                 createUserProfile(
                     usernameString,
                     email,
-                    imageArray,
+                    imageString,
                     descriptionString,
                     password,
                     birthday,
@@ -190,7 +178,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
                     firstNameString,
                     lastNameString
                 )
-    
+
             }
 
         }
