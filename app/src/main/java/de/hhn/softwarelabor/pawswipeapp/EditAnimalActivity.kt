@@ -33,8 +33,8 @@ class EditAnimalActivity : AppCompatActivity() {
 
         genderSpinner = findViewById(R.id.petGenderSpinner)
 
-        datePickerFragment =
-            DatePickerFragment(this.getString(R.string.de_dateFormat), this)
+        datePickerFragment = DatePickerFragment(this.getString(R.string.de_dateFormat), this)
+
         ArrayAdapter.createFromResource(
             this,
             R.array.gender_array,
