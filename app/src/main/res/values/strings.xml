@@ -116,5 +116,6 @@
     <string name="animal_item_breed_placeholder">Britisch Kurzhaar</string>
     <string name="animal_list_empty_text">Es wurden noch keine Tiere geliked</string>
     <string name="pflichtfelder">* Pflichtfelder</string>
+    <string name="like_error_text">Aktion konnte nicht ausgeführt werden</string>
 
 </resources>
