@@ -1,22 +1,20 @@
 package de.hhn.softwarelabor.pawswipeapp
 
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
-import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 import java.text.SimpleDateFormat
 import java.util.*
 import com.squareup.picasso.Picasso
 
 class ShowAnimalProfile : AppCompatActivity() {
-    lateinit var pictureView: ImageView
-    lateinit var descriptionView : TextView
-    lateinit var nameView : TextView
-    lateinit var ageView : TextView
+    private lateinit var pictureView: ImageView
+    private lateinit var descriptionView : TextView
+    private lateinit var nameView : TextView
+    private lateinit var ageView : TextView
 
 
 
@@ -33,8 +31,7 @@ class ShowAnimalProfile : AppCompatActivity() {
 
 
 
-
-        val id: Int = 1
+        val id: Int = 7
         val api = AnimalProfileApi()
         api.getAnimalProfileByID(id) { response, error ->
             if (error != null) {
@@ -61,7 +58,6 @@ class ShowAnimalProfile : AppCompatActivity() {
 
 
         }
-
 
     }
     private fun init(){
