@@ -41,14 +41,6 @@ class LoginActivity : AppCompatActivity() {
     
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-    
-        runOnUiThread {
-            Toast.makeText(
-                this,
-                AppData.getPassword(this),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
         
         if (backPressedOnce) {
             finishAffinity()    // Beendet alle Activities und die App
@@ -70,21 +62,15 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-    
-        runOnUiThread {
-            Toast.makeText(
-                this,
-                AppData.getPassword(this),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
 
         init()
-        if (AppData.getPassword(this) != ""){
+        /*if (AppData.getPassword(this) != ""){
             if (AppData.getDiscriminator(this) == "shelter"){
                 loginShelter(AppData.getMail(this), AppData.getPassword(this))
+            } else {
+                loginUser(AppData.getMail(this), AppData.getPassword(this))
             }
-        }
+        }*/
         
 
         loginUserButton.setOnClickListener {
