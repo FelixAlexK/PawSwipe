@@ -1,6 +1,7 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +20,7 @@ import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AnimalAdapter
 import de.hhn.softwarelabor.pawswipeapp.utils.AnimalItem
+import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
 import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
 
@@ -78,6 +80,8 @@ class AnimalListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_list)
 
+        
+
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         profileId = intent.getIntExtra("id", 0)
@@ -88,13 +92,21 @@ class AnimalListActivity : AppCompatActivity() {
         recyclerView.adapter = animalAdapter
         matchBtn = findViewById(R.id.matching_btn3)
         chatBtn = findViewById(R.id.chat_btn3)
-
-
-        matchBtn.setOnClickListener {
-            val intent = Intent(this@AnimalListActivity, MatchActivity::class.java)
-            intent.putExtra("id", profileId)
-            startActivity(intent)
+    
+    
+        if(AppData.getDiscriminator(this@AnimalListActivity) == "shelter"){
+            matchBtn.isClickable = false
+            matchBtn.setBackgroundColor(Color.TRANSPARENT)
+            matchBtn.background = null
+        } else {
+            matchBtn.setOnClickListener {
+                val intent = Intent(this@AnimalListActivity, MatchActivity::class.java)
+                intent.putExtra("id", profileId)
+                startActivity(intent)
+            }
+            
         }
+        
 
         chatBtn.setOnClickListener {
             val intent = Intent(this@AnimalListActivity, ChatActivity::class.java)

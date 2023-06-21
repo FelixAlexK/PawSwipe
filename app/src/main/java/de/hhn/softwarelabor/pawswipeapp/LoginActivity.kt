@@ -236,7 +236,7 @@ class LoginActivity : AppCompatActivity() {
                             AppData.setDiscriminator(this, shelter.discriminator)
 
                             
-                            val intent = Intent(this@LoginActivity, MatchActivity::class.java)
+                            val intent = Intent(this@LoginActivity, AnimalListActivity::class.java)
                             intent.putExtra("id", shelter.profile_id)
                             startActivity(intent)
                         }

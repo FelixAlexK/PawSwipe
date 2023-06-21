@@ -1,6 +1,7 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +12,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 
 class ChatActivity : AppCompatActivity() {
 
@@ -47,10 +49,19 @@ class ChatActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         matchBtn = findViewById(R.id.matching_btn)
-        matchBtn.setOnClickListener {
-            val intent = Intent(this@ChatActivity, MatchActivity::class.java)
-            startActivity(intent)
+    
+        if(AppData.getDiscriminator(this@ChatActivity) == "shelter"){
+            matchBtn.isClickable = false
+            matchBtn.setBackgroundColor(Color.TRANSPARENT)
+            matchBtn.background = null
+        } else {
+            matchBtn.setOnClickListener {
+                val intent = Intent(this@ChatActivity, MatchActivity::class.java)
+                startActivity(intent)
+            }
+        
         }
+        
 
         animalListBtn = findViewById(R.id.animalList_btn)
         animalListBtn.setOnClickListener {
