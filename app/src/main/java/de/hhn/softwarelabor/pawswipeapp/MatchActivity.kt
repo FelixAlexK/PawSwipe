@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
+import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 import de.hhn.softwarelabor.pawswipeapp.utils.ViewPagerAdapter
 
 /**
@@ -36,6 +37,13 @@ class MatchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
+        
+        // TEST
+        Toast.makeText(
+            this,
+            AppData.getMail(this),
+            Toast.LENGTH_SHORT
+        ).show()
 
         profileId = intent.getIntExtra("id", 0)
         animalId = intent.getIntExtra("animal_id", 0)
@@ -59,6 +67,21 @@ class MatchActivity : AppCompatActivity() {
         }
 
         likeBtn.setOnClickListener {
+            Toast.makeText(
+                this,
+                AppData.getMail(this@MatchActivity),
+                Toast.LENGTH_SHORT
+            ).show()
+            Toast.makeText(
+                this,
+                AppData.getPassword(this@MatchActivity),
+                Toast.LENGTH_SHORT
+            ).show()
+            Toast.makeText(
+                this,
+                AppData.getDiscriminator(this@MatchActivity),
+                Toast.LENGTH_SHORT
+            ).show()
 
 
             likeAnimal(profileId, animalId)

@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
+import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 import java.security.MessageDigest
 
 private const val DISCRIMINATOR_SHELTER = "shelter"
@@ -141,7 +142,12 @@ class LoginActivity : AppCompatActivity() {
                                 getString(R.string.login_success, user.username),
                                 Toast.LENGTH_SHORT
                             ).show()
-
+    
+    
+                            AppData.setMail(this, user.email)
+                            AppData.setPassword(this, loginPasswordEditText.text.toString())
+                            AppData.setDiscriminator(this, user.discriminator)
+    
                             val intent = Intent(this@LoginActivity, MatchActivity::class.java)
                             intent.putExtra("id", user.profile_id)
                             startActivity(intent)
@@ -205,6 +211,12 @@ class LoginActivity : AppCompatActivity() {
                                 getString(R.string.login_success, shelter.username),
                                 Toast.LENGTH_SHORT
                             ).show()
+                            
+                            AppData.setMail(this, shelter.email)
+                            AppData.setPassword(this, loginPasswordEditText.text.toString())
+                            AppData.setDiscriminator(this, shelter.discriminator)
+
+                            
                             val intent = Intent(this@LoginActivity, MatchActivity::class.java)
                             intent.putExtra("id", shelter.profile_id)
                             startActivity(intent)
@@ -258,6 +270,7 @@ class LoginActivity : AppCompatActivity() {
             loginPasswordEditText = findViewById(R.id.loginPassword_editText)
             loginRegisterButton = findViewById(R.id.loginRegister_button)
             loginLoginButton = findViewById(R.id.loginLogin_button)
+            loginEmailEditText.setText(AppData.getMail(this@LoginActivity))
         } catch (e: NullPointerException) {
             Log.e(TAG, e.message.toString())
             e.printStackTrace()
