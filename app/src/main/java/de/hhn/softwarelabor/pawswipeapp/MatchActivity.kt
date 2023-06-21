@@ -1,6 +1,7 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
+import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 import de.hhn.softwarelabor.pawswipeapp.utils.ViewPagerAdapter
 
 /**
@@ -27,6 +29,7 @@ class MatchActivity : AppCompatActivity() {
     private lateinit var animalListBtn: Button
     private lateinit var likeBtn: ImageButton
     private lateinit var dislikeBtn: ImageButton
+    private lateinit var matchBtn: Button
     private lateinit var viewPager: ViewPager
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var imageList: List<Int>
@@ -64,6 +67,12 @@ class MatchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
         
+        // If a bug brings a Shelter to the Match Activity, it closes the Activity
+        if (AppData.getDiscriminator(this@MatchActivity) == "shelter"){
+            finish()
+        }
+
+        
         profileId = intent.getIntExtra("id", 0)
         animalId = intent.getIntExtra("animal_id", 0)
         
@@ -71,8 +80,15 @@ class MatchActivity : AppCompatActivity() {
         animalListBtn = findViewById(R.id.animalList_btn2)
         likeBtn = findViewById(R.id.like_button)
         dislikeBtn = findViewById(R.id.dislike_button)
+        matchBtn = findViewById(R.id.matching_btn2)
         viewPager = findViewById(R.id.idViewPager)
         imageList = ArrayList()
+    
+        if(AppData.getDiscriminator(this@MatchActivity) == "shelter"){
+            matchBtn.isClickable = false
+            matchBtn.setBackgroundColor(Color.TRANSPARENT)
+            matchBtn.background = null
+        }
         
         chatBtn.setOnClickListener {
             val intent = Intent(this@MatchActivity, ChatActivity::class.java)
