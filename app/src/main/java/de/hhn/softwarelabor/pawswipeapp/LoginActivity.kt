@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -33,6 +35,30 @@ class LoginActivity : AppCompatActivity() {
     private var profile: ProfileApi = ProfileApi()
     private var isShelter = false
     private var isUser = false
+    
+    private var backPressedOnce = false
+    private val timerDuration = 3000 // 3 Sekunden
+    
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        
+        if (backPressedOnce) {
+            finishAffinity()    // Beendet alle Activities und die App
+            return
+        }
+        
+        backPressedOnce = true
+        Toast.makeText(
+            this,
+            getString(R.string.zum_beenden_der_app),
+            Toast.LENGTH_SHORT
+        ).show()
+        
+        Handler(Looper.getMainLooper()).postDelayed({
+            backPressedOnce = false
+        }, timerDuration.toLong())
+        
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -137,13 +163,6 @@ class LoginActivity : AppCompatActivity() {
                 ) {
                     if (password == user.password && email == user.email) {
                         runOnUiThread {
-                            Toast.makeText(
-                                this,
-                                getString(R.string.login_success, user.username),
-                                Toast.LENGTH_SHORT
-                            ).show()
-    
-    
                             AppData.setMail(this, user.email)
                             AppData.setPassword(this, loginPasswordEditText.text.toString())
                             AppData.setDiscriminator(this, user.discriminator)

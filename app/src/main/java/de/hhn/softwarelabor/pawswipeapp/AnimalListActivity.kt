@@ -2,6 +2,8 @@ package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -44,6 +46,30 @@ class AnimalListActivity : AppCompatActivity() {
     private lateinit var animalAdapter: AnimalAdapter
     private var animalItems: ArrayList<AnimalItem> = ArrayList()
     private var profileId: Int = 0
+    
+    private var backPressedOnce = false
+    private val timerDuration = 3000 // 3 Sekunden
+    
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        
+        if (backPressedOnce) {
+            finishAffinity()    // Beendet alle Activities und die App
+            return
+        }
+        
+        backPressedOnce = true
+        Toast.makeText(
+            this,
+            getString(R.string.zum_beenden_der_app),
+            Toast.LENGTH_SHORT
+        ).show()
+        
+        Handler(Looper.getMainLooper()).postDelayed({
+            backPressedOnce = false
+        }, timerDuration.toLong())
+        
+    }
 
     /**
      * Initializes the activity, sets up the UI and loads the liked animals.

@@ -2,17 +2,44 @@ package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var matchBtn: Button
     private lateinit var animalListBtn: Button
+    
+    private var backPressedOnce = false
+    private val timerDuration = 3000 // 3 Sekunden
+    
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        
+        if (backPressedOnce) {
+            finishAffinity()    // Beendet alle Activities und die App
+            return
+        }
+        
+        backPressedOnce = true
+        Toast.makeText(
+            this,
+            getString(R.string.zum_beenden_der_app),
+            Toast.LENGTH_SHORT
+        ).show()
+        
+        Handler(Looper.getMainLooper()).postDelayed({
+            backPressedOnce = false
+        }, timerDuration.toLong())
+        
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
