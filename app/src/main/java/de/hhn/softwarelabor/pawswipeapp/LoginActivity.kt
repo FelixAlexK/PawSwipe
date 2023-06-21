@@ -41,6 +41,14 @@ class LoginActivity : AppCompatActivity() {
     
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
+    
+        runOnUiThread {
+            Toast.makeText(
+                this,
+                AppData.getPassword(this),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
         
         if (backPressedOnce) {
             finishAffinity()    // Beendet alle Activities und die App
@@ -62,8 +70,22 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+    
+        runOnUiThread {
+            Toast.makeText(
+                this,
+                AppData.getPassword(this),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
         init()
+        if (AppData.getPassword(this) != ""){
+            if (AppData.getDiscriminator(this) == "shelter"){
+                loginShelter(AppData.getMail(this), AppData.getPassword(this))
+            }
+        }
+        
 
         loginUserButton.setOnClickListener {
             try {
@@ -163,8 +185,9 @@ class LoginActivity : AppCompatActivity() {
                 ) {
                     if (password == user.password && email == user.email) {
                         runOnUiThread {
+                            AppData.setID(this, user.profile_id ?: 0)
                             AppData.setMail(this, user.email)
-                            AppData.setPassword(this, loginPasswordEditText.text.toString())
+                            AppData.setPassword(this, stringToSHA256(loginPasswordEditText.text.toString()))
                             AppData.setDiscriminator(this, user.discriminator)
     
                             val intent = Intent(this@LoginActivity, MatchActivity::class.java)
@@ -230,9 +253,9 @@ class LoginActivity : AppCompatActivity() {
                                 getString(R.string.login_success, shelter.username),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            
+                            AppData.setID(this, shelter.profile_id ?: 0)
                             AppData.setMail(this, shelter.email)
-                            AppData.setPassword(this, loginPasswordEditText.text.toString())
+                            AppData.setPassword(this, stringToSHA256(loginPasswordEditText.text.toString()))
                             AppData.setDiscriminator(this, shelter.discriminator)
 
                             

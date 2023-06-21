@@ -5,10 +5,21 @@ import android.content.Context
 class AppData {
     companion object{
         private const val SHARED_PREFS_NAME = "MySharedPrefs"
+        private const val ID_KEY = "IdKey"
         private const val MAIL_KEY = "MailKey"
         private const val PASSWORD_KEY = "PasswordKey"
         private const val DISCRIMINATOR_KEY = "DiscriminatorKey"
-        
+    
+        fun getID(context: Context): Int {
+            val sharedPrefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+            return sharedPrefs.getInt(ID_KEY, 0)
+        }
+        fun setID(context: Context, id: Int){
+            val sharedPrefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+            val editor = sharedPrefs.edit()
+            editor.putInt(ID_KEY, id)
+            editor.apply()
+        }
         fun getMail(context: Context): String {
             val sharedPrefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
             return sharedPrefs.getString(MAIL_KEY, "") ?:""

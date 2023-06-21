@@ -84,7 +84,7 @@ class AnimalListActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
-        profileId = intent.getIntExtra("id", 0)
+        profileId = AppData.getID(this)
         getAnimalItemsFromAnimalIds(profileId)
         recyclerView = findViewById(R.id.animal_list_recyclerView)
         animalAdapter = AnimalAdapter(animalItems)
@@ -131,8 +131,10 @@ class AnimalListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {
-                val intent = Intent(this@AnimalListActivity, SettingsActivity::class.java)
-                intent.putExtra("id", profileId)
+                val intent: Intent = if (AppData.getDiscriminator(this@AnimalListActivity) == "shelter"){
+                    Intent(this@AnimalListActivity, EditShelterActivity::class.java)
+                } else
+                    Intent(this@AnimalListActivity, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
@@ -157,6 +159,9 @@ class AnimalListActivity : AppCompatActivity() {
             }
 
             R.id.menu_logOut -> {
+                AppData.setID(this, 0)
+                AppData.setPassword(this, "")
+                AppData.setDiscriminator(this, "")
                 val intent = Intent(this@AnimalListActivity, LoginActivity::class.java)
                 startActivity(intent)
                 true

@@ -147,9 +147,7 @@ class CreateShelterActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.cancelChanges_headerText))
                 .setMessage(getString(R.string.cancelChanges_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    val intent =
-                        Intent(this@CreateShelterActivity, RegisterAccountActivity::class.java)
-                    startActivity(intent)
+                    finish()
                     dialog.dismiss()
                 }
                 .setNegativeButton(getString(R.string.no_dialogText)) { dialog, _ ->

@@ -73,7 +73,7 @@ class MatchActivity : AppCompatActivity() {
         }
 
         
-        profileId = intent.getIntExtra("id", 0)
+        profileId = AppData.getID(this)
         animalId = intent.getIntExtra("animal_id", 0)
         
         chatBtn = findViewById(R.id.chat_btn2)
@@ -143,8 +143,10 @@ class MatchActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {
-                val intent = Intent(this@MatchActivity, SettingsActivity::class.java)
-                intent.putExtra("id", profileId)
+                val intent: Intent = if (AppData.getDiscriminator(this@MatchActivity) == "shelter"){
+                    Intent(this@MatchActivity, EditShelterActivity::class.java)
+                } else
+                    Intent(this@MatchActivity, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
@@ -169,6 +171,9 @@ class MatchActivity : AppCompatActivity() {
             }
             
             R.id.menu_logOut -> {
+                AppData.setID(this, 0)
+                AppData.setPassword(this, "")
+                AppData.setDiscriminator(this, "")
                 val intent = Intent(this@MatchActivity, LoginActivity::class.java)
                 startActivity(intent)
                 true

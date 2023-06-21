@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
+import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
 
 
@@ -46,7 +47,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        id = intent.getIntExtra("id", 0)
+        id = AppData.getID(this)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         datePickerFragment = DatePickerFragment(this.getString(R.string.de_dateFormat), this)
@@ -83,9 +84,7 @@ class SettingsActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.cancelChanges_headerText))
                 .setMessage(getString(R.string.cancelChanges_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    val intent = Intent(this@SettingsActivity, MatchActivity::class.java)
-                    intent.putExtra("id", id)
-                    startActivity(intent)
+                    finish()
                     dialog.dismiss()
                 }
                 .setNegativeButton(getString(R.string.no_dialogText)) { dialog, _ ->

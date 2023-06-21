@@ -79,7 +79,10 @@ class ChatActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {
-                val intent = Intent(this@ChatActivity, SettingsActivity::class.java)
+                val intent: Intent = if (AppData.getDiscriminator(this@ChatActivity) == "shelter"){
+                    Intent(this@ChatActivity, EditShelterActivity::class.java)
+                } else
+                    Intent(this@ChatActivity, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
@@ -100,6 +103,9 @@ class ChatActivity : AppCompatActivity() {
                 true
             }
             R.id.menu_logOut -> {
+                AppData.setID(this, 0)
+                AppData.setPassword(this, "")
+                AppData.setDiscriminator(this, "")
                 val intent = Intent(this@ChatActivity, LoginActivity::class.java)
                 startActivity(intent)
                 true
