@@ -67,23 +67,7 @@ class MatchActivity : AppCompatActivity() {
         }
 
         likeBtn.setOnClickListener {
-            Toast.makeText(
-                this,
-                AppData.getMail(this@MatchActivity),
-                Toast.LENGTH_SHORT
-            ).show()
-            Toast.makeText(
-                this,
-                AppData.getPassword(this@MatchActivity),
-                Toast.LENGTH_SHORT
-            ).show()
-            Toast.makeText(
-                this,
-                AppData.getDiscriminator(this@MatchActivity),
-                Toast.LENGTH_SHORT
-            ).show()
-
-
+            
             likeAnimal(profileId, animalId)
 
         }
