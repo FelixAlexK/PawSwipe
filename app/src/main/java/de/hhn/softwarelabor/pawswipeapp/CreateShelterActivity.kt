@@ -12,6 +12,8 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +29,7 @@ private const val COUNTRY = "de"
  */
 class CreateShelterActivity : AppCompatActivity() {
 
+    private lateinit var scrollView: ScrollView
     private lateinit var profileApi: ProfileApi
     private lateinit var shelterNameEditText: EditText
     private lateinit var homepageEditText: EditText
@@ -54,6 +57,7 @@ class CreateShelterActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         profileApi = ProfileApi()
 
+        scrollView = findViewById(R.id.createShelterScrollView)
         shelterNameEditText = findViewById(R.id.shelterEditText)
         homepageEditText = findViewById(R.id.homepageEditText)
         postalCodeEditText = findViewById(R.id.plzEditText)
@@ -76,12 +80,12 @@ class CreateShelterActivity : AppCompatActivity() {
 
             
             if ( // Check if the required Fields are empty
-                checkEmpty(shelterNameEditText.text.toString()) ||
-                checkEmpty(phoneNumberEditText.text.toString()) ||
-                checkEmpty(postalCodeEditText.text.toString()) ||
-                checkEmpty(shelterCityEditText.text.toString()) ||
-                checkEmpty(streetEditText.text.toString()) ||
-                checkEmpty(streetNumberEditText.text.toString())
+                checkTextviewEmpty(shelterNameEditText) ||
+                checkTextviewEmpty(phoneNumberEditText) ||
+                checkTextviewEmpty(postalCodeEditText) ||
+                checkTextviewEmpty(shelterCityEditText) ||
+                checkTextviewEmpty(streetEditText) ||
+                checkTextviewEmpty(streetNumberEditText)
             ){
                 Toast.makeText(
                     this@CreateShelterActivity,
@@ -186,10 +190,14 @@ class CreateShelterActivity : AppCompatActivity() {
      */
     
     // Checks if the given String is empty or only spaces.
-    private fun checkEmpty(string: String) : Boolean {
-        val newString = string.replace(" ", "")
-        if (newString == "")
+    private fun checkTextviewEmpty(v: TextView) : Boolean {
+        val newString = v.text.toString().replace(" ", "")
+        if (newString == ""){
+            v.error = "Bitte Ausfüllen"
+            v.requestFocus()
+            scrollView.requestChildFocus(v,v)
             return true
+        }
         return false
     }
     
