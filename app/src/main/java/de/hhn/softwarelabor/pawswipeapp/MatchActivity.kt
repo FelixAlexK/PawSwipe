@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
@@ -18,9 +19,12 @@ import com.yuyakaido.android.cardstackview.CardStackLayoutManager
 import com.yuyakaido.android.cardstackview.CardStackListener
 import com.yuyakaido.android.cardstackview.CardStackView
 import com.yuyakaido.android.cardstackview.Direction
+import com.yuyakaido.android.cardstackview.Duration
 import com.yuyakaido.android.cardstackview.StackFrom
+import com.yuyakaido.android.cardstackview.SwipeAnimationSetting
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AppData
+
 
 /**
  * Match activity is an activity for displaying and interacting with animal profiles.
@@ -42,8 +46,9 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     
     private var backPressedOnce = false
     private val timerDuration = 3000 // 3 Sekunden
-
+    
     private val latLongUtil = LatLongUtil(this)
+    
     
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
@@ -66,12 +71,15 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         
     }
     
-    
+    override fun onResume() {
+        super.onResume()
+        profileId = AppData.getID(this@MatchActivity)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
         
-        val cardStackView: CardStackView  = findViewById(R.id.matchCardStackView)
+        val cardStackView: CardStackView = findViewById(R.id.matchCardStackView)
         
         val testData = listOf("Card 1", "Card 2", "Card 3")
         
@@ -84,24 +92,20 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         //cardStackView.swipe()
         //cardStackView.rewind()
         
-/*
-        val layoutParams = cardStackView.layoutParams as ConstraintLayout.LayoutParams
-        val size = resources.displayMetrics.widthPixels
-        layoutParams.width = size
-        layoutParams.height = size
-        cardStackView.layoutParams = layoutParams
-        */
-        
-        
-        
-        
+        /*
+                val layoutParams = cardStackView.layoutParams as ConstraintLayout.LayoutParams
+                val size = resources.displayMetrics.widthPixels
+                layoutParams.width = size
+                layoutParams.height = size
+                cardStackView.layoutParams = layoutParams
+                */
         
         
         // If a bug brings a Shelter to the Match Activity, it closes the Activity
-        if (AppData.getDiscriminator(this@MatchActivity) == "shelter"){
+        if (AppData.getDiscriminator(this@MatchActivity) == "shelter") {
             finish()
         }
-
+        
         
         profileId = AppData.getID(this)
         animalId = intent.getIntExtra("animal_id", 0)
@@ -112,8 +116,8 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         dislikeBtn = findViewById(R.id.dislike_button)
         matchBtn = findViewById(R.id.matching_btn2)
         imageList = ArrayList()
-    
-        if(AppData.getDiscriminator(this@MatchActivity) == "shelter"){
+        
+        if (AppData.getDiscriminator(this@MatchActivity) == "shelter") {
             matchBtn.isClickable = false
             matchBtn.setBackgroundColor(Color.TRANSPARENT)
             matchBtn.background = null
@@ -131,13 +135,23 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         }
         
         likeBtn.setOnClickListener {
-            
-            likeAnimal(profileId, animalId)
-            
+            val swipeAnimationSetting = SwipeAnimationSetting.Builder()
+                .setDirection(Direction.Right)
+                .setDuration(Duration.Normal.duration)
+                .setInterpolator(AccelerateInterpolator())
+                .build()
+            layoutManager.setSwipeAnimationSetting(swipeAnimationSetting)
+            cardStackView.swipe()
         }
         
         dislikeBtn.setOnClickListener {
-            //TODO(Swipe action on click)
+            val swipeAnimationSetting = SwipeAnimationSetting.Builder()
+                .setDirection(Direction.Left)
+                .setDuration(Duration.Normal.duration)
+                .setInterpolator(AccelerateInterpolator())
+                .build()
+            layoutManager.setSwipeAnimationSetting(swipeAnimationSetting)
+            cardStackView.swipe()
         }
         
         imageList = imageList + R.drawable.pixabay_cute_cat
@@ -170,10 +184,11 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {
-                val intent: Intent = if (AppData.getDiscriminator(this@MatchActivity) == "shelter"){
-                    Intent(this@MatchActivity, EditShelterActivity::class.java)
-                } else
-                    Intent(this@MatchActivity, SettingsActivity::class.java)
+                val intent: Intent =
+                    if (AppData.getDiscriminator(this@MatchActivity) == "shelter") {
+                        Intent(this@MatchActivity, EditShelterActivity::class.java)
+                    } else
+                        Intent(this@MatchActivity, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
@@ -239,7 +254,25 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
             
         }
     }
+    
     /** -------------------------------------------------------------------------------------- */
+    private fun dislikeAnimal(profileId: Int, animalId: Int) {
+        likeApi.dislikeAnimal(profileId, animalId) { response, error ->
+            runOnUiThread {
+                if (error != null) {
+                    Toast.makeText(
+                        this@MatchActivity,
+                        getString(R.string.like_error_text),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else if (response?.isSuccessful == true) {
+                    Log.i("PawSwipe", "Succesfully Disliked")
+                }
+            }
+            
+        }
+    }
+    
     fun findLatLongForGivenAddress(address: String): Pair<Double, Double>? {
         return latLongUtil.getLatLongFromAddress(address)
     }
@@ -248,19 +281,26 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     }
     
     override fun onCardSwiped(direction: Direction?) {
-        when (direction){
+        when (direction) {
             Direction.Left -> {
-                Toast.makeText(this@MatchActivity,
+                Toast.makeText(
+                    this@MatchActivity,
                     "Swiped Left",
                     Toast.LENGTH_SHORT
                 ).show()
+                dislikeAnimal(profileId, 2)
             }
+            
             Direction.Right -> {
-                Toast.makeText(this@MatchActivity,
+                Toast.makeText(
+                    this@MatchActivity,
                     "Swiped Right",
                     Toast.LENGTH_SHORT
                 ).show()
+                likeAnimal(profileId, 2)
+                
             }
+            
             else -> {
                 // Swiped to the Wrong way
             }
