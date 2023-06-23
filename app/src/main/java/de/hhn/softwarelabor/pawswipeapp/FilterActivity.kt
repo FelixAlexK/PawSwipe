@@ -1,7 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -11,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
 
 class FilterActivity : AppCompatActivity() {
 
@@ -43,8 +43,7 @@ class FilterActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.cancelChanges_headerText))
                 .setMessage(getString(R.string.cancelChanges_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    val intent = Intent(this@FilterActivity, ChatActivity::class.java)
-                    startActivity(intent)
+                    finish()
                     dialog.dismiss()
                 }
                 .setNegativeButton(getString(R.string.no_dialogText)) { dialog, _ ->
@@ -59,8 +58,7 @@ class FilterActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.saveChanges_headerText))
                 .setMessage(getString(R.string.saveChanges_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    val intent = Intent(this@FilterActivity, ChatActivity::class.java)
-                    startActivity(intent)
+                    finish()
                     dialog.dismiss()
                 }
                 .setNegativeButton(getString(R.string.no_dialogText)) { dialog, _ ->
@@ -187,7 +185,7 @@ class FilterActivity : AppCompatActivity() {
             speciesSpinner.setSelection(0)
             breedSpinner.setSelection(0)
             genderSpinner.setSelection(0)
-            petBirthdayButton.text = "Geburtstag"
+            petBirthdayButton.setText(R.string.birthday_text)
             petColorEditText.setText("")
             petIllnessEditText.setText("")
         }

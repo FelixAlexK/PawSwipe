@@ -33,6 +33,7 @@
         app:layout_constraintVertical_bias="0.025" />
 
     <ScrollView
+        android:id="@+id/createShelterScrollView"
         android:layout_width="409dp"
         android:layout_height="0dp"
         android:layout_marginStart="1dp"
@@ -40,7 +41,9 @@
         app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        android:fadeScrollbars="false"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,14 +56,13 @@
 
                 <ImageView
                     android:id="@+id/pictureView"
-                    android:layout_width="138dp"
-                    android:layout_height="102dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:srcCompat="@tools:sample/avatars" />

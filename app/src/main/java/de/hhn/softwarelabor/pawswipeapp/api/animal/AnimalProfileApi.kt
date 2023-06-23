@@ -3,7 +3,6 @@ package de.hhn.softwarelabor.pawswipeapp.api.animal
 import android.content.ContentValues
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import de.hhn.softwarelabor.pawswipeapp.api.data.AnimalProfileData
 import de.hhn.softwarelabor.pawswipeapp.api.data.ProfileData
 import okhttp3.Call
@@ -35,11 +34,11 @@ class AnimalProfileApi : AnimalProfileInterface {
         breed: String?,
         color: String?,
         gender: String?,
-        picture_one: Array<Byte>?,
-        picture_two: Array<Byte>?,
-        picture_three: Array<Byte>?,
-        picture_four: Array<Byte>?,
-        picture_five: Array<Byte>?,
+        picture_one: String?,
+        picture_two: String?,
+        picture_three: String?,
+        picture_four: String?,
+        picture_five: String?,
         profile_id: ProfileData,
         callback: (Int?, Throwable?) -> Unit
     ) {
@@ -109,7 +108,7 @@ class AnimalProfileApi : AnimalProfileInterface {
         }
     }
 
-    override fun getAnimalProfileByID(id: Int, callback: (JsonObject?, Throwable?) -> Unit) {
+    override fun getAnimalProfileByID(id: Int, callback: (AnimalProfileData?, Throwable?) -> Unit) {
         val request = Request.Builder()
             .url("$BASE_URL/id/$id")
             .get()
@@ -126,7 +125,8 @@ class AnimalProfileApi : AnimalProfileInterface {
                     val responseBody = response.body?.string()
                     if(response.isSuccessful && responseBody != null){
 
-                        val jsonObject = Gson().fromJson(responseBody, JsonObject::class.java)
+                        val jsonObject =
+                            Gson().fromJson(responseBody, AnimalProfileData::class.java)
                         callback(jsonObject, null)
                     }else {
                         callback(null, Exception("Error fetching IDs"))

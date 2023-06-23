@@ -41,7 +41,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom">
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
+        android:fadeScrollbars="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -144,7 +145,7 @@
                     android:layout_marginBottom="8dp"
                     android:importantForAutofill="no"
                     android:minHeight="48dp"
-                    android:text="@string/birthday_tv"
+                    android:text="@string/birthday_text"
                     android:textAlignment="viewStart"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/material_dynamic_neutral40"

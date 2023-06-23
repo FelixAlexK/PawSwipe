@@ -7,9 +7,12 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
+import de.hhn.softwarelabor.pawswipeapp.utils.AppData
+import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -29,6 +32,8 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var streetNrEditText: EditText
     private lateinit var descriptionEditText: EditText
 
+    private lateinit var userProfileImageView: ImageView
+
 
     private lateinit var datePickerFragment: DatePickerFragment
 
@@ -42,7 +47,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        id = intent.getIntExtra("id", 0)
+        id = AppData.getID(this)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         datePickerFragment = DatePickerFragment(this.getString(R.string.de_dateFormat), this)
@@ -51,36 +56,27 @@ class SettingsActivity : AppCompatActivity() {
         saveButton = findViewById(R.id.save_btn)
         deleteUserButton = findViewById(R.id.deleteUserProfile)
 
-
         userBirthdayButton = findViewById(R.id.userBirthdayButton)
 
         emailEditText = findViewById(R.id.emailEditText)
 
-
         userNameEditText = findViewById(R.id.userNameEditText)
-
 
         firstNameEditText = findViewById(R.id.firstNameEditText)
 
-
         lastNameEditText = findViewById(R.id.nameEditText)
-
 
         cityEditText = findViewById(R.id.addressEditText)
 
-
         postalCodeEditText = findViewById(R.id.postalAddressEditText)
-
 
         streetEditText = findViewById(R.id.streetEditText)
 
-
         streetNrEditText = findViewById(R.id.houseNumberEditText)
-
 
         descriptionEditText = findViewById(R.id.userDescriptionMultiLineText)
 
-
+        userProfileImageView = findViewById(R.id.userProfileImageView)
 
 
         cancelButton.setOnClickListener {
@@ -88,9 +84,7 @@ class SettingsActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.cancelChanges_headerText))
                 .setMessage(getString(R.string.cancelChanges_messageText))
                 .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    val intent = Intent(this@SettingsActivity, MatchActivity::class.java)
-                    intent.putExtra("id", id)
-                    startActivity(intent)
+                    finish()
                     dialog.dismiss()
                 }
                 .setNegativeButton(getString(R.string.no_dialogText)) { dialog, _ ->
@@ -101,7 +95,7 @@ class SettingsActivity : AppCompatActivity() {
 
         saveButton.setOnClickListener {
 
-            if (userBirthdayButton.text != this.getString(R.string.birthday_tv)) {
+            if (userBirthdayButton.text != this.getString(R.string.birthday_text)) {
                 val birthDayString =
                     datePickerFragment.convertDateToServerCompatibleDate(userBirthdayButton.text.toString())
                 birthDayString?.let { setMap("birthday", it) }
