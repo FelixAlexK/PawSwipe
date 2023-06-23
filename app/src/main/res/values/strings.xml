@@ -118,5 +118,8 @@
     <string name="pflichtfelder">* Pflichtfelder</string>
     <string name="like_error_text">Aktion konnte nicht ausgeführt werden</string>
     <string name="zum_beenden_der_app">Zum Beenden der App erneut \"Zurück\" drücken.</string>
+    <string name="shelter_no_animals_text">Keine Tiere erstellt</string>
+    <string name="profile_no_animals_liked_text">Keine Tiere als \'Gefällt mir\' markiert</string>
+    <string name="animal_without_name_text">namenlos</string>
 
 </resources>
