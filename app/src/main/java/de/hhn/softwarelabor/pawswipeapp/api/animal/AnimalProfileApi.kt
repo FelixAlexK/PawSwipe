@@ -43,6 +43,7 @@ class AnimalProfileApi : AnimalProfileInterface {
         callback: (Int?, Throwable?) -> Unit
     ) {
         val animalProfileData = AnimalProfileData(
+            null,
             name, species, birthday, illness, description, breed, color, gender, picture_one,
             picture_two, picture_three, picture_four, picture_five, profile_id
         )
