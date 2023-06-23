@@ -40,6 +40,8 @@ class MatchActivity : AppCompatActivity() {
     
     private var backPressedOnce = false
     private val timerDuration = 3000 // 3 Sekunden
+
+    private val latLongUtil = LatLongUtil(this)
     
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
@@ -211,7 +213,25 @@ class MatchActivity : AppCompatActivity() {
             }
             
         }
-        
     }
+    /** -------------------------------------------------------------------------------------- */
+    fun findLatLongForGivenAddress(address: String): Pair<Double, Double>? {
+        return latLongUtil.getLatLongFromAddress(address)
+    }
+
+
+    // Example:
+    // val address = "1600 Amphitheatre Parkway, Mountain View, CA"
+    /*
+    fun convertAdressInputToOneAdress() {
+        // street: String?,
+        // country: String?,
+        // city: String?,
+        // street_number: String?,
+        // postal_code: String?, - Postleitzahl
+        val profileAPI = ProfileApi()
+        val adressList = profileAPI.getUserProfileByID(this)
+    }
+     */
 }
 
