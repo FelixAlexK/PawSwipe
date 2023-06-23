@@ -50,7 +50,6 @@ class AnimalListActivity : AppCompatActivity() {
     private lateinit var detailedAnimalSpecies: TextView
     private lateinit var detailedAnimalBirthday: TextView
     private lateinit var detailedAnimalPreExistingIllness: TextView
-    private lateinit var detailedAnimalDescription: TextView
     private lateinit var detailedAnimalColor: TextView
     private lateinit var detailedAnimalGender: TextView
     private lateinit var detailedShelterPhone: TextView
@@ -87,8 +86,6 @@ class AnimalListActivity : AppCompatActivity() {
             detailedAnimalPicture = customLayout.findViewById(R.id.detailedAnimalPicture_imageView)
             detailedAnimalBreed = customLayout.findViewById(R.id.detailedAnimalBreed_textView)
             detailedAnimalBirthday = customLayout.findViewById(R.id.detailedAnimalBirthday_textView)
-            detailedAnimalDescription =
-                customLayout.findViewById(R.id.detailedAnimalDescription_textView)
             detailedAnimalSpecies = customLayout.findViewById(R.id.detailedAnimalSpecies_textView)
             detailedAnimalPreExistingIllness =
                 customLayout.findViewById(R.id.detailedAnimalPreExistingIllness_textView)
@@ -112,16 +109,14 @@ class AnimalListActivity : AppCompatActivity() {
             detailedAnimalColor.text = item.animalColor
             detailedAnimalPreExistingIllness.text = item.animalPreExistingIllness
 
-            detailedAnimalDescription.text = item.animalDescription
-
-
             detailedAnimalBirthday.text = item.animalBirthday
             if (AppData.getDiscriminator(this) == DISCRIMINATOR_SHELTER) {
                 detailedShelterPhone.visibility = View.GONE
                 detailedShelterEmail.visibility = View.GONE
             } else {
                 detailedShelterEmail.text = item.shelterEmail
-                detailedShelterPhone.text = "(+49) ${item.shelterPhone}"
+                detailedShelterPhone.text =
+                    getString(R.string.detailed_shelter_phone_text, item.shelterPhone)
             }
 
 
