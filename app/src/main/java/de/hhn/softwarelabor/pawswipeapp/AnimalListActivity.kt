@@ -53,6 +53,8 @@ class AnimalListActivity : AppCompatActivity() {
     private lateinit var detailedAnimalDescription: TextView
     private lateinit var detailedAnimalColor: TextView
     private lateinit var detailedAnimalGender: TextView
+    private lateinit var detailedShelterPhone: TextView
+    private lateinit var detailedShelterEmail: TextView
 
 
     private var animalItems: ArrayList<AnimalItem> = ArrayList()
@@ -92,6 +94,11 @@ class AnimalListActivity : AppCompatActivity() {
                 customLayout.findViewById(R.id.detailedAnimalPreExistingIllness_textView)
             detailedAnimalColor = customLayout.findViewById(R.id.detailedAnimalColor_textView)
             detailedAnimalGender = customLayout.findViewById(R.id.detailedAnimalGender_textView)
+            detailedShelterPhone = customLayout.findViewById(R.id.detailedAnimalPhone_textView)
+            detailedShelterEmail = customLayout.findViewById(R.id.detailedAnimalEmail_textView)
+
+
+
 
             detailedAnimalName.text = item.animalName
             detailedAnimalPicture.setImageBitmap(item.imageResId?.let {
@@ -104,8 +111,18 @@ class AnimalListActivity : AppCompatActivity() {
             detailedAnimalGender.text = item.animalGender
             detailedAnimalColor.text = item.animalColor
             detailedAnimalPreExistingIllness.text = item.animalPreExistingIllness
+
             detailedAnimalDescription.text = item.animalDescription
+
+
             detailedAnimalBirthday.text = item.animalBirthday
+            if (AppData.getDiscriminator(this) == DISCRIMINATOR_SHELTER) {
+                detailedShelterPhone.visibility = View.GONE
+                detailedShelterEmail.visibility = View.GONE
+            } else {
+                detailedShelterEmail.text = item.shelterEmail
+                detailedShelterPhone.text = "(+49) ${item.shelterPhone}"
+            }
 
 
             val builder = AlertDialog.Builder(this, R.style.CustomDialogTheme)
@@ -303,6 +320,9 @@ class AnimalListActivity : AppCompatActivity() {
                                     if (response?.color.isNullOrEmpty()) "n.a." else response?.color,
                                     response?.gender,
                                     response?.description,
+                                    response?.profile_id?.phone_number,
+                                    response?.profile_id?.email
+
                                 )
                                 animalAdapter.addItem(item)
 
@@ -368,6 +388,8 @@ class AnimalListActivity : AppCompatActivity() {
                                         if (profile.color.isNullOrEmpty()) "n.a." else profile.color,
                                         profile.gender,
                                         profile.description,
+                                        null,
+                                        null
                                     )
                                     animalAdapter.addItem(item)
 
