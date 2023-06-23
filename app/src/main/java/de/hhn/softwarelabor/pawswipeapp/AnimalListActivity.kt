@@ -10,9 +10,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +44,17 @@ class AnimalListActivity : AppCompatActivity() {
     private lateinit var chatBtn: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var animalAdapter: AnimalAdapter
+    private lateinit var detailedAnimalName: TextView
+    private lateinit var detailedAnimalPicture: ImageView
+    private lateinit var detailedAnimalBreed: TextView
+    private lateinit var detailedAnimalSpecies: TextView
+    private lateinit var detailedAnimalBirthday: TextView
+    private lateinit var detailedAnimalPreExistingIllness: TextView
+    private lateinit var detailedAnimalDescription: TextView
+    private lateinit var detailedAnimalColor: TextView
+    private lateinit var detailedAnimalGender: TextView
+
+
     private var animalItems: ArrayList<AnimalItem> = ArrayList()
     private var profileId: Int = 0
 
@@ -58,13 +71,59 @@ class AnimalListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_animal_list)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        matchBtn = findViewById(R.id.matching_btn3)
+        chatBtn = findViewById(R.id.chat_btn3)
+        recyclerView = findViewById(R.id.animal_list_recyclerView)
+
+
+        profileId = AppData.getID(this)
 
         val animalItemClick: (AnimalItem) -> Unit = { item ->
-            val intent = Intent(this, ChatActivity::class.java)
-            intent.putExtra("animal_id", item.animalID)
-            // Fügen Sie hier weitere Informationen hinzu, die Sie an die neue Activity übergeben möchten
-            startActivity(intent)
+            val customLayout =
+                layoutInflater.inflate(R.layout.activity_detailed_animal_profile, null)
+            detailedAnimalName = customLayout.findViewById(R.id.detailedAnimalName_textView)
+            detailedAnimalPicture = customLayout.findViewById(R.id.detailedAnimalPicture_imageView)
+            detailedAnimalBreed = customLayout.findViewById(R.id.detailedAnimalBreed_textView)
+            detailedAnimalBirthday = customLayout.findViewById(R.id.detailedAnimalBirthday_textView)
+            detailedAnimalDescription =
+                customLayout.findViewById(R.id.detailedAnimalDescription_textView)
+            detailedAnimalSpecies = customLayout.findViewById(R.id.detailedAnimalSpecies_textView)
+            detailedAnimalPreExistingIllness =
+                customLayout.findViewById(R.id.detailedAnimalPreExistingIllness_textView)
+            detailedAnimalColor = customLayout.findViewById(R.id.detailedAnimalColor_textView)
+            detailedAnimalGender = customLayout.findViewById(R.id.detailedAnimalGender_textView)
+
+            detailedAnimalName.text = item.animalName
+            detailedAnimalPicture.setImageBitmap(item.imageResId?.let {
+                BitmapScaler.scaleToFitWidth(
+                    it, 750
+                )
+            })
+            detailedAnimalSpecies.text = item.animalSpecies
+            detailedAnimalBreed.text = item.animalBreed
+            detailedAnimalGender.text = item.animalGender
+            detailedAnimalColor.text = item.animalColor
+            detailedAnimalPreExistingIllness.text = item.animalPreExistingIllness
+            detailedAnimalDescription.text = item.animalDescription
+            detailedAnimalBirthday.text = item.animalBirthday
+
+
+            val builder = AlertDialog.Builder(this, R.style.CustomDialogTheme)
+            builder.setView(customLayout)
+
+            val dialog: AlertDialog = builder.create()
+
+
+            dialog.show()
+
+
         }
+
+        animalAdapter = AnimalAdapter(animalItems, animalItemClick, this@AnimalListActivity)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = animalAdapter
+
+
 
         onBackPressedDispatcher.addCallback(
             this /* lifecycle owner */,
@@ -91,16 +150,6 @@ class AnimalListActivity : AppCompatActivity() {
 
 
 
-        profileId = AppData.getID(this)
-
-
-
-        recyclerView = findViewById(R.id.animal_list_recyclerView)
-        animalAdapter = AnimalAdapter(animalItems, animalItemClick, this@AnimalListActivity)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = animalAdapter
-        matchBtn = findViewById(R.id.matching_btn3)
-        chatBtn = findViewById(R.id.chat_btn3)
 
 
         if (AppData.getDiscriminator(this@AnimalListActivity) == DISCRIMINATOR_SHELTER) {
@@ -248,7 +297,12 @@ class AnimalListActivity : AppCompatActivity() {
                                     },
                                     response?.name,
                                     response?.species,
-                                    response?.breed
+                                    response?.breed,
+                                    response?.birthday,
+                                    response?.illness,
+                                    if (response?.color.isNullOrEmpty()) "n.a." else response?.color,
+                                    response?.gender,
+                                    response?.description,
                                 )
                                 animalAdapter.addItem(item)
 
@@ -308,7 +362,12 @@ class AnimalListActivity : AppCompatActivity() {
                                         },
                                         profile.name,
                                         profile.species,
-                                        profile.breed
+                                        profile.breed,
+                                        profile.birthday,
+                                        profile.illness,
+                                        if (profile.color.isNullOrEmpty()) "n.a." else profile.color,
+                                        profile.gender,
+                                        profile.description,
                                     )
                                     animalAdapter.addItem(item)
 
