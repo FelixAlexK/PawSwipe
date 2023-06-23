@@ -59,6 +59,13 @@ class AnimalListActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
+        val animalItemClick: (AnimalItem) -> Unit = { item ->
+            val intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra("animal_id", item.animalID)
+            // Fügen Sie hier weitere Informationen hinzu, die Sie an die neue Activity übergeben möchten
+            startActivity(intent)
+        }
+
         onBackPressedDispatcher.addCallback(
             this /* lifecycle owner */,
             object : OnBackPressedCallback(true) {
@@ -89,7 +96,7 @@ class AnimalListActivity : AppCompatActivity() {
 
 
         recyclerView = findViewById(R.id.animal_list_recyclerView)
-        animalAdapter = AnimalAdapter(animalItems, this@AnimalListActivity)
+        animalAdapter = AnimalAdapter(animalItems, animalItemClick, this@AnimalListActivity)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = animalAdapter
         matchBtn = findViewById(R.id.matching_btn3)

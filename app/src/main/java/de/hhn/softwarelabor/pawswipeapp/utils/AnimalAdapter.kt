@@ -14,7 +14,11 @@ import de.hhn.softwarelabor.pawswipeapp.R
  *
  * @author Felix Kuhbier
  */
-class AnimalAdapter(private val animalItems: ArrayList<AnimalItem>, private val context: Context) :
+class AnimalAdapter(
+    private val animalItems: ArrayList<AnimalItem>,
+    private val onItemClick: (AnimalItem) -> Unit,
+    private val context: Context
+) :
     RecyclerView.Adapter<AnimalViewHolder>() {
 
     /**
@@ -47,6 +51,10 @@ class AnimalAdapter(private val animalItems: ArrayList<AnimalItem>, private val 
      * @param position The position of the item within the adapter's data set.
      */
     override fun onBindViewHolder(holder: AnimalViewHolder, position: Int) {
+        val item = animalItems[position]
+        holder.itemView.setOnClickListener {
+            onItemClick(item)
+        }
         holder.bind(animalItems[position])
     }
 
