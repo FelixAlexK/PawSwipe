@@ -1,5 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp.utils
 
+import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,7 +16,8 @@ import de.hhn.softwarelabor.pawswipeapp.R
  *
  * @author Felix Kuhbier
  */
-class AnimalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class AnimalViewHolder(itemView: View, private val context: Context) :
+    RecyclerView.ViewHolder(itemView) {
     private val imageView: ImageView = itemView.findViewById(R.id.animal_item_imageView)
     private val nameTextView: TextView = itemView.findViewById(R.id.animal_item_name_textView)
     private val breedTextView: TextView = itemView.findViewById(R.id.animal_item_breed_textView)
@@ -28,7 +30,8 @@ class AnimalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      */
     fun bind(item: AnimalItem) {
         item.imageResId?.let { imageView.setImageBitmap(it) }
-        nameTextView.text = item.animalName
+        nameTextView.text =
+            if (item.animalName.isNullOrEmpty()) context.getString(R.string.animal_without_name_text) else item.animalName
         breedTextView.text = item.animalBreed
         speciesTextView.text = item.animalSpecies
     }
