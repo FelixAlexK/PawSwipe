@@ -13,7 +13,9 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
@@ -29,12 +31,6 @@ import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
  * AnimalListActivity is an AppCompatActivity that displays a list of liked animals.
  * @author Felix Kuhbier & Leo Kalmbach
  *
- * @property matchBtn Button to navigate to the MatchActivity.
- * @property chatBtn Button to navigate to the ChatActivity.
- * @property recyclerView RecyclerView that displays the list of liked animals.
- * @property animalAdapter AnimalAdapter for managing the list of liked animals in the RecyclerView.
- * @property animalItems ArrayList of AnimalItem objects representing the liked animals.
- * @property profileId Integer representing the profile ID of the current user.
  */
 
 private const val BITMAP_WIDTH = 250
@@ -51,27 +47,7 @@ class AnimalListActivity : AppCompatActivity() {
     
     private var backPressedOnce = false
     private val timerDuration = 3000 // 3 Sekunden
-    
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        
-        if (backPressedOnce) {
-            finishAffinity()    // Beendet alle Activities und die App
-            return
-        }
-        
-        backPressedOnce = true
-        Toast.makeText(
-            this,
-            getString(R.string.zum_beenden_der_app),
-            Toast.LENGTH_SHORT
-        ).show()
-        
-        Handler(Looper.getMainLooper()).postDelayed({
-            backPressedOnce = false
-        }, timerDuration.toLong())
-        
-    }
+
 
     /**
      * Initializes the activity, sets up the UI and loads the liked animals.
@@ -80,7 +56,28 @@ class AnimalListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_list)
 
-        
+        onBackPressedDispatcher.addCallback(
+            this /* lifecycle owner */,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (backPressedOnce) {
+                        finishAffinity(this@AnimalListActivity) // Beendet alle Activities und die App
+                        return
+                    }
+
+                    backPressedOnce = true
+                    Toast.makeText(
+                        this@AnimalListActivity,
+                        getString(R.string.zum_beenden_der_app),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        backPressedOnce = false
+                    }, timerDuration.toLong())
+                }
+            })
+
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
