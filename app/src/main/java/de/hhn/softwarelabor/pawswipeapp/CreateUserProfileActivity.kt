@@ -14,6 +14,8 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -37,7 +39,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
     private lateinit var datePickerFragment: DatePickerFragment
 
     private var profileApi: ProfileApi = ProfileApi()
-
+    private lateinit var scrollView: ScrollView
     private lateinit var firstNameEditText: EditText
     private lateinit var nameEditText: EditText
     private lateinit var birthdateButton: Button
@@ -51,12 +53,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
     private lateinit var streetEditText: EditText
     private lateinit var streetNrEditText: EditText
 
-    private fun checkEmpty(string: String): Boolean {
-        val newString = string.replace(" ", "")
-        if (newString == "")
-            return true
-        return false
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +73,7 @@ class CreateUserProfileActivity : AppCompatActivity() {
             birthdateButton.text = date
         }
 
+        scrollView = findViewById(R.id.createProfileScrollView)
         firstNameEditText = findViewById(R.id.prenameEditText)
         nameEditText = findViewById(R.id.nameEditText)
         birthdateButton = findViewById(R.id.userBirthdayButton)
@@ -102,9 +100,9 @@ class CreateUserProfileActivity : AppCompatActivity() {
 
 
             if (
-                checkEmpty(usernameEditText.text.toString()) ||
-                checkEmpty(firstNameEditText.text.toString()) ||
-                checkEmpty(nameEditText.text.toString()) ||
+                checkTVEmpty(usernameEditText) ||
+                checkTVEmpty(firstNameEditText) ||
+                checkTVEmpty(nameEditText) ||
                 birthdateButton.text.toString() == resources.getString(R.string.birthday_text)
             ) {
                 Toast.makeText(
@@ -205,6 +203,16 @@ class CreateUserProfileActivity : AppCompatActivity() {
             pickImageLauncher.launch(intent)
         }
 
+    }
+    
+    private fun checkTVEmpty(v: TextView): Boolean {
+        val newString = v.text.toString().replace(" ", "")
+        if (newString == ""){
+            v.error = "Bitte Ausfüllen"
+            scrollView.requestChildFocus(v,v)
+            return true
+        }
+        return false
     }
 
     /**

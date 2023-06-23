@@ -33,20 +33,22 @@
         app:layout_constraintVertical_bias="0.025" />
 
     <ScrollView
+        android:id="@+id/petProfileScroll"
         android:layout_width="409dp"
         android:layout_height="460dp"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom">
+        android:fadeScrollbars="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -108,11 +110,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:minHeight="48dp"
                     android:ems="10"
+                    android:hint="@string/petName_hint"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:hint="@string/petName_hint"
+                    android:minHeight="48dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -229,6 +231,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/white"
                     android:importantForAutofill="no"
                     android:minHeight="48dp"
                     android:text="@string/birthday_text"
@@ -236,7 +239,6 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/material_dynamic_neutral40"
                     android:textSize="18sp"
-                    android:backgroundTint="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -288,12 +290,12 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="100dp"
                     android:layout_marginBottom="8dp"
-                    android:minHeight="48dp"
                     android:ems="10"
                     android:gravity="start|top"
+                    android:hint="@string/petPreExistingIllness_hint"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine"
-                    android:hint="@string/petPreExistingIllness_hint"
+                    android:minHeight="48dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -323,12 +325,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:minHeight="48dp"
                     android:ems="10"
                     android:gravity="start|top"
+                    android:hint="@string/petDescription_hint"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine"
-                    android:hint="@string/petDescription_hint"
+                    android:minHeight="48dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -18,7 +18,9 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +40,8 @@ private const val MULTILINE_TEXT_LENGTH = 255
 class PetProfileActivity : AppCompatActivity() {
 
 
+    private lateinit var scrollView: ScrollView
+    
     private lateinit var genderSpinner: Spinner
     private lateinit var speciesSpinner: Spinner
     private lateinit var breedSpinner: Spinner
@@ -66,10 +70,24 @@ class PetProfileActivity : AppCompatActivity() {
     private var birthday: String? = null
 
 
-    private fun checkEmpty(string: String) : Boolean {
-        val newString = string.replace(" ", "")
-        if (newString == "")
+    private fun checkTVEmpty(v:TextView) : Boolean {
+        val newString = v.text.toString().replace(" ", "")
+        if (newString == "" || newString == resources.getString(R.string.birthday_text)){
+            v.error = "Bitte Ausfüllen"
+            v.requestFocus()
+            scrollView.requestChildFocus(v,v)
             return true
+        }
+        return false
+    }
+    private fun checkSpinnerEmpty(v:Spinner) : Boolean {
+        if (v.selectedItem == v.getItemAtPosition(0)){
+            val errorText : TextView = v.selectedView as TextView
+            errorText.error = "Bitte Auswählen"
+            v.requestFocus()
+            scrollView.requestChildFocus(v,v)
+            return true
+        }
         return false
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,11 +102,11 @@ class PetProfileActivity : AppCompatActivity() {
         createPetButton.setOnClickListener {
             if(
                 // TODO Check for ProfilePic, after implemented the upload function
-                speciesSpinner.selectedItem == speciesSpinner.getItemAtPosition(0)
-                || breedSpinner.selectedItem.toString() == breedSpinner.getItemAtPosition(0)
-                || genderSpinner.selectedItem.toString() == genderSpinner.getItemAtPosition(0)
-                || petBirthdayButton.text.toString() == resources.getString(R.string.birthday_text)
-                || checkEmpty(petIllnessMultilineText.text.toString())
+                checkSpinnerEmpty(speciesSpinner) ||
+                checkSpinnerEmpty(breedSpinner) ||
+                checkSpinnerEmpty(genderSpinner) ||
+                checkTVEmpty(petBirthdayButton) ||
+                checkTVEmpty(petIllnessMultilineText)
             ) {
                 Toast.makeText(
                     this@PetProfileActivity,
@@ -315,6 +333,8 @@ class PetProfileActivity : AppCompatActivity() {
     private fun init() {
         try {
 
+            scrollView = findViewById(R.id.petProfileScroll)
+            
             uploadPictureButton = findViewById(R.id.addPetProfileImageButton)
             cancelPetButton = findViewById(R.id.cancel_btn)
             createPetButton = findViewById(R.id.save_btn)
