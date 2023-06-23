@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -133,13 +134,18 @@ class AnimalListActivity : AppCompatActivity() {
             }
 
 
-            val builder = AlertDialog.Builder(this, R.style.CustomDialogTheme)
+            val builder = AlertDialog.Builder(this)
             builder.setView(customLayout)
 
             val dialog: AlertDialog = builder.create()
 
 
             dialog.show()
+
+            val outerLayout: ConstraintLayout? = dialog.findViewById(R.id.outer_layout)
+            outerLayout?.setOnClickListener {
+                dialog.dismiss()
+            }
 
 
         }
