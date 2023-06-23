@@ -7,19 +7,15 @@
     android:background="@color/pawswipe_orange"
     tools:context=".MainActivity">
 
-    <TextView
+    <pl.droidsonroids.gif.GifImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:src="@drawable/paw_swipe_splash_screen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <pl.droidsonroids.gif.GifImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/paw_swipe_splash_screen"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:adjustViewBounds="true"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
