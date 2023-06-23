@@ -80,7 +80,7 @@ class AnimalProfileApi : AnimalProfileInterface {
 
     }
 
-    override fun getAllAnimalProfileIDs(callback: (List<String>?, Throwable?) -> Unit) {
+    override fun getAllAnimalProfileIDs(callback: (List<Int>?, Throwable?) -> Unit) {
         val request = Request.Builder()
             .url("$BASE_URL/all/ids")
             .get()
@@ -96,7 +96,7 @@ class AnimalProfileApi : AnimalProfileInterface {
                 override fun onResponse(call: Call, response: Response) {
                     val responseBody = response.body?.string()
                     if (response.isSuccessful && responseBody != null) {
-                        val ids = gson.fromJson(responseBody, Array<String>::class.java).toList()
+                        val ids = gson.fromJson(responseBody, Array<Int>::class.java).toList()
                         callback(ids, null)
                     } else {
                         callback(null, Exception("Error fetching IDs"))
