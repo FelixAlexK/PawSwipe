@@ -24,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
 import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
+import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
 import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
 
@@ -75,7 +76,7 @@ class PetProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pet_profil)
         init()
-        id = intent.getIntExtra("id", 0)
+        id = AppData.getID(this)
 
         datePickerFragment =
             DatePickerFragment(this.getString(R.string.de_dateFormat), this@PetProfileActivity)
@@ -140,9 +141,7 @@ class PetProfileActivity : AppCompatActivity() {
                     petIllnessMultilineText.setText("")
                     petDescriptionText.setText("")
                     petColorEditText.setText("")
-                    val intent = Intent(this@PetProfileActivity, MatchActivity::class.java)
-                    intent.putExtra("id", id)
-                    startActivity(intent)
+                    finish()
                     dialog.dismiss()
                 }
                 .setNegativeButton(getString(R.string.no_dialogText)) { dialog, _ ->
@@ -289,9 +288,7 @@ class PetProfileActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                        val intent = Intent(this@PetProfileActivity, MatchActivity::class.java)
-                        intent.putExtra("id", id)
-                        startActivity(intent)
+                        finish()
                     }
                 }
             }

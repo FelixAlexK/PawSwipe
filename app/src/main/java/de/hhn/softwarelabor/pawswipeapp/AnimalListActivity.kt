@@ -1,7 +1,10 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -17,6 +20,7 @@ import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AnimalAdapter
 import de.hhn.softwarelabor.pawswipeapp.utils.AnimalItem
+import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
 import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
 
@@ -44,6 +48,30 @@ class AnimalListActivity : AppCompatActivity() {
     private lateinit var animalAdapter: AnimalAdapter
     private var animalItems: ArrayList<AnimalItem> = ArrayList()
     private var profileId: Int = 0
+    
+    private var backPressedOnce = false
+    private val timerDuration = 3000 // 3 Sekunden
+    
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        
+        if (backPressedOnce) {
+            finishAffinity()    // Beendet alle Activities und die App
+            return
+        }
+        
+        backPressedOnce = true
+        Toast.makeText(
+            this,
+            getString(R.string.zum_beenden_der_app),
+            Toast.LENGTH_SHORT
+        ).show()
+        
+        Handler(Looper.getMainLooper()).postDelayed({
+            backPressedOnce = false
+        }, timerDuration.toLong())
+        
+    }
 
     /**
      * Initializes the activity, sets up the UI and loads the liked animals.
@@ -52,9 +80,11 @@ class AnimalListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_list)
 
+        
+
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
-        profileId = intent.getIntExtra("id", 0)
+        profileId = AppData.getID(this)
         getAnimalItemsFromAnimalIds(profileId)
         recyclerView = findViewById(R.id.animal_list_recyclerView)
         animalAdapter = AnimalAdapter(animalItems)
@@ -62,13 +92,21 @@ class AnimalListActivity : AppCompatActivity() {
         recyclerView.adapter = animalAdapter
         matchBtn = findViewById(R.id.matching_btn3)
         chatBtn = findViewById(R.id.chat_btn3)
-
-
-        matchBtn.setOnClickListener {
-            val intent = Intent(this@AnimalListActivity, MatchActivity::class.java)
-            intent.putExtra("id", profileId)
-            startActivity(intent)
+    
+    
+        if(AppData.getDiscriminator(this@AnimalListActivity) == "shelter"){
+            matchBtn.isClickable = false
+            matchBtn.setBackgroundColor(Color.TRANSPARENT)
+            matchBtn.background = null
+        } else {
+            matchBtn.setOnClickListener {
+                val intent = Intent(this@AnimalListActivity, MatchActivity::class.java)
+                intent.putExtra("id", profileId)
+                startActivity(intent)
+            }
+            
         }
+        
 
         chatBtn.setOnClickListener {
             val intent = Intent(this@AnimalListActivity, ChatActivity::class.java)
@@ -93,8 +131,10 @@ class AnimalListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {
-                val intent = Intent(this@AnimalListActivity, SettingsActivity::class.java)
-                intent.putExtra("id", profileId)
+                val intent: Intent = if (AppData.getDiscriminator(this@AnimalListActivity) == "shelter"){
+                    Intent(this@AnimalListActivity, EditShelterActivity::class.java)
+                } else
+                    Intent(this@AnimalListActivity, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
@@ -119,6 +159,9 @@ class AnimalListActivity : AppCompatActivity() {
             }
 
             R.id.menu_logOut -> {
+                AppData.setID(this, 0)
+                AppData.setPassword(this, "")
+                AppData.setDiscriminator(this, "")
                 val intent = Intent(this@AnimalListActivity, LoginActivity::class.java)
                 startActivity(intent)
                 true
