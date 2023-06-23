@@ -22,5 +22,7 @@ data class AnimalItem(
     val animalColor: String?,
     val animalGender: String?,
     val animalDescription: String?,
+    val shelterPhone: String?,
+    val shelterEmail: String?,
 
     )
