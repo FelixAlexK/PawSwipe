@@ -1,5 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp.utils
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,7 @@ import de.hhn.softwarelabor.pawswipeapp.R
  *
  * @author Felix Kuhbier
  */
-class AnimalAdapter(private val animalItems: ArrayList<AnimalItem>) :
+class AnimalAdapter(private val animalItems: ArrayList<AnimalItem>, private val context: Context) :
     RecyclerView.Adapter<AnimalViewHolder>() {
 
     /**
@@ -27,7 +28,7 @@ class AnimalAdapter(private val animalItems: ArrayList<AnimalItem>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.animal_item, parent, false)
-        return AnimalViewHolder(view)
+        return AnimalViewHolder(view, context)
     }
 
     /**
