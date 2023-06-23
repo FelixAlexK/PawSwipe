@@ -9,12 +9,16 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager
+import com.yuyakaido.android.cardstackview.CardStackListener
 import com.yuyakaido.android.cardstackview.CardStackView
+import com.yuyakaido.android.cardstackview.Direction
+import com.yuyakaido.android.cardstackview.StackFrom
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 
@@ -23,7 +27,7 @@ import de.hhn.softwarelabor.pawswipeapp.utils.AppData
  * @author Felix Kuhbier & Leo Kalmbach
  * @since 2023.06.12
  */
-class MatchActivity : AppCompatActivity() {
+class MatchActivity : AppCompatActivity(), CardStackListener {
     
     private lateinit var chatBtn: Button
     private lateinit var animalListBtn: Button
@@ -71,11 +75,14 @@ class MatchActivity : AppCompatActivity() {
         
         val testData = listOf("Card 1", "Card 2", "Card 3")
         
-        val layoutManager = CardStackLayoutManager(this)
+        val layoutManager = CardStackLayoutManager(this@MatchActivity, this@MatchActivity)
+        layoutManager.setStackFrom(StackFrom.Bottom)
         cardStackView.layoutManager = layoutManager
         
         val adapter = CardAdapter(testData)
         cardStackView.adapter = adapter
+        //cardStackView.swipe()
+        //cardStackView.rewind()
         
 /*
         val layoutParams = cardStackView.layoutParams as ConstraintLayout.LayoutParams
@@ -236,8 +243,43 @@ class MatchActivity : AppCompatActivity() {
     fun findLatLongForGivenAddress(address: String): Pair<Double, Double>? {
         return latLongUtil.getLatLongFromAddress(address)
     }
-
-
+    
+    override fun onCardDragging(direction: Direction?, ratio: Float) {
+    }
+    
+    override fun onCardSwiped(direction: Direction?) {
+        when (direction){
+            Direction.Left -> {
+                Toast.makeText(this@MatchActivity,
+                    "Swiped Left",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            Direction.Right -> {
+                Toast.makeText(this@MatchActivity,
+                    "Swiped Right",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            else -> {
+                // Swiped to the Wrong way
+            }
+        }
+    }
+    
+    override fun onCardRewound() {
+    }
+    
+    override fun onCardCanceled() {
+    }
+    
+    override fun onCardAppeared(view: View?, position: Int) {
+    }
+    
+    override fun onCardDisappeared(view: View?, position: Int) {
+    }
+    
+    
     // Example:
     // val address = "1600 Amphitheatre Parkway, Mountain View, CA"
     /*
