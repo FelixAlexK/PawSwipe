@@ -13,10 +13,10 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager.widget.ViewPager
+import com.yuyakaido.android.cardstackview.CardStackLayoutManager
+import com.yuyakaido.android.cardstackview.CardStackView
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AppData
-import de.hhn.softwarelabor.pawswipeapp.utils.ViewPagerAdapter
 
 /**
  * Match activity is an activity for displaying and interacting with animal profiles.
@@ -30,8 +30,6 @@ class MatchActivity : AppCompatActivity() {
     private lateinit var likeBtn: ImageButton
     private lateinit var dislikeBtn: ImageButton
     private lateinit var matchBtn: Button
-    private lateinit var viewPager: ViewPager
-    private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var imageList: List<Int>
     
     private var profileId: Int = 0
@@ -69,6 +67,29 @@ class MatchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
         
+        val cardStackView: CardStackView  = findViewById(R.id.matchCardStackView)
+        
+        val testData = listOf("Card 1", "Card 2", "Card 3")
+        
+        val layoutManager = CardStackLayoutManager(this)
+        cardStackView.layoutManager = layoutManager
+        
+        val adapter = CardAdapter(testData)
+        cardStackView.adapter = adapter
+        
+/*
+        val layoutParams = cardStackView.layoutParams as ConstraintLayout.LayoutParams
+        val size = resources.displayMetrics.widthPixels
+        layoutParams.width = size
+        layoutParams.height = size
+        cardStackView.layoutParams = layoutParams
+        */
+        
+        
+        
+        
+        
+        
         // If a bug brings a Shelter to the Match Activity, it closes the Activity
         if (AppData.getDiscriminator(this@MatchActivity) == "shelter"){
             finish()
@@ -83,7 +104,6 @@ class MatchActivity : AppCompatActivity() {
         likeBtn = findViewById(R.id.like_button)
         dislikeBtn = findViewById(R.id.dislike_button)
         matchBtn = findViewById(R.id.matching_btn2)
-        viewPager = findViewById(R.id.idViewPager)
         imageList = ArrayList()
     
         if(AppData.getDiscriminator(this@MatchActivity) == "shelter"){
@@ -119,9 +139,7 @@ class MatchActivity : AppCompatActivity() {
         imageList = imageList + R.drawable.wf
         imageList = imageList + R.drawable.paw_swipe_splash_screen
         
-        viewPagerAdapter = ViewPagerAdapter(this@MatchActivity, imageList)
         
-        viewPager.adapter = viewPagerAdapter
     }
     
     /**
