@@ -1,7 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -25,6 +24,7 @@ import de.hhn.softwarelabor.pawswipeapp.utils.AnimalItem
 import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
 import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
+import de.hhn.softwarelabor.pawswipeapp.utils.Discriminator
 
 
 /**
@@ -56,6 +56,8 @@ class AnimalListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_list)
 
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
         onBackPressedDispatcher.addCallback(
             this /* lifecycle owner */,
             object : OnBackPressedCallback(true) {
@@ -79,7 +81,6 @@ class AnimalListActivity : AppCompatActivity() {
             })
 
 
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         profileId = AppData.getID(this)
         getAnimalItemsFromAnimalIds(profileId)
@@ -90,18 +91,16 @@ class AnimalListActivity : AppCompatActivity() {
         matchBtn = findViewById(R.id.matching_btn3)
         chatBtn = findViewById(R.id.chat_btn3)
     
-    
-        if(AppData.getDiscriminator(this@AnimalListActivity) == "shelter"){
-            matchBtn.isClickable = false
-            matchBtn.setBackgroundColor(Color.TRANSPARENT)
-            matchBtn.background = null
+
+        if (AppData.getDiscriminator(this@AnimalListActivity) == Discriminator.SHELTER.name) {
+            matchBtn.visibility = View.GONE
         } else {
             matchBtn.setOnClickListener {
                 val intent = Intent(this@AnimalListActivity, MatchActivity::class.java)
                 intent.putExtra("id", profileId)
                 startActivity(intent)
             }
-            
+
         }
         
 
@@ -128,10 +127,11 @@ class AnimalListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {
-                val intent: Intent = if (AppData.getDiscriminator(this@AnimalListActivity) == "shelter"){
-                    Intent(this@AnimalListActivity, EditShelterActivity::class.java)
-                } else
-                    Intent(this@AnimalListActivity, SettingsActivity::class.java)
+                val intent: Intent =
+                    if (AppData.getDiscriminator(this@AnimalListActivity) == Discriminator.SHELTER.name) {
+                        Intent(this@AnimalListActivity, EditShelterActivity::class.java)
+                    } else
+                        Intent(this@AnimalListActivity, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
