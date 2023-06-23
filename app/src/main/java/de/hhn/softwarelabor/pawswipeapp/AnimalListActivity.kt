@@ -36,6 +36,9 @@ import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
 
 private const val BITMAP_WIDTH = 250
 private const val BITMAP_HEIGHT = 250
+private const val BITMAP_WIDTH_DETAILED = 750
+private const val BITMAP_HEIGHT_DETAILED = 750
+
 private const val DISCRIMINATOR_SHELTER = "shelter"
 
 class AnimalListActivity : AppCompatActivity() {
@@ -54,6 +57,8 @@ class AnimalListActivity : AppCompatActivity() {
     private lateinit var detailedAnimalGender: TextView
     private lateinit var detailedShelterPhone: TextView
     private lateinit var detailedShelterEmail: TextView
+    private lateinit var detailedShelterPhoneHint: TextView
+    private lateinit var detailedShelterEmailHint: TextView
 
 
     private var animalItems: ArrayList<AnimalItem> = ArrayList()
@@ -79,9 +84,12 @@ class AnimalListActivity : AppCompatActivity() {
 
         profileId = AppData.getID(this)
 
+        //animal profile details dialog
         val animalItemClick: (AnimalItem) -> Unit = { item ->
             val customLayout =
                 layoutInflater.inflate(R.layout.activity_detailed_animal_profile, null)
+
+
             detailedAnimalName = customLayout.findViewById(R.id.detailedAnimalName_textView)
             detailedAnimalPicture = customLayout.findViewById(R.id.detailedAnimalPicture_imageView)
             detailedAnimalBreed = customLayout.findViewById(R.id.detailedAnimalBreed_textView)
@@ -93,15 +101,16 @@ class AnimalListActivity : AppCompatActivity() {
             detailedAnimalGender = customLayout.findViewById(R.id.detailedAnimalGender_textView)
             detailedShelterPhone = customLayout.findViewById(R.id.detailedAnimalPhone_textView)
             detailedShelterEmail = customLayout.findViewById(R.id.detailedAnimalEmail_textView)
-
-
+            detailedShelterPhoneHint =
+                customLayout.findViewById(R.id.detailedAnimalPhoneHint_textView)
+            detailedShelterEmailHint =
+                customLayout.findViewById(R.id.detailedAnimalEmailHint_textView)
 
 
             detailedAnimalName.text = item.animalName
             detailedAnimalPicture.setImageBitmap(item.imageResId?.let {
-                BitmapScaler.scaleToFitWidth(
-                    it, 750
-                )
+                BitmapScaler.scaleToFitWidth(it, BITMAP_WIDTH_DETAILED)
+                BitmapScaler.scaleToFitHeight(it, BITMAP_HEIGHT_DETAILED)
             })
             detailedAnimalSpecies.text = item.animalSpecies
             detailedAnimalBreed.text = item.animalBreed
@@ -110,9 +119,13 @@ class AnimalListActivity : AppCompatActivity() {
             detailedAnimalPreExistingIllness.text = item.animalPreExistingIllness
 
             detailedAnimalBirthday.text = item.animalBirthday
+
+            //when discriminator == shelter -> hide phone and email
             if (AppData.getDiscriminator(this) == DISCRIMINATOR_SHELTER) {
                 detailedShelterPhone.visibility = View.GONE
+                detailedShelterPhoneHint.visibility = View.GONE
                 detailedShelterEmail.visibility = View.GONE
+                detailedShelterEmailHint.visibility = View.GONE
             } else {
                 detailedShelterEmail.text = item.shelterEmail
                 detailedShelterPhone.text =
