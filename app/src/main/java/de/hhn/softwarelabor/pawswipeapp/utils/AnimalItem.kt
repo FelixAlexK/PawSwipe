@@ -12,6 +12,7 @@ import android.graphics.Bitmap
  * @constructor Create empty Animal item
  */
 data class AnimalItem(
+    val animalID: Int?,
     val imageResId: Bitmap?,
     val animalName: String?,
     val animalSpecies: String?,

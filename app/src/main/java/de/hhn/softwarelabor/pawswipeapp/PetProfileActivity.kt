@@ -67,29 +67,41 @@ class PetProfileActivity : AppCompatActivity() {
     private var pictureThree: String? = null
     private var pictureFour: String? = null
     private var pictureFive: String? = null
-    private var birthday: String? = null
 
 
-    private fun checkTVEmpty(v:TextView) : Boolean {
+    private fun checkTVEmpty(v: TextView): Boolean {
         val newString = v.text.toString().replace(" ", "")
-        if (newString == "" || newString == resources.getString(R.string.birthday_text)){
+        if (newString == "" || newString == resources.getString(R.string.birthday_text)) {
             v.error = "Bitte Ausfüllen"
             v.requestFocus()
-            scrollView.requestChildFocus(v,v)
+            scrollView.requestChildFocus(v, v)
             return true
         }
         return false
     }
-    private fun checkSpinnerEmpty(v:Spinner) : Boolean {
-        if (v.selectedItem == v.getItemAtPosition(0)){
-            val errorText : TextView = v.selectedView as TextView
+
+    private fun checkSpinnerEmpty(v: Spinner): Boolean {
+        if (v.selectedItem == v.getItemAtPosition(0)) {
+            val errorText: TextView = v.selectedView as TextView
             errorText.error = "Bitte Auswählen"
             v.requestFocus()
-            scrollView.requestChildFocus(v,v)
+            scrollView.requestChildFocus(v, v)
             return true
         }
         return false
     }
+
+    private fun checkPictureUploaded(pictureString: String?, v: TextView): Boolean {
+        if (pictureString.isNullOrEmpty()) {
+            v.error = "Bitte ein Bild hochladen"
+            v.requestFocus()
+            scrollView.requestChildFocus(v, v)
+            return true
+        }
+
+        return false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pet_profil)
@@ -101,7 +113,7 @@ class PetProfileActivity : AppCompatActivity() {
 
         createPetButton.setOnClickListener {
             if(
-                // TODO Check for ProfilePic, after implemented the upload function
+                checkPictureUploaded(pictureOne, uploadPictureButton) ||
                 checkSpinnerEmpty(speciesSpinner) ||
                 checkSpinnerEmpty(breedSpinner) ||
                 checkSpinnerEmpty(genderSpinner) ||
@@ -128,10 +140,10 @@ class PetProfileActivity : AppCompatActivity() {
                         petColorEditText.text.toString(),
                         genderSpinner.selectedItem.toString(),
                         pictureOne,
-                    pictureTwo,
-                    pictureThree,
-                    pictureFour,
-                    pictureFive,
+                        pictureTwo,
+                        pictureThree,
+                        pictureFour,
+                        pictureFive,
                         id
                     )
         

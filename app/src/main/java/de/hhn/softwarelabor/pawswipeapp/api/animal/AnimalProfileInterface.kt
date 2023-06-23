@@ -48,7 +48,7 @@ interface AnimalProfileInterface {
      * @param callback
      * @receiver
      */
-    fun getAllAnimalProfileIDs(callback: (List<String>?, Throwable?) -> Unit)
+    fun getAllAnimalProfileIDs(callback: (List<Int>?, Throwable?) -> Unit)
 
     /**
      * Get animal profile by id

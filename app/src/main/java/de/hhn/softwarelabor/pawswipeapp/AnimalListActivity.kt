@@ -1,7 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +12,9 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
@@ -29,16 +30,11 @@ import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
  * AnimalListActivity is an AppCompatActivity that displays a list of liked animals.
  * @author Felix Kuhbier & Leo Kalmbach
  *
- * @property matchBtn Button to navigate to the MatchActivity.
- * @property chatBtn Button to navigate to the ChatActivity.
- * @property recyclerView RecyclerView that displays the list of liked animals.
- * @property animalAdapter AnimalAdapter for managing the list of liked animals in the RecyclerView.
- * @property animalItems ArrayList of AnimalItem objects representing the liked animals.
- * @property profileId Integer representing the profile ID of the current user.
  */
 
 private const val BITMAP_WIDTH = 250
 private const val BITMAP_HEIGHT = 250
+private const val DISCRIMINATOR_SHELTER = "shelter"
 
 class AnimalListActivity : AppCompatActivity() {
 
@@ -48,30 +44,11 @@ class AnimalListActivity : AppCompatActivity() {
     private lateinit var animalAdapter: AnimalAdapter
     private var animalItems: ArrayList<AnimalItem> = ArrayList()
     private var profileId: Int = 0
-    
+
     private var backPressedOnce = false
     private val timerDuration = 3000 // 3 Sekunden
-    
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        
-        if (backPressedOnce) {
-            finishAffinity()    // Beendet alle Activities und die App
-            return
-        }
-        
-        backPressedOnce = true
-        Toast.makeText(
-            this,
-            getString(R.string.zum_beenden_der_app),
-            Toast.LENGTH_SHORT
-        ).show()
-        
-        Handler(Looper.getMainLooper()).postDelayed({
-            backPressedOnce = false
-        }, timerDuration.toLong())
-        
-    }
+    private val likeApi: LikeApi = LikeApi()
+    private val animalProfileApi: AnimalProfileApi = AnimalProfileApi()
 
     /**
      * Initializes the activity, sets up the UI and loads the liked animals.
@@ -80,40 +57,66 @@ class AnimalListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_list)
 
-        
-
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
+        onBackPressedDispatcher.addCallback(
+            this /* lifecycle owner */,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (backPressedOnce) {
+                        finishAffinity(this@AnimalListActivity) // Beendet alle Activities und die App
+                        return
+                    }
+
+                    backPressedOnce = true
+                    Toast.makeText(
+                        this@AnimalListActivity,
+                        getString(R.string.zum_beenden_der_app),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        backPressedOnce = false
+                    }, timerDuration.toLong())
+                }
+            }
+        )
+
+
+
         profileId = AppData.getID(this)
-        getAnimalItemsFromAnimalIds(profileId)
+
+
+
         recyclerView = findViewById(R.id.animal_list_recyclerView)
-        animalAdapter = AnimalAdapter(animalItems)
+        animalAdapter = AnimalAdapter(animalItems, this@AnimalListActivity)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = animalAdapter
         matchBtn = findViewById(R.id.matching_btn3)
         chatBtn = findViewById(R.id.chat_btn3)
-    
-    
-        if(AppData.getDiscriminator(this@AnimalListActivity) == "shelter"){
-            matchBtn.isClickable = false
-            matchBtn.setBackgroundColor(Color.TRANSPARENT)
-            matchBtn.background = null
+
+
+        if (AppData.getDiscriminator(this@AnimalListActivity) == DISCRIMINATOR_SHELTER) {
+            getAnimalsFromShelter(profileId)
+            updateEmptyTextViewVisibility(getString(R.string.shelter_no_animals_text))
+            matchBtn.visibility = View.GONE
         } else {
+            getAnimalItemsFromAnimalIds(profileId)
+            updateEmptyTextViewVisibility(getString(R.string.profile_no_animals_liked_text))
             matchBtn.setOnClickListener {
                 val intent = Intent(this@AnimalListActivity, MatchActivity::class.java)
                 intent.putExtra("id", profileId)
                 startActivity(intent)
             }
-            
+
         }
-        
+
 
         chatBtn.setOnClickListener {
             val intent = Intent(this@AnimalListActivity, ChatActivity::class.java)
             startActivity(intent)
         }
 
-        updateEmptyTextViewVisibility()
     }
 
     /**
@@ -131,10 +134,11 @@ class AnimalListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {
-                val intent: Intent = if (AppData.getDiscriminator(this@AnimalListActivity) == "shelter"){
-                    Intent(this@AnimalListActivity, EditShelterActivity::class.java)
-                } else
-                    Intent(this@AnimalListActivity, SettingsActivity::class.java)
+                val intent: Intent =
+                    if (AppData.getDiscriminator(this@AnimalListActivity) == DISCRIMINATOR_SHELTER) {
+                        Intent(this@AnimalListActivity, EditShelterActivity::class.java)
+                    } else
+                        Intent(this@AnimalListActivity, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
@@ -180,9 +184,10 @@ class AnimalListActivity : AppCompatActivity() {
     /**
      * Updates the visibility of the emptyTextView based on the size of the animalItems ArrayList.
      */
-    private fun updateEmptyTextViewVisibility() {
+    private fun updateEmptyTextViewVisibility(message: String) {
         val emptyTextView: TextView = findViewById(R.id.animal_list_empty_textView)
         emptyTextView.visibility = if (animalItems.isEmpty()) View.VISIBLE else View.GONE
+        emptyTextView.text = message
     }
 
     /**
@@ -191,8 +196,7 @@ class AnimalListActivity : AppCompatActivity() {
      * @param profileId Integer representing the profile ID of the current user.
      */
     private fun getAnimalItemsFromAnimalIds(profileId: Int) {
-        val likeApi = LikeApi()
-        val animalProfileApi = AnimalProfileApi()
+
 
         //get all the IDs of animals you like
         likeApi.getLikedAnimals(profileId) { response, error ->
@@ -223,6 +227,7 @@ class AnimalListActivity : AppCompatActivity() {
 
 
                                 val item = AnimalItem(
+                                    response?.animal_id,
                                     response?.picture_one?.let {
                                         BitmapScaler.scaleToFitWidth(
                                             Base64Utils.decode(it),
@@ -239,7 +244,8 @@ class AnimalListActivity : AppCompatActivity() {
                                     response?.breed
                                 )
                                 animalAdapter.addItem(item)
-                                updateEmptyTextViewVisibility()
+
+                                updateEmptyTextViewVisibility(getString(R.string.profile_no_animals_liked_text))
 
                             }
                         }
@@ -248,6 +254,73 @@ class AnimalListActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun getAnimalsFromShelter(profileId: Int) {
+
+        animalProfileApi.getAllAnimalProfileIDs { ints, error ->
+
+            if (error != null) {
+                runOnUiThread {
+                    Toast.makeText(
+                        this@AnimalListActivity,
+                        "Ids konnten nicht geladen werden! (${error.message})",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            } else {
+
+
+                ints?.forEach { int ->
+                    animalProfileApi.getAnimalProfileByID(int) { profile, error ->
+                        if (error != null) {
+                            runOnUiThread {
+                                Toast.makeText(
+                                    this@AnimalListActivity,
+                                    "Tier konnte nicht geladen werden! (${error.message})",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                        } else {
+                            runOnUiThread {
+                                if (profile?.profile_id?.profile_id == profileId) {
+                                    val item = AnimalItem(
+                                        profile.animal_id,
+                                        profile.picture_one?.let {
+                                            BitmapScaler.scaleToFitWidth(
+                                                Base64Utils.decode(it),
+                                                BITMAP_WIDTH
+                                            )
+
+                                            BitmapScaler.scaleToFitHeight(
+                                                Base64Utils.decode(it),
+                                                BITMAP_HEIGHT
+                                            )
+                                        },
+                                        profile.name,
+                                        profile.species,
+                                        profile.breed
+                                    )
+                                    animalAdapter.addItem(item)
+
+                                    updateEmptyTextViewVisibility(getString(R.string.shelter_no_animals_text))
+                                }
+                            }
+
+                        }
+
+
+                    }
+
+                }
+
+
+            }
+
+        }
+
 
     }
 }
