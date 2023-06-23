@@ -16,6 +16,7 @@ package de.hhn.softwarelabor.pawswipeapp.api.data
  * @property profile_id must not be null
  */
 data class AnimalProfileData(
+    val animal_id: Int?,
     val name: String?,
     val species: String?,
     val birthday: String?,
