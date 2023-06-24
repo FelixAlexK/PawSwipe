@@ -22,6 +22,8 @@ import com.yuyakaido.android.cardstackview.Direction
 import com.yuyakaido.android.cardstackview.Duration
 import com.yuyakaido.android.cardstackview.StackFrom
 import com.yuyakaido.android.cardstackview.SwipeAnimationSetting
+import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
+import de.hhn.softwarelabor.pawswipeapp.api.data.AnimalProfileData
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 
@@ -49,6 +51,12 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     
     private val latLongUtil = LatLongUtil(this)
     
+    private val animalProfileApi = AnimalProfileApi()
+    
+    private lateinit var adapter: CardAdapter
+    private lateinit var cardStackView: CardStackView
+    private lateinit var layoutManager: CardStackLayoutManager
+    
     
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
@@ -60,9 +68,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         
         backPressedOnce = true
         Toast.makeText(
-            this,
-            getString(R.string.zum_beenden_der_app),
-            Toast.LENGTH_SHORT
+            this, getString(R.string.zum_beenden_der_app), Toast.LENGTH_SHORT
         ).show()
         
         Handler(Looper.getMainLooper()).postDelayed({
@@ -75,31 +81,20 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         super.onResume()
         profileId = AppData.getID(this@MatchActivity)
     }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
         
-        val cardStackView: CardStackView = findViewById(R.id.matchCardStackView)
+        cardStackView = findViewById(R.id.matchCardStackView)
         
-        val testData = listOf("Card 1", "Card 2", "Card 3")
         
-        val layoutManager = CardStackLayoutManager(this@MatchActivity, this@MatchActivity)
-        layoutManager.setStackFrom(StackFrom.Bottom)
+        layoutManager = CardStackLayoutManager(this@MatchActivity, this@MatchActivity)
+        layoutManager.setStackFrom(StackFrom.None)
+        layoutManager.setVisibleCount(1)
         cardStackView.layoutManager = layoutManager
         
-        val adapter = CardAdapter(testData)
-        cardStackView.adapter = adapter
-        //cardStackView.swipe()
-        //cardStackView.rewind()
-        
-        /*
-                val layoutParams = cardStackView.layoutParams as ConstraintLayout.LayoutParams
-                val size = resources.displayMetrics.widthPixels
-                layoutParams.width = size
-                layoutParams.height = size
-                cardStackView.layoutParams = layoutParams
-                */
-        
+        getAllAnimals()
         
         // If a bug brings a Shelter to the Match Activity, it closes the Activity
         if (AppData.getDiscriminator(this@MatchActivity) == "shelter") {
@@ -135,20 +130,17 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         }
         
         likeBtn.setOnClickListener {
-            val swipeAnimationSetting = SwipeAnimationSetting.Builder()
-                .setDirection(Direction.Right)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(AccelerateInterpolator())
-                .build()
+            val swipeAnimationSetting =
+                SwipeAnimationSetting.Builder().setDirection(Direction.Right)
+                    .setDuration(Duration.Normal.duration).setInterpolator(AccelerateInterpolator())
+                    .build()
             layoutManager.setSwipeAnimationSetting(swipeAnimationSetting)
             cardStackView.swipe()
         }
         
         dislikeBtn.setOnClickListener {
-            val swipeAnimationSetting = SwipeAnimationSetting.Builder()
-                .setDirection(Direction.Left)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(AccelerateInterpolator())
+            val swipeAnimationSetting = SwipeAnimationSetting.Builder().setDirection(Direction.Left)
+                .setDuration(Duration.Normal.duration).setInterpolator(AccelerateInterpolator())
                 .build()
             layoutManager.setSwipeAnimationSetting(swipeAnimationSetting)
             cardStackView.swipe()
@@ -187,8 +179,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 val intent: Intent =
                     if (AppData.getDiscriminator(this@MatchActivity) == "shelter") {
                         Intent(this@MatchActivity, EditShelterActivity::class.java)
-                    } else
-                        Intent(this@MatchActivity, SettingsActivity::class.java)
+                    } else Intent(this@MatchActivity, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
@@ -243,9 +234,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
             runOnUiThread {
                 if (error != null) {
                     Toast.makeText(
-                        this@MatchActivity,
-                        getString(R.string.like_error_text),
-                        Toast.LENGTH_SHORT
+                        this@MatchActivity, getString(R.string.like_error_text), Toast.LENGTH_SHORT
                     ).show()
                 } else if (response?.isSuccessful == true) {
                     Log.i("PawSwipe", "Successfully liked")
@@ -261,9 +250,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
             runOnUiThread {
                 if (error != null) {
                     Toast.makeText(
-                        this@MatchActivity,
-                        getString(R.string.like_error_text),
-                        Toast.LENGTH_SHORT
+                        this@MatchActivity, getString(R.string.like_error_text), Toast.LENGTH_SHORT
                     ).show()
                 } else if (response?.isSuccessful == true) {
                     Log.i("PawSwipe", "Succesfully Disliked")
@@ -281,29 +268,31 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     }
     
     override fun onCardSwiped(direction: Direction?) {
-        when (direction) {
-            Direction.Left -> {
-                Toast.makeText(
-                    this@MatchActivity,
-                    "Swiped Left",
-                    Toast.LENGTH_SHORT
-                ).show()
-                dislikeAnimal(profileId, 2)
-            }
-            
-            Direction.Right -> {
-                Toast.makeText(
-                    this@MatchActivity,
-                    "Swiped Right",
-                    Toast.LENGTH_SHORT
-                ).show()
-                likeAnimal(profileId, 2)
+        val currentPosition = layoutManager.topPosition
+        
+        if (currentPosition >= 0 && currentPosition < adapter.itemCount) {
+            val animal = adapter.getAnimal(currentPosition)
+            when (direction) {
+                Direction.Left -> {
+                    Toast.makeText(
+                        this@MatchActivity, "Swiped Left", Toast.LENGTH_SHORT
+                    ).show()
+                    dislikeAnimal(profileId, animal.animal_id!!)
+                }
                 
+                Direction.Right -> {
+                    Toast.makeText(
+                        this@MatchActivity, "Swiped Right", Toast.LENGTH_SHORT
+                    ).show()
+                    likeAnimal(profileId, animal.animal_id!!)
+                    
+                }
+                
+                else -> {
+                    // Swiped to the Wrong way
+                }
             }
             
-            else -> {
-                // Swiped to the Wrong way
-            }
         }
     }
     
@@ -319,19 +308,68 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     override fun onCardDisappeared(view: View?, position: Int) {
     }
     
-    
-    // Example:
-    // val address = "1600 Amphitheatre Parkway, Mountain View, CA"
-    /*
-    fun convertAdressInputToOneAdress() {
-        // street: String?,
-        // country: String?,
-        // city: String?,
-        // street_number: String?,
-        // postal_code: String?, - Postleitzahl
-        val profileAPI = ProfileApi()
-        val adressList = profileAPI.getUserProfileByID(this)
+    private fun getAllAnimals() {
+        
+        val animals = mutableListOf<AnimalProfileData>()
+        
+        animalProfileApi.getAllAnimalProfileIDs { ints, error ->
+            if (error != null) {
+                runOnUiThread {
+                    Toast.makeText(
+                        this@MatchActivity,
+                        "Ids konnten nicht geladen werden! (${error.message})",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                
+            } else {
+                ints?.forEach { int ->
+                    animalProfileApi.getAnimalProfileByID(int) { profile, error ->
+                        if (error != null) {
+                            runOnUiThread {
+                                Toast.makeText(
+                                    this@MatchActivity,
+                                    "Tier konnte nicht geladen werden! (${error.message})",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            
+                        } else {
+                            val animal = AnimalProfileData(
+                                profile?.animal_id,
+                                profile?.name,
+                                profile?.species,
+                                profile?.birthday,
+                                profile?.illness,
+                                profile?.description,
+                                profile?.breed,
+                                profile?.color,
+                                profile?.gender,
+                                profile?.picture_one,
+                                null,
+                                null,
+                                null,
+                                null,
+                                profile!!.profile_id
+                            )
+                            animals.add(animal)
+                            // Check if all animals have been retrieved
+                            if (animals.size == ints.size) {
+                                // All animals have been retrieved, initialize the adapter
+                                runOnUiThread {
+                                    adapter = CardAdapter(this@MatchActivity, animals)
+                                    cardStackView.adapter =
+                                        adapter // Set the adapter for the cardStackView
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+        adapter = CardAdapter(this@MatchActivity, animals)
+        cardStackView.adapter = adapter // Setzen Sie den Adapter für den CardStackView
     }
-     */
 }
 
