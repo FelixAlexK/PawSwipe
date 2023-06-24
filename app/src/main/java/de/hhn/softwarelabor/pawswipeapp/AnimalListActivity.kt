@@ -10,10 +10,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +37,9 @@ import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
 
 private const val BITMAP_WIDTH = 250
 private const val BITMAP_HEIGHT = 250
+private const val BITMAP_WIDTH_DETAILED = 750
+private const val BITMAP_HEIGHT_DETAILED = 750
+
 private const val DISCRIMINATOR_SHELTER = "shelter"
 
 class AnimalListActivity : AppCompatActivity() {
@@ -42,6 +48,20 @@ class AnimalListActivity : AppCompatActivity() {
     private lateinit var chatBtn: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var animalAdapter: AnimalAdapter
+    private lateinit var detailedAnimalName: TextView
+    private lateinit var detailedAnimalPicture: ImageView
+    private lateinit var detailedAnimalBreed: TextView
+    private lateinit var detailedAnimalSpecies: TextView
+    private lateinit var detailedAnimalBirthday: TextView
+    private lateinit var detailedAnimalPreExistingIllness: TextView
+    private lateinit var detailedAnimalColor: TextView
+    private lateinit var detailedAnimalGender: TextView
+    private lateinit var detailedShelterPhone: TextView
+    private lateinit var detailedShelterEmail: TextView
+    private lateinit var detailedShelterPhoneHint: TextView
+    private lateinit var detailedShelterEmailHint: TextView
+
+
     private var animalItems: ArrayList<AnimalItem> = ArrayList()
     private var profileId: Int = 0
 
@@ -58,6 +78,83 @@ class AnimalListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_animal_list)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        matchBtn = findViewById(R.id.matching_btn3)
+        chatBtn = findViewById(R.id.chat_btn3)
+        recyclerView = findViewById(R.id.animal_list_recyclerView)
+
+
+        profileId = AppData.getID(this)
+
+        //animal profile details dialog
+        val animalItemClick: (AnimalItem) -> Unit = { item ->
+            val customLayout =
+                layoutInflater.inflate(R.layout.activity_detailed_animal_profile, null)
+
+
+            detailedAnimalName = customLayout.findViewById(R.id.detailedAnimalName_textView)
+            detailedAnimalPicture = customLayout.findViewById(R.id.detailedAnimalPicture_imageView)
+            detailedAnimalBreed = customLayout.findViewById(R.id.detailedAnimalBreed_textView)
+            detailedAnimalBirthday = customLayout.findViewById(R.id.detailedAnimalBirthday_textView)
+            detailedAnimalSpecies = customLayout.findViewById(R.id.detailedAnimalSpecies_textView)
+            detailedAnimalPreExistingIllness =
+                customLayout.findViewById(R.id.detailedAnimalPreExistingIllness_textView)
+            detailedAnimalColor = customLayout.findViewById(R.id.detailedAnimalColor_textView)
+            detailedAnimalGender = customLayout.findViewById(R.id.detailedAnimalGender_textView)
+            detailedShelterPhone = customLayout.findViewById(R.id.detailedAnimalPhone_textView)
+            detailedShelterEmail = customLayout.findViewById(R.id.detailedAnimalEmail_textView)
+            detailedShelterPhoneHint =
+                customLayout.findViewById(R.id.detailedAnimalPhoneHint_textView)
+            detailedShelterEmailHint =
+                customLayout.findViewById(R.id.detailedAnimalEmailHint_textView)
+
+
+            detailedAnimalName.text = item.animalName
+            detailedAnimalPicture.setImageBitmap(item.imageResId?.let {
+                BitmapScaler.scaleToFitWidth(it, BITMAP_WIDTH_DETAILED)
+                BitmapScaler.scaleToFitHeight(it, BITMAP_HEIGHT_DETAILED)
+            })
+            detailedAnimalSpecies.text = item.animalSpecies
+            detailedAnimalBreed.text = item.animalBreed
+            detailedAnimalGender.text = item.animalGender
+            detailedAnimalColor.text = item.animalColor
+            detailedAnimalPreExistingIllness.text = item.animalPreExistingIllness
+
+            detailedAnimalBirthday.text = item.animalBirthday
+
+            //when discriminator == shelter -> hide phone and email
+            if (AppData.getDiscriminator(this) == DISCRIMINATOR_SHELTER) {
+                detailedShelterPhone.visibility = View.GONE
+                detailedShelterPhoneHint.visibility = View.GONE
+                detailedShelterEmail.visibility = View.GONE
+                detailedShelterEmailHint.visibility = View.GONE
+            } else {
+                detailedShelterEmail.text = item.shelterEmail
+                detailedShelterPhone.text =
+                    getString(R.string.detailed_shelter_phone_text, item.shelterPhone)
+            }
+
+
+            val builder = AlertDialog.Builder(this)
+            builder.setView(customLayout)
+
+            val dialog: AlertDialog = builder.create()
+
+
+            dialog.show()
+
+            val outerLayout: ConstraintLayout? = dialog.findViewById(R.id.outer_layout)
+            outerLayout?.setOnClickListener {
+                dialog.dismiss()
+            }
+
+
+        }
+
+        animalAdapter = AnimalAdapter(animalItems, animalItemClick, this@AnimalListActivity)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = animalAdapter
+
+
 
         onBackPressedDispatcher.addCallback(
             this /* lifecycle owner */,
@@ -84,16 +181,6 @@ class AnimalListActivity : AppCompatActivity() {
 
 
 
-        profileId = AppData.getID(this)
-
-
-
-        recyclerView = findViewById(R.id.animal_list_recyclerView)
-        animalAdapter = AnimalAdapter(animalItems, this@AnimalListActivity)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = animalAdapter
-        matchBtn = findViewById(R.id.matching_btn3)
-        chatBtn = findViewById(R.id.chat_btn3)
 
 
         if (AppData.getDiscriminator(this@AnimalListActivity) == DISCRIMINATOR_SHELTER) {
@@ -241,7 +328,15 @@ class AnimalListActivity : AppCompatActivity() {
                                     },
                                     response?.name,
                                     response?.species,
-                                    response?.breed
+                                    response?.breed,
+                                    response?.birthday,
+                                    response?.illness,
+                                    if (response?.color.isNullOrEmpty()) "n.a." else response?.color,
+                                    response?.gender,
+                                    response?.description,
+                                    response?.profile_id?.phone_number,
+                                    response?.profile_id?.email
+
                                 )
                                 animalAdapter.addItem(item)
 
@@ -301,7 +396,14 @@ class AnimalListActivity : AppCompatActivity() {
                                         },
                                         profile.name,
                                         profile.species,
-                                        profile.breed
+                                        profile.breed,
+                                        profile.birthday,
+                                        profile.illness,
+                                        if (profile.color.isNullOrEmpty()) "n.a." else profile.color,
+                                        profile.gender,
+                                        profile.description,
+                                        null,
+                                        null
                                     )
                                     animalAdapter.addItem(item)
 
