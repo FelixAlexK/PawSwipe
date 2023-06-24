@@ -121,5 +121,23 @@
     <string name="shelter_no_animals_text">Keine Tiere erstellt</string>
     <string name="profile_no_animals_liked_text">Keine Tiere als \'Gefällt mir\' markiert</string>
     <string name="animal_without_name_text">namenlos</string>
+    <string name="detailed_animal_name_placeholder">Name</string>
+    <string name="detailed_animal_species_placeholder">Art</string>
+    <string name="detailed_animal_breed_placeholder">Rasse</string>
+    <string name="detailed_animal_gender_placeholder">männlich</string>
+    <string name="detailed_animal_birthday_placeholder">2020–11–05</string>
+    <string name="detailed_animal_illness_placeholder">Krebs</string>
+    <string name="detailed_animal_color_placeholder">Grau Gestreift</string>
+    <string name="detailed_animal_phone_placeholder">123456789</string>
+    <string name="detailed_animal_email_placeholder">test.email@email.com</string>
+    <string name="detailed_animal_species_hint_text">Tierart:</string>
+    <string name="detailed_animal_breed_hint_text">Rasse:</string>
+    <string name="detailed_animal_gender_hint_text">Geschlecht:</string>
+    <string name="detailed_animal_birthday_hint_text">Geburtstag:</string>
+    <string name="detailed_animal_color_hint_text">Farbe/Muster</string>
+    <string name="detailed_animal_illness_hint_text">Vorerkrankungen:</string>
+    <string name="detailed_animal_phone_hint_text">Telefonnummer:</string>
+    <string name="detailed_animal_email_hint_text">E-Mail:</string>
+    <string name="detailed_shelter_phone_text">(+49) %s</string>
 
 </resources>
