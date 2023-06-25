@@ -2,8 +2,6 @@ package de.hhn.softwarelabor.pawswipeapp
 
 import android.content.ContentValues.TAG
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -25,16 +23,16 @@ private const val DISCRIMINATOR_PROFILE = "profile"
  * @constructor Create empty Login activity
  */
 class LoginActivity : AppCompatActivity() {
-    private lateinit var loginUserButton: Button
-    private lateinit var loginShelterButton: Button
+    // private lateinit var loginUserButton: Button
+    // private lateinit var loginShelterButton: Button
     private lateinit var loginEmailEditText: EditText
     private lateinit var loginPasswordEditText: EditText
     private lateinit var loginRegisterButton: Button
     private lateinit var loginLoginButton: Button
 
     private var profile: ProfileApi = ProfileApi()
-    private var isShelter = false
-    private var isUser = false
+    // private var isShelter = false
+    // private var isUser = false
     
     private var backPressedOnce = false
     private val timerDuration = 3000 // 3 Sekunden
@@ -72,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }*/
         
-
+        /*
         loginUserButton.setOnClickListener {
             try {
                 loginUserButton.setBackgroundColor(Color.GREEN)
@@ -108,24 +106,14 @@ class LoginActivity : AppCompatActivity() {
             isShelter = true
             isUser = false
         }
+         */
 
         loginLoginButton.setOnClickListener {
             val email: String = loginEmailEditText.text.toString()
             val password: String = stringToSHA256(loginPasswordEditText.text.toString())
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                if (isShelter) {
-                    loginShelter(email, password)
-                } else if (isUser) {
-                    loginUser(email, password)
-                } else {
-                    runOnUiThread {
-                        Toast.makeText(
-                            this, getString(R.string.login_shelter_or_user),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
 
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                loginAccount(email, password)
             } else {
                 runOnUiThread {
                     Toast.makeText(
@@ -135,7 +123,6 @@ class LoginActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-
         }
 
         loginRegisterButton.setOnClickListener {
@@ -146,6 +133,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    /*
     /**
      * Login user
      *
@@ -164,6 +152,8 @@ class LoginActivity : AppCompatActivity() {
                         ).show()
                     }
                     Log.e(TAG, error.message.toString())
+
+
                 } else if (user != null && user.discriminator.equals(
                         DISCRIMINATOR_PROFILE,
                         ignoreCase = true
@@ -215,7 +205,6 @@ class LoginActivity : AppCompatActivity() {
      * @param password The password of the user.
      */
     private fun loginShelter(email: String, password: String) {
-
         try {
             profile.getUserProfileByEmail(email) { shelter, error ->
                 if (error != null) {
@@ -227,6 +216,8 @@ class LoginActivity : AppCompatActivity() {
                         ).show()
                     }
                     Log.e(TAG, error.message.toString())
+
+
                 } else if (shelter != null && shelter.discriminator.equals(
                         DISCRIMINATOR_SHELTER,
                         ignoreCase = true
@@ -274,9 +265,78 @@ class LoginActivity : AppCompatActivity() {
             Log.e(TAG, e.message.toString())
             e.printStackTrace()
         }
-
-
     }
+     */
+
+    /** --------------------------------------------------------------------------------- */
+    private fun loginAccount(email: String, password: String) {
+        try {
+            profile.getUserProfileByEmail(email) { profile, error ->
+                if (error != null) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.login_no_account_found_with_email),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    Log.e(TAG, error.message.toString())
+                }
+                else if (profile != null) {
+                    if (password == profile.password && email == profile.email) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                this,
+                                getString(R.string.login_success, profile.username),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            AppData.setID(this, profile.profile_id ?: 0)
+                            AppData.setMail(this, profile.email)
+                            AppData.setPassword(this, stringToSHA256(loginPasswordEditText.text.toString()))
+                            AppData.setDiscriminator(this, profile.discriminator)
+
+                            val intent = when (profile.discriminator) {
+                                "user" -> Intent(this@LoginActivity, MatchActivity::class.java)
+                                "shelter" -> Intent(this@LoginActivity, AnimalListActivity::class.java)
+                                else -> null
+                            }
+
+                            if (intent != null) {
+                                intent.putExtra("id", profile.profile_id)
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    getString(R.string.login_invalid_discriminator),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(
+                                this,
+                                getString(R.string.login_error),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.login_null_error),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+            e.printStackTrace()
+        }
+    }
+    /** --------------------------------------------------------------------------------- */
 
     private fun stringToSHA256(input: String): String {
         val md = MessageDigest.getInstance("SHA-256")
@@ -292,8 +352,8 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun init() {
         try {
-            loginUserButton = findViewById(R.id.loginUser_button)
-            loginShelterButton = findViewById(R.id.loginShelter_button)
+            // loginUserButton = findViewById(R.id.loginUser_button)
+            // loginShelterButton = findViewById(R.id.loginShelter_button)
             loginEmailEditText = findViewById(R.id.loginEmail_editText)
             loginPasswordEditText = findViewById(R.id.loginPassword_editText)
             loginRegisterButton = findViewById(R.id.loginRegister_button)
