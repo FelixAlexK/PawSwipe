@@ -134,6 +134,7 @@ class AnimalListActivity : AppCompatActivity() {
                 detailedShelterPhoneHint.visibility = View.GONE
                 detailedShelterEmail.visibility = View.GONE
                 detailedShelterEmailHint.visibility = View.GONE
+                detailedAnimalDislikeButton.visibility = View.GONE
             } else {
                 detailedShelterEmail.text = item.shelterEmail
                 detailedShelterPhone.text =
