@@ -86,6 +86,8 @@
     <string name="animalList_tv">Tierliste</string>
     <string name="filterEdit_tv">Filter bearbeiten</string>
     <string name="filterRadius_et">Radius in km</string>
+    <string name="no_selection">---</string>
+
     <string name="resetFilter_btn">Zurücksetzen</string>
     <string name="createAnimal_tv">Tier erstellen</string>
     <string name="createUser_tv">Profil erstellen</string>

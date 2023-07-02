@@ -10,19 +10,20 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import de.hhn.softwarelabor.pawswipeapp.utils.*
+import android.widget.Switch
+
+
 
 class FilterActivity : AppCompatActivity() {
 
-    private lateinit var species: String
-    private lateinit var illness: String
-    private lateinit var breed: String
-    private lateinit var color: String
-    private lateinit var gender: String
-    private lateinit var minAge: String
-    private lateinit var maxAge: String
+    private var species: String = "---"
+    private var illness: String = "---"
+    private var breed: String = "---"
+    private var color: String = "---"
+    private var gender: String = "---"
+    private var minAge: String = "---"
+    private var maxAge: String = "---"
 
     private lateinit var cancelButton: Button
     private lateinit var saveButton: Button
@@ -40,11 +41,19 @@ class FilterActivity : AppCompatActivity() {
 
     private lateinit var radiusEditText: EditText
     private lateinit var petColorEditText: EditText
-    private lateinit var petIllnessEditText: EditText
+    private lateinit var petIllnessSwitch: Switch
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
+
+        speciesSpinner = findViewById(R.id.petSpeciesFilter)
+        petIllnessSwitch = findViewById(R.id.illness_switch)
+        breedSpinner = findViewById(R.id.petBreedsFilter)
+        petColorEditText = findViewById(R.id.petColorEditText)
+        genderSpinner = findViewById(R.id.petGenderSpinner)
+
+
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         datePickerFragment =
@@ -67,18 +76,11 @@ class FilterActivity : AppCompatActivity() {
         saveButton = findViewById(R.id.save_btn2)
         saveButton.setOnClickListener {
 
-
-            speciesSpinner = findViewById(R.id.petSpeciesFilter)
-            petIllnessEditText = findViewById(R.id.petPreExistingIllnessMultiLineText)
-            breedSpinner = findViewById(R.id.petBreedsFilter)
-            petColorEditText = findViewById(R.id.petColorEditText)
-            genderSpinner = findViewById(R.id.petGenderSpinner)
-
             if(speciesSpinner.selectedItemPosition == 0){
                 species = speciesSpinner.selectedItem.toString()
             }
-            if(!(petIllnessEditText.text.equals("Keine"))){
-                illness = petIllnessEditText.text.toString()
+            if(petIllnessSwitch.isActivated){
+                illness = "Keine"
             }
             if(breedSpinner.selectedItemPosition == 0){
                 breed = breedSpinner.selectedItem.toString()
@@ -139,7 +141,6 @@ class FilterActivity : AppCompatActivity() {
 
         radiusEditText = findViewById(R.id.radius_et)
         petColorEditText = findViewById(R.id.petColorEditText)
-        petIllnessEditText = findViewById(R.id.petPreExistingIllnessMultiLineText)
         resetFilterButton = findViewById(R.id.resetFilter_btn)
 
         speciesSpinner = findViewById(R.id.petSpeciesFilter)
@@ -150,6 +151,16 @@ class FilterActivity : AppCompatActivity() {
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             speciesSpinner.adapter = adapter
+        }
+
+        petIllnessSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // Switch is activated
+                petIllnessSwitch.text = "Ok"
+            } else {
+                // Switch is deactivated
+                petIllnessSwitch.text = "Nicht Ok"
+            }
         }
 
         speciesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -235,7 +246,6 @@ class FilterActivity : AppCompatActivity() {
             breedSpinner.setSelection(0)
             genderSpinner.setSelection(0)
             petColorEditText.setText("")
-            petIllnessEditText.setText("")
         }
     }
 

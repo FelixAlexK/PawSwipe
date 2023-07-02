@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="cat_array">
-        <item>Rasse</item>
+        <item>---</item>
         <item>Kurzhaar-Katze</item>
         <item>Siamkatze</item>
         <item>Bengal-Katze</item>
