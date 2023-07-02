@@ -10,6 +10,7 @@ class AppData {
         private const val PASSWORD_KEY = "PasswordKey"
         private const val DISCRIMINATOR_KEY = "DiscriminatorKey"
 
+        private var radius: Int = 0
         private var species: String = ""
         private var illness: Boolean = true
         private var breed: String = ""
@@ -19,6 +20,13 @@ class AppData {
         private var maxAge: String = ""
 
 
+        fun getRadius(): Int {
+            return radius
+        }
+
+        fun setRadius(radius: Int) {
+            this.radius = radius
+        }
         fun getSpecies(): String {
             return species
         }

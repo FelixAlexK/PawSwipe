@@ -51,11 +51,8 @@ class FilterActivity : AppCompatActivity() {
         resetFilterButton = findViewById(R.id.resetFilter_btn)
 
 
-        loadFilterIntoActivity()
-
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        datePickerFragment =
-            DatePickerFragment(this.getString(R.string.de_dateFormat), this)
+        datePickerFragment = DatePickerFragment(this.getString(R.string.de_dateFormat), this)
 
         cancelButton = findViewById(R.id.cancel_btn2)
         cancelButton.setOnClickListener {
@@ -75,6 +72,8 @@ class FilterActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
 
             // saves the filter setting into the AppData companion object
+            AppData.setRadius(radiusEditText.text.toString().toInt())
+
             if(speciesSpinner.selectedItemPosition != 0){ // if not selected first position in list which represents a place holder
                 AppData.setSpecies(speciesSpinner.selectedItem.toString())
             }
@@ -82,7 +81,7 @@ class FilterActivity : AppCompatActivity() {
                 AppData.setSpecies("")
             }
 
-            if(petIllnessSwitch.isActivated){
+            if(petIllnessSwitch.isChecked){
                 AppData.setIllness(true)
             }
             else{
@@ -119,18 +118,48 @@ class FilterActivity : AppCompatActivity() {
                 AppData.setMaxAge("")
             }
 
+            // This is for debugging @todo remove this part
+            val radius = AppData.getRadius()
             val species = AppData.getSpecies()
             val breed = AppData.getBreed()
             val gender = AppData.getGender()
             val minAge = AppData.getMinAge()
             val maxAge = AppData.getMaxAge()
             val color = AppData.getColor()
-            println("Tierart: $species \nRasse: $breed \nGeschlecht: $gender \nMin Alter: $minAge \nMax Alter: $maxAge \nFarbe: $color")
+            val illness = AppData.getIllness()
+            println("Radius: $radius \nTierart: $species \nRasse: $breed \nGeschlecht: $gender \nMin Alter: $minAge \nMax Alter: $maxAge \nFarbe: $color \nIllness: $illness")
 
         }
 
         setupSpinners()
 
+        // Load the color from AppData
+        val color: String = AppData.getColor()
+        if(!(color.equals(""))){
+            petColorEditText.setText(color)
+        }
+
+        //Load the radius from AppData
+        val radius: Int = AppData.getRadius()
+        if(radius == 0){
+            radiusEditText.setText("")
+        }
+        else{
+            radiusEditText.setText(radius.toString())
+        }
+
+        // Loads the illness from AppData
+        val illness :Boolean = AppData.getIllness()
+        if(illness){
+            petIllnessSwitch.text = "Ok"
+            petIllnessSwitch.isChecked = true
+        }
+        else{
+            petIllnessSwitch.text = "Nicht Ok"
+            petIllnessSwitch.isChecked = false
+        }
+
+        // Listener for Illness Switch
         petIllnessSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 petIllnessSwitch.text = "Ok"
@@ -146,21 +175,6 @@ class FilterActivity : AppCompatActivity() {
             genderSpinner.setSelection(0)
             petColorEditText.setText("")
         }
-    }
-
-    private fun loadFilterIntoActivity(){
-
-
-        val species = AppData.getSpecies()
-
-        val adapter = speciesSpinner.adapter
-        if (adapter is ArrayAdapter<*>) {
-            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == species }
-            if (position != null) {
-                speciesSpinner.setSelection(position)
-            }
-        }
-
     }
 
     private fun setupSpinners(){
@@ -192,7 +206,6 @@ class FilterActivity : AppCompatActivity() {
                 maxAgeSpinner.setSelection(position)
             }
         }
-
 
         ArrayAdapter.createFromResource(
             this,
@@ -330,5 +343,4 @@ class FilterActivity : AppCompatActivity() {
     private fun showDatePickerDialog(v: View) {
         datePickerFragment.show(supportFragmentManager, "datePicker")
     }
-
 }
