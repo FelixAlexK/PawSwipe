@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             finish()
         }, SPLASH_DISPLAY_LENGTH.toLong())
 
+
     }
 
 
