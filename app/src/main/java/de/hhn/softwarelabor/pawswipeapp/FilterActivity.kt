@@ -46,6 +46,9 @@ class FilterActivity : AppCompatActivity() {
         genderSpinner = findViewById(R.id.petGenderSpinner)
         minAgeSpinner = findViewById(R.id.petMinAgeFilter)
         maxAgeSpinner = findViewById(R.id.petMaxAgeFilter)
+        radiusEditText = findViewById(R.id.radius_et)
+        petColorEditText = findViewById(R.id.petColorEditText)
+        resetFilterButton = findViewById(R.id.resetFilter_btn)
 
 
         loadFilterIntoActivity()
@@ -126,6 +129,42 @@ class FilterActivity : AppCompatActivity() {
 
         }
 
+        setupSpinners()
+
+        petIllnessSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                petIllnessSwitch.text = "Ok"
+            } else {
+                petIllnessSwitch.text = "Nicht Ok"
+            }
+        }
+
+        resetFilterButton.setOnClickListener {
+            radiusEditText.setText("")
+            speciesSpinner.setSelection(0)
+            breedSpinner.setSelection(0)
+            genderSpinner.setSelection(0)
+            petColorEditText.setText("")
+        }
+    }
+
+    private fun loadFilterIntoActivity(){
+
+
+        val species = AppData.getSpecies()
+
+        val adapter = speciesSpinner.adapter
+        if (adapter is ArrayAdapter<*>) {
+            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == species }
+            if (position != null) {
+                speciesSpinner.setSelection(position)
+            }
+        }
+
+    }
+
+    private fun setupSpinners(){
+
         ArrayAdapter.createFromResource(
             this,
             R.array.age_array,
@@ -169,11 +208,6 @@ class FilterActivity : AppCompatActivity() {
             }
         }
 
-
-        radiusEditText = findViewById(R.id.radius_et)
-        petColorEditText = findViewById(R.id.petColorEditText)
-        resetFilterButton = findViewById(R.id.resetFilter_btn)
-
         ArrayAdapter.createFromResource(
             this,
             R.array.species_array,
@@ -185,14 +219,6 @@ class FilterActivity : AppCompatActivity() {
             val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == species }
             if (position != null) {
                 speciesSpinner.setSelection(position)
-            }
-        }
-
-        petIllnessSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                petIllnessSwitch.text = "Ok"
-            } else {
-                petIllnessSwitch.text = "Nicht Ok"
             }
         }
 
@@ -299,29 +325,6 @@ class FilterActivity : AppCompatActivity() {
                 // Handle the case where no item is selected
             }
         }
-
-        resetFilterButton.setOnClickListener {
-            radiusEditText.setText("")
-            speciesSpinner.setSelection(0)
-            breedSpinner.setSelection(0)
-            genderSpinner.setSelection(0)
-            petColorEditText.setText("")
-        }
-    }
-
-    private fun loadFilterIntoActivity(){
-
-
-        val species = AppData.getSpecies()
-
-        val adapter = speciesSpinner.adapter
-        if (adapter is ArrayAdapter<*>) {
-            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == species }
-            if (position != null) {
-                speciesSpinner.setSelection(position)
-            }
-        }
-
     }
 
     private fun showDatePickerDialog(v: View) {
