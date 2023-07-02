@@ -80,7 +80,7 @@ class FilterActivity : AppCompatActivity() {
                 species = speciesSpinner.selectedItem.toString()
             }
             if(petIllnessSwitch.isActivated){
-                illness = "Keine"
+                illness = ""
             }
             if(breedSpinner.selectedItemPosition == 0){
                 breed = breedSpinner.selectedItem.toString()
