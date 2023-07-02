@@ -24,14 +24,10 @@ class FilterActivity : AppCompatActivity() {
     private lateinit var genderSpinner: Spinner
     private lateinit var speciesSpinner: Spinner
     private lateinit var breedSpinner: Spinner
-
     private lateinit var minAgeSpinner: Spinner
     private lateinit var maxAgeSpinner: Spinner
 
-
-    private lateinit var datePickerFragment: DatePickerFragment
-
-    private lateinit var radiusEditText: EditText
+    private lateinit var radiusField: EditText
     private lateinit var petColorEditText: EditText
     private lateinit var petIllnessSwitch: Switch
 
@@ -46,15 +42,15 @@ class FilterActivity : AppCompatActivity() {
         genderSpinner = findViewById(R.id.petGenderSpinner)
         minAgeSpinner = findViewById(R.id.petMinAgeFilter)
         maxAgeSpinner = findViewById(R.id.petMaxAgeFilter)
-        radiusEditText = findViewById(R.id.radius_et)
+        radiusField = findViewById(R.id.radius_field)
         petColorEditText = findViewById(R.id.petColorEditText)
         resetFilterButton = findViewById(R.id.resetFilter_btn)
-
+        saveButton = findViewById(R.id.save_btn2)
+        cancelButton = findViewById(R.id.cancel_btn2)
+        breedSpinner = findViewById(R.id.petBreedsFilter)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        datePickerFragment = DatePickerFragment(this.getString(R.string.de_dateFormat), this)
 
-        cancelButton = findViewById(R.id.cancel_btn2)
         cancelButton.setOnClickListener {
             AlertDialog.Builder(this@FilterActivity)
                 .setTitle(getString(R.string.cancelChanges_headerText))
@@ -68,11 +64,10 @@ class FilterActivity : AppCompatActivity() {
                 }.show()
         }
 
-        saveButton = findViewById(R.id.save_btn2)
         saveButton.setOnClickListener {
 
             // saves the filter setting into the AppData companion object
-            AppData.setRadius(radiusEditText.text.toString().toInt())
+            AppData.setRadius(radiusField.text.toString().toInt())
 
             if(speciesSpinner.selectedItemPosition != 0){ // if not selected first position in list which represents a place holder
                 AppData.setSpecies(speciesSpinner.selectedItem.toString())
@@ -142,10 +137,10 @@ class FilterActivity : AppCompatActivity() {
         //Load the radius from AppData
         val radius: Int = AppData.getRadius()
         if(radius == 0){
-            radiusEditText.setText("")
+            radiusField.setText("")
         }
         else{
-            radiusEditText.setText(radius.toString())
+            radiusField.setText(radius.toString())
         }
 
         // Loads the illness from AppData
@@ -169,7 +164,7 @@ class FilterActivity : AppCompatActivity() {
         }
 
         resetFilterButton.setOnClickListener {
-            radiusEditText.setText("")
+            radiusField.setText("")
             speciesSpinner.setSelection(0)
             breedSpinner.setSelection(0)
             genderSpinner.setSelection(0)
@@ -242,7 +237,6 @@ class FilterActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                breedSpinner = findViewById(R.id.petBreedsFilter)
                 val breed = AppData.getBreed()
 
                 when (parent.getItemAtPosition(position).toString()) {
@@ -338,9 +332,5 @@ class FilterActivity : AppCompatActivity() {
                 // Handle the case where no item is selected
             }
         }
-    }
-
-    private fun showDatePickerDialog(v: View) {
-        datePickerFragment.show(supportFragmentManager, "datePicker")
     }
 }
