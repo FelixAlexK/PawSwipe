@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat.finishAffinity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
@@ -60,6 +62,7 @@ class AnimalListActivity : AppCompatActivity() {
     private lateinit var detailedShelterEmail: TextView
     private lateinit var detailedShelterPhoneHint: TextView
     private lateinit var detailedShelterEmailHint: TextView
+    private lateinit var detailedAnimalDislikeButton: ImageButton
 
 
     private var animalItems: ArrayList<AnimalItem> = ArrayList()
@@ -106,6 +109,10 @@ class AnimalListActivity : AppCompatActivity() {
                 customLayout.findViewById(R.id.detailedAnimalPhoneHint_textView)
             detailedShelterEmailHint =
                 customLayout.findViewById(R.id.detailedAnimalEmailHint_textView)
+            detailedAnimalDislikeButton =
+                customLayout.findViewById(R.id.detailedAnimalDislike_imageButton)
+
+
 
 
             detailedAnimalName.text = item.animalName
@@ -127,6 +134,7 @@ class AnimalListActivity : AppCompatActivity() {
                 detailedShelterPhoneHint.visibility = View.GONE
                 detailedShelterEmail.visibility = View.GONE
                 detailedShelterEmailHint.visibility = View.GONE
+                detailedAnimalDislikeButton.visibility = View.GONE
             } else {
                 detailedShelterEmail.text = item.shelterEmail
                 detailedShelterPhone.text =
@@ -147,7 +155,37 @@ class AnimalListActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
 
+            detailedAnimalDislikeButton.setOnClickListener {
+                item.animalID?.let { it1 ->
+                    LikeApi().dislikeAnimal(profileId, it1) { _, error ->
+                        if (error != null) {
+                            runOnUiThread {
+                                Toast.makeText(
+                                    this@AnimalListActivity,
+                                    getString(R.string.like_error_text),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } else {
+                            runOnUiThread {
+                                Toast.makeText(
+                                    this@AnimalListActivity,
+                                    "Tier wurde als \"Gefällt mir nicht\" markiert",
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
+                                dialog.dismiss()
+                                reloadActivity()
+
+                            }
+
+
+                        }
+                    }
+                }
+
+
+            }
         }
 
         animalAdapter = AnimalAdapter(animalItems, animalItemClick, this@AnimalListActivity)
@@ -204,6 +242,21 @@ class AnimalListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+
+    /**
+     * This function is used to reload the current activity.
+     *
+     * It first finishes the current activity with [finish], and then restarts
+     * the same activity with [startActivity]. [overridePendingTransition] is used
+     * to remove the transition animations, providing a seamless reload effect.
+     */
+    private fun reloadActivity() {
+        finish()
+        overridePendingTransition(0, 0)
+        startActivity(intent)
+        overridePendingTransition(0, 0)
     }
 
     /**
@@ -426,6 +479,7 @@ class AnimalListActivity : AppCompatActivity() {
 
     }
 }
+
 
 
 
