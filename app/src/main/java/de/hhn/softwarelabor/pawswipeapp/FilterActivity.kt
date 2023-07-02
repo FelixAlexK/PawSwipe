@@ -33,6 +33,7 @@ class FilterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_filter)
 
         speciesSpinner = findViewById(R.id.petSpeciesFilter)
@@ -51,6 +52,13 @@ class FilterActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
+        setupListeners()
+        setupSpinners()         // also loads Data from AppData
+        loadTextViews()         // also loads Data from AppData
+    }
+
+    private fun setupListeners(){
+
         cancelButton.setOnClickListener {
             AlertDialog.Builder(this@FilterActivity)
                 .setTitle(getString(R.string.cancelChanges_headerText))
@@ -66,52 +74,40 @@ class FilterActivity : AppCompatActivity() {
 
         saveButton.setOnClickListener {
 
-            // saves the filter setting into the AppData companion object
+            // saves the filter settings into the AppData companion object
             AppData.setRadius(radiusField.text.toString().toInt())
 
             if(speciesSpinner.selectedItemPosition != 0){ // if not selected first position in list which represents a place holder
                 AppData.setSpecies(speciesSpinner.selectedItem.toString())
             }
-            else{
-                AppData.setSpecies("")
-            }
+            else{ AppData.setSpecies("") }
 
             if(petIllnessSwitch.isChecked){
                 AppData.setIllness(true)
             }
-            else{
-                AppData.setIllness(false)
-            }
+            else{ AppData.setIllness(false) }
 
             if(breedSpinner.selectedItemPosition != 0){
                 AppData.setBreed(breedSpinner.selectedItem.toString())
             }
-            else{
-                AppData.setBreed("")
-            }
+            else{ AppData.setBreed("") }
 
             AppData.setColor(petColorEditText.text.toString())
 
             if(genderSpinner.selectedItemPosition != 0){
                 AppData.setGender(genderSpinner.selectedItem.toString())
             }
-            else{
-                AppData.setGender("")
-            }
+            else{ AppData.setGender("") }
 
             if(minAgeSpinner.selectedItemPosition != 0){
                 AppData.setMinAge(minAgeSpinner.selectedItem.toString())
             }
-            else{
-                AppData.setMinAge("")
-            }
+            else{ AppData.setMinAge("") }
 
             if(maxAgeSpinner.selectedItemPosition != 0){
                 AppData.setMaxAge(maxAgeSpinner.selectedItem.toString())
             }
-            else{
-                AppData.setMaxAge("")
-            }
+            else{ AppData.setMaxAge("") }
 
             // This is for debugging @todo remove this part
             val radius = AppData.getRadius()
@@ -126,8 +122,26 @@ class FilterActivity : AppCompatActivity() {
 
         }
 
-        setupSpinners()
+        // Listener for illness switch
+        petIllnessSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                petIllnessSwitch.text = "Ok"
+            } else {
+                petIllnessSwitch.text = "Nicht Ok"
+            }
+        }
 
+        // Listener for reset button
+        resetFilterButton.setOnClickListener {
+            radiusField.setText("")
+            speciesSpinner.setSelection(0)
+            breedSpinner.setSelection(0)
+            genderSpinner.setSelection(0)
+            petColorEditText.setText("")
+        }
+    }
+
+    private fun loadTextViews(){
         // Load the color from AppData
         val color: String = AppData.getColor()
         if(!(color.equals(""))){
@@ -152,23 +166,6 @@ class FilterActivity : AppCompatActivity() {
         else{
             petIllnessSwitch.text = "Nicht Ok"
             petIllnessSwitch.isChecked = false
-        }
-
-        // Listener for Illness Switch
-        petIllnessSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                petIllnessSwitch.text = "Ok"
-            } else {
-                petIllnessSwitch.text = "Nicht Ok"
-            }
-        }
-
-        resetFilterButton.setOnClickListener {
-            radiusField.setText("")
-            speciesSpinner.setSelection(0)
-            breedSpinner.setSelection(0)
-            genderSpinner.setSelection(0)
-            petColorEditText.setText("")
         }
     }
 
