@@ -1,6 +1,7 @@
 package de.hhn.softwarelabor.pawswipeapp
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -75,7 +76,12 @@ class FilterActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
 
             // saves the filter settings into the AppData companion object
-            AppData.setRadius(radiusField.text.toString().toInt())
+            if(radiusField.text.toString().equals("")){
+                AppData.setRadius(0)
+            }
+            else{
+                AppData.setRadius(radiusField.text.toString().toInt())
+            }
 
             if(speciesSpinner.selectedItemPosition != 0){ // if not selected first position in list which represents a place holder
                 AppData.setSpecies(speciesSpinner.selectedItem.toString())
@@ -120,6 +126,8 @@ class FilterActivity : AppCompatActivity() {
             val illness = AppData.getIllness()
             println("Radius: $radius \nTierart: $species \nRasse: $breed \nGeschlecht: $gender \nMin Alter: $minAge \nMax Alter: $maxAge \nFarbe: $color \nIllness: $illness")
 
+            val intent = Intent(this@FilterActivity, MatchActivity::class.java)
+            startActivity(intent)
         }
 
         // Listener for illness switch
