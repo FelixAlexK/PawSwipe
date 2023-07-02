@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".MatchActivity">
 
+    <com.yuyakaido.android.cardstackview.CardStackView
+        android:id="@+id/matchCardStackView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        />
+
     <Button
         android:id="@+id/filter_btn"
         android:layout_width="126dp"
@@ -43,38 +53,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
 
-    <TextView
-        android:id="@+id/matchingText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/matchingText"
-        android:textSize="60sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.09"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/idViewPager"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.365"
-        android:layout_margin="10dp">
-
-    </androidx.viewpager.widget.ViewPager>
-
     <ImageButton
         android:id="@+id/dislike_button"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:adjustViewBounds="true"
@@ -84,7 +66,6 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idViewPager"
         app:srcCompat="@drawable/dislike" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -99,17 +80,15 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:adjustViewBounds="true"
         android:background="@null"
+        android:contentDescription="@string/like_dislike_button_description"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/matching_btn2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/idViewPager"
-        app:srcCompat="@drawable/love"
-        android:contentDescription="@string/like_dislike_button_description" />
+        app:srcCompat="@drawable/love" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
