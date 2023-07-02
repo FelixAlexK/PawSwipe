@@ -133,11 +133,15 @@ class FilterActivity : AppCompatActivity() {
 
         // Listener for reset button
         resetFilterButton.setOnClickListener {
-            radiusField.setText("")
             speciesSpinner.setSelection(0)
             breedSpinner.setSelection(0)
+            minAgeSpinner.setSelection(0)
+            maxAgeSpinner.setSelection(0)
             genderSpinner.setSelection(0)
+            petIllnessSwitch.isChecked = true
+            petIllnessSwitch.text = "Ok"
             petColorEditText.setText("")
+            radiusField.setText("0")
         }
     }
 
