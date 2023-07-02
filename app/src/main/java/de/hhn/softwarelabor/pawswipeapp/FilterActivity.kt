@@ -10,18 +10,31 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import de.hhn.softwarelabor.pawswipeapp.utils.*
 
 class FilterActivity : AppCompatActivity() {
 
+    private lateinit var species: String
+    private lateinit var illness: String
+    private lateinit var breed: String
+    private lateinit var color: String
+    private lateinit var gender: String
+    private lateinit var minAge: String
+    private lateinit var maxAge: String
+
     private lateinit var cancelButton: Button
     private lateinit var saveButton: Button
-    private lateinit var petBirthdayButton: Button
     private lateinit var resetFilterButton: Button
 
     private lateinit var genderSpinner: Spinner
     private lateinit var speciesSpinner: Spinner
     private lateinit var breedSpinner: Spinner
+
+    private lateinit var minAgeSpinner: Spinner
+    private lateinit var maxAgeSpinner: Spinner
+
 
     private lateinit var datePickerFragment: DatePickerFragment
 
@@ -54,17 +67,63 @@ class FilterActivity : AppCompatActivity() {
         saveButton = findViewById(R.id.save_btn2)
         saveButton.setOnClickListener {
 
-            AlertDialog.Builder(this@FilterActivity)
-                .setTitle(getString(R.string.saveChanges_headerText))
-                .setMessage(getString(R.string.saveChanges_messageText))
-                .setPositiveButton(getString(R.string.yes_dialogText)) { dialog, _ ->
-                    finish()
-                    dialog.dismiss()
-                }
-                .setNegativeButton(getString(R.string.no_dialogText)) { dialog, _ ->
-                    dialog.dismiss()
-                }.show()
+
+            speciesSpinner = findViewById(R.id.petSpeciesFilter)
+            petIllnessEditText = findViewById(R.id.petPreExistingIllnessMultiLineText)
+            breedSpinner = findViewById(R.id.petBreedsFilter)
+            petColorEditText = findViewById(R.id.petColorEditText)
+            genderSpinner = findViewById(R.id.petGenderSpinner)
+
+            if(speciesSpinner.selectedItemPosition == 0){
+                species = speciesSpinner.selectedItem.toString()
+            }
+            if(!(petIllnessEditText.text.equals("Keine"))){
+                illness = petIllnessEditText.text.toString()
+            }
+            if(breedSpinner.selectedItemPosition == 0){
+                breed = breedSpinner.selectedItem.toString()
+            }
+            if(!(petColorEditText.text.equals("Keine"))){
+                color = petColorEditText.text.toString()
+            }
+            if(genderSpinner.selectedItemPosition == 0){
+                gender = genderSpinner.selectedItem.toString()
+            }
+            if(minAgeSpinner.selectedItemPosition == 0){
+                minAge = minAgeSpinner.selectedItem.toString()
+            }
+            if(maxAgeSpinner.selectedItemPosition == 0){
+                maxAge = maxAgeSpinner.selectedItem.toString()
+            }
+
+
+            println("Tierart: $species \nRasse: $breed \nGeschlecht: $gender \nMin Alter: $minAge \nMax Alter: $maxAge \nFarbe: $color")
+
         }
+
+        minAgeSpinner = findViewById(R.id.petMinAgeFilter)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.age_array,
+            android.R.layout.simple_spinner_dropdown_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            minAgeSpinner.adapter = adapter
+        }
+
+        maxAgeSpinner = findViewById(R.id.petMaxAgeFilter)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.age_array,
+            android.R.layout.simple_spinner_dropdown_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            maxAgeSpinner.adapter = adapter
+        }
+
+
 
         genderSpinner = findViewById(R.id.petGenderSpinner)
         ArrayAdapter.createFromResource(
@@ -77,17 +136,6 @@ class FilterActivity : AppCompatActivity() {
             genderSpinner.adapter = adapter
         }
 
-        petBirthdayButton = findViewById(R.id.petBirthdayButton)
-
-        datePickerFragment.setOnDatePickedListener { date ->
-            petBirthdayButton.text = date
-        }
-        petBirthdayButton.apply {
-
-            setOnClickListener {
-                showDatePickerDialog(this)
-            }
-        }
 
         radiusEditText = findViewById(R.id.radius_et)
         petColorEditText = findViewById(R.id.petColorEditText)
@@ -175,6 +223,7 @@ class FilterActivity : AppCompatActivity() {
                     }
                 }
             }
+
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Handle the case where no item is selected
             }
@@ -185,11 +234,9 @@ class FilterActivity : AppCompatActivity() {
             speciesSpinner.setSelection(0)
             breedSpinner.setSelection(0)
             genderSpinner.setSelection(0)
-            petBirthdayButton.setText(R.string.birthday_text)
             petColorEditText.setText("")
             petIllnessEditText.setText("")
         }
-
     }
 
     private fun showDatePickerDialog(v: View) {
