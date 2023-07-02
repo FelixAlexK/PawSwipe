@@ -17,14 +17,6 @@ import android.widget.Switch
 
 class FilterActivity : AppCompatActivity() {
 
-    private var species: String = "---"
-    private var illness: String = "---"
-    private var breed: String = "---"
-    private var color: String = "---"
-    private var gender: String = "---"
-    private var minAge: String = "---"
-    private var maxAge: String = "---"
-
     private lateinit var cancelButton: Button
     private lateinit var saveButton: Button
     private lateinit var resetFilterButton: Button
@@ -76,29 +68,35 @@ class FilterActivity : AppCompatActivity() {
         saveButton = findViewById(R.id.save_btn2)
         saveButton.setOnClickListener {
 
+            // saves the filter setting into the AppData companion object
             if(speciesSpinner.selectedItemPosition == 0){
-                species = speciesSpinner.selectedItem.toString()
+                AppData.setSpecies(speciesSpinner.selectedItem.toString())
             }
             if(petIllnessSwitch.isActivated){
-                illness = ""
+                AppData.setIllness("")
             }
             if(breedSpinner.selectedItemPosition == 0){
-                breed = breedSpinner.selectedItem.toString()
+                AppData.setBreed(breedSpinner.selectedItem.toString())
             }
-            if(!(petColorEditText.text.equals("Keine"))){
-                color = petColorEditText.text.toString()
+            if(!(petColorEditText.text.equals(""))){
+                AppData.setColor(petColorEditText.text.toString())
             }
             if(genderSpinner.selectedItemPosition == 0){
-                gender = genderSpinner.selectedItem.toString()
+                AppData.setGender(genderSpinner.selectedItem.toString())
             }
             if(minAgeSpinner.selectedItemPosition == 0){
-                minAge = minAgeSpinner.selectedItem.toString()
+                AppData.setMinAge(minAgeSpinner.selectedItem.toString())
             }
             if(maxAgeSpinner.selectedItemPosition == 0){
-                maxAge = maxAgeSpinner.selectedItem.toString()
+                AppData.setMaxAge(maxAgeSpinner.selectedItem.toString())
             }
 
-
+            val species = AppData.getSpecies()
+            val breed = AppData.getBreed()
+            val gender = AppData.getGender()
+            val minAge = AppData.getMinAge()
+            val maxAge = AppData.getMaxAge()
+            val color = AppData.getColor()
             println("Tierart: $species \nRasse: $breed \nGeschlecht: $gender \nMin Alter: $minAge \nMax Alter: $maxAge \nFarbe: $color")
 
         }
