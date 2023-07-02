@@ -25,7 +25,7 @@ import de.hhn.softwarelabor.pawswipeapp.utils.ViewPagerAdapter
  */
 class MatchActivity : AppCompatActivity() {
     
-    private lateinit var chatBtn: Button
+    private lateinit var filterBtn: Button
     private lateinit var animalListBtn: Button
     private lateinit var likeBtn: ImageButton
     private lateinit var dislikeBtn: ImageButton
@@ -78,7 +78,7 @@ class MatchActivity : AppCompatActivity() {
         profileId = AppData.getID(this)
         animalId = intent.getIntExtra("animal_id", 0)
         
-        chatBtn = findViewById(R.id.chat_btn2)
+        filterBtn = findViewById(R.id.filter_btn)
         animalListBtn = findViewById(R.id.animalList_btn2)
         likeBtn = findViewById(R.id.like_button)
         dislikeBtn = findViewById(R.id.dislike_button)
@@ -92,8 +92,8 @@ class MatchActivity : AppCompatActivity() {
             matchBtn.background = null
         }
         
-        chatBtn.setOnClickListener {
-            val intent = Intent(this@MatchActivity, ChatActivity::class.java)
+        filterBtn.setOnClickListener {
+            val intent = Intent(this@MatchActivity, FilterActivity::class.java)
             startActivity(intent)
         }
         

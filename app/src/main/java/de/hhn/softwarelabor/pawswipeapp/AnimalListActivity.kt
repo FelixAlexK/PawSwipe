@@ -45,7 +45,7 @@ private const val DISCRIMINATOR_SHELTER = "shelter"
 class AnimalListActivity : AppCompatActivity() {
 
     private lateinit var matchBtn: Button
-    private lateinit var chatBtn: Button
+    private lateinit var filterBtn: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var animalAdapter: AnimalAdapter
     private lateinit var detailedAnimalName: TextView
@@ -79,7 +79,7 @@ class AnimalListActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         matchBtn = findViewById(R.id.matching_btn3)
-        chatBtn = findViewById(R.id.chat_btn3)
+        filterBtn = findViewById(R.id.filter_btn3)
         recyclerView = findViewById(R.id.animal_list_recyclerView)
 
 
@@ -199,8 +199,8 @@ class AnimalListActivity : AppCompatActivity() {
         }
 
 
-        chatBtn.setOnClickListener {
-            val intent = Intent(this@AnimalListActivity, ChatActivity::class.java)
+        filterBtn.setOnClickListener {
+            val intent = Intent(this@AnimalListActivity, FilterActivity::class.java)
             startActivity(intent)
         }
 
