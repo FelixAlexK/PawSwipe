@@ -11,7 +11,7 @@ class AppData {
         private const val DISCRIMINATOR_KEY = "DiscriminatorKey"
 
         private var species: String = ""
-        private var illness: String = ""
+        private var illness: Boolean = true
         private var breed: String = ""
         private var color: String = ""
         private var gender: String = ""
@@ -27,11 +27,11 @@ class AppData {
             this.species = species
         }
 
-        fun getIllness(): String {
+        fun getIllness(): Boolean {
             return illness
         }
 
-        fun setIllness(illness: String) {
+        fun setIllness(illness: Boolean) {
             this.illness = illness
         }
 

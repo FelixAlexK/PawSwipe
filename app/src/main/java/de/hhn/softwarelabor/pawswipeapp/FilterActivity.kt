@@ -44,8 +44,11 @@ class FilterActivity : AppCompatActivity() {
         breedSpinner = findViewById(R.id.petBreedsFilter)
         petColorEditText = findViewById(R.id.petColorEditText)
         genderSpinner = findViewById(R.id.petGenderSpinner)
+        minAgeSpinner = findViewById(R.id.petMinAgeFilter)
+        maxAgeSpinner = findViewById(R.id.petMaxAgeFilter)
 
 
+        loadFilterIntoActivity()
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         datePickerFragment =
@@ -69,26 +72,48 @@ class FilterActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
 
             // saves the filter setting into the AppData companion object
-            if(speciesSpinner.selectedItemPosition == 0){
+            if(speciesSpinner.selectedItemPosition != 0){ // if not selected first position in list which represents a place holder
                 AppData.setSpecies(speciesSpinner.selectedItem.toString())
             }
-            if(petIllnessSwitch.isActivated){
-                AppData.setIllness("")
+            else{
+                AppData.setSpecies("")
             }
-            if(breedSpinner.selectedItemPosition == 0){
+
+            if(petIllnessSwitch.isActivated){
+                AppData.setIllness(true)
+            }
+            else{
+                AppData.setIllness(false)
+            }
+
+            if(breedSpinner.selectedItemPosition != 0){
                 AppData.setBreed(breedSpinner.selectedItem.toString())
             }
-            if(!(petColorEditText.text.equals(""))){
-                AppData.setColor(petColorEditText.text.toString())
+            else{
+                AppData.setBreed("")
             }
-            if(genderSpinner.selectedItemPosition == 0){
+
+            AppData.setColor(petColorEditText.text.toString())
+
+            if(genderSpinner.selectedItemPosition != 0){
                 AppData.setGender(genderSpinner.selectedItem.toString())
             }
-            if(minAgeSpinner.selectedItemPosition == 0){
+            else{
+                AppData.setGender("")
+            }
+
+            if(minAgeSpinner.selectedItemPosition != 0){
                 AppData.setMinAge(minAgeSpinner.selectedItem.toString())
             }
-            if(maxAgeSpinner.selectedItemPosition == 0){
+            else{
+                AppData.setMinAge("")
+            }
+
+            if(maxAgeSpinner.selectedItemPosition != 0){
                 AppData.setMaxAge(maxAgeSpinner.selectedItem.toString())
+            }
+            else{
+                AppData.setMaxAge("")
             }
 
             val species = AppData.getSpecies()
@@ -101,7 +126,6 @@ class FilterActivity : AppCompatActivity() {
 
         }
 
-        minAgeSpinner = findViewById(R.id.petMinAgeFilter)
         ArrayAdapter.createFromResource(
             this,
             R.array.age_array,
@@ -110,9 +134,12 @@ class FilterActivity : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             minAgeSpinner.adapter = adapter
+            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == AppData.getMinAge() }
+            if (position != null) {
+                minAgeSpinner.setSelection(position)
+            }
         }
 
-        maxAgeSpinner = findViewById(R.id.petMaxAgeFilter)
         ArrayAdapter.createFromResource(
             this,
             R.array.age_array,
@@ -121,11 +148,13 @@ class FilterActivity : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             maxAgeSpinner.adapter = adapter
+            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == AppData.getMaxAge() }
+            if (position != null) {
+                maxAgeSpinner.setSelection(position)
+            }
         }
 
 
-
-        genderSpinner = findViewById(R.id.petGenderSpinner)
         ArrayAdapter.createFromResource(
             this,
             R.array.gender_array,
@@ -134,6 +163,10 @@ class FilterActivity : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             genderSpinner.adapter = adapter
+            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == AppData.getGender() }
+            if (position != null) {
+                genderSpinner.setSelection(position)
+            }
         }
 
 
@@ -141,7 +174,6 @@ class FilterActivity : AppCompatActivity() {
         petColorEditText = findViewById(R.id.petColorEditText)
         resetFilterButton = findViewById(R.id.resetFilter_btn)
 
-        speciesSpinner = findViewById(R.id.petSpeciesFilter)
         ArrayAdapter.createFromResource(
             this,
             R.array.species_array,
@@ -149,14 +181,17 @@ class FilterActivity : AppCompatActivity() {
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             speciesSpinner.adapter = adapter
+            val species = AppData.getSpecies();
+            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == species }
+            if (position != null) {
+                speciesSpinner.setSelection(position)
+            }
         }
 
         petIllnessSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                // Switch is activated
                 petIllnessSwitch.text = "Ok"
             } else {
-                // Switch is deactivated
                 petIllnessSwitch.text = "Nicht Ok"
             }
         }
@@ -169,6 +204,8 @@ class FilterActivity : AppCompatActivity() {
                 id: Long
             ) {
                 breedSpinner = findViewById(R.id.petBreedsFilter)
+                val breed = AppData.getBreed()
+
                 when (parent.getItemAtPosition(position).toString()) {
                     "Hund" -> {
                         ArrayAdapter.createFromResource(
@@ -178,6 +215,11 @@ class FilterActivity : AppCompatActivity() {
                         ).also { adapter ->
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                             breedSpinner.adapter = adapter
+
+                            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == breed }
+                            if (position != null) {
+                                breedSpinner.setSelection(position)
+                            }
                         }
                     }
                     "Katze" -> {
@@ -188,6 +230,11 @@ class FilterActivity : AppCompatActivity() {
                         ).also { adapter ->
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                             breedSpinner.adapter = adapter
+
+                            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == breed }
+                            if (position != null) {
+                                breedSpinner.setSelection(position)
+                            }
                         }
                     }
                     "Vogel" -> {
@@ -198,6 +245,11 @@ class FilterActivity : AppCompatActivity() {
                         ).also { adapter ->
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                             breedSpinner.adapter = adapter
+
+                            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == breed }
+                            if (position != null) {
+                                breedSpinner.setSelection(position)
+                            }
                         }
                     }
                     "Kleintiere" -> {
@@ -208,6 +260,11 @@ class FilterActivity : AppCompatActivity() {
                         ).also { adapter ->
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                             breedSpinner.adapter = adapter
+
+                            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == breed }
+                            if (position != null) {
+                                breedSpinner.setSelection(position)
+                            }
                         }
                     }
                     "Reptilien" -> {
@@ -218,6 +275,11 @@ class FilterActivity : AppCompatActivity() {
                         ).also { adapter ->
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                             breedSpinner.adapter = adapter
+
+                            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == breed }
+                            if (position != null) {
+                                breedSpinner.setSelection(position)
+                            }
                         }
                     }
                     else -> {
@@ -245,6 +307,21 @@ class FilterActivity : AppCompatActivity() {
             genderSpinner.setSelection(0)
             petColorEditText.setText("")
         }
+    }
+
+    private fun loadFilterIntoActivity(){
+
+
+        val species = AppData.getSpecies()
+
+        val adapter = speciesSpinner.adapter
+        if (adapter is ArrayAdapter<*>) {
+            val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == species }
+            if (position != null) {
+                speciesSpinner.setSelection(position)
+            }
+        }
+
     }
 
     private fun showDatePickerDialog(v: View) {
