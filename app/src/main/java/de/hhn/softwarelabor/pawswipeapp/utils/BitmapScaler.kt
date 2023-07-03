@@ -32,4 +32,28 @@ object BitmapScaler {
         val factor = height / b.height.toFloat()
         return Bitmap.createScaledBitmap(b, (b.width * factor).toInt(), height, true)
     }
+
+    private fun calculateNewDimensions(
+        bitmap: Bitmap,
+        aspectRatio: Pair<Int, Int>
+    ): Pair<Int, Int> {
+        val originalWidth = bitmap.width
+        val originalHeight = bitmap.height
+        val originalRatio = originalWidth.toFloat() / originalHeight.toFloat()
+        val targetRatio = aspectRatio.first.toFloat() / aspectRatio.second.toFloat()
+
+        return if (targetRatio > originalRatio) {
+            val newWidth = (originalHeight * targetRatio).toInt()
+            Pair(newWidth, originalHeight)
+        } else {
+            val newHeight = (originalWidth / targetRatio).toInt()
+            Pair(originalWidth, newHeight)
+        }
+    }
+
+    fun resizeBitmapToAspectRatio(bitmap: Bitmap, aspectRatio: Pair<Int, Int>): Bitmap {
+        val (newWidth, newHeight) = calculateNewDimensions(bitmap, aspectRatio)
+        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+    }
+
 }
