@@ -17,7 +17,6 @@ import android.view.animation.AccelerateInterpolator
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -66,7 +65,6 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     private lateinit var adapter: CardAdapter
     private lateinit var cardStackView: CardStackView
     private lateinit var layoutManager: CardStackLayoutManager
-    private lateinit var linLayoutCard: LinearLayout
     private var currentPosition = 0
     var isDragging = false
     var startX = 0f
@@ -121,7 +119,6 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         setContentView(R.layout.activity_match)
         
         cardStackView = findViewById(R.id.matchCardStackView)
-        linLayoutCard = findViewById(R.id.linearlayoutCardView)
         
         
         layoutManager = CardStackLayoutManager(this@MatchActivity, this@MatchActivity)
@@ -130,7 +127,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         cardStackView.layoutManager = layoutManager
         
         cardStackView.layoutParams.width = resources.displayMetrics.widthPixels
-        cardStackView.layoutParams.height = resources.displayMetrics.widthPixels
+        cardStackView.layoutParams.height = (resources.displayMetrics.widthPixels*1.2f).toInt()
         
         
         getAllAnimals()
@@ -203,8 +200,6 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 
                 MotionEvent.ACTION_UP -> {
                     if (!isDragging) {
-                        //START
-    
                         currentAnimal = adapter.getAnimal(currentPosition)
     
                         val customLayout =
@@ -287,8 +282,6 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                         outerLayout?.setOnClickListener {
                             dialog.dismiss()
                         }
-    
-                        //ENDE
                     }
 
                     isDragging = false
