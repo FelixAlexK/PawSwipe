@@ -6,15 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".MatchActivity">
 
-    <com.yuyakaido.android.cardstackview.CardStackView
-        android:id="@+id/matchCardStackView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
+    <LinearLayout
+        android:id="@+id/linearlayoutCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/dislike_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        />
+        android:gravity="bottom">
+
+        <com.yuyakaido.android.cardstackview.CardStackView
+            android:id="@+id/matchCardStackView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/dislike_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </LinearLayout>
+
+
 
     <Button
         android:id="@+id/chat_btn2"
