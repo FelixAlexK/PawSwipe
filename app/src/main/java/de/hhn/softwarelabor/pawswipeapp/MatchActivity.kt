@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.widget.Button
@@ -26,6 +27,7 @@ import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
 import de.hhn.softwarelabor.pawswipeapp.api.data.AnimalProfileData
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AppData
+import kotlin.math.abs
 
 
 /**
@@ -56,6 +58,10 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     private lateinit var adapter: CardAdapter
     private lateinit var cardStackView: CardStackView
     private lateinit var layoutManager: CardStackLayoutManager
+    private var currentPosition = 1
+    var isDragging = false
+    var startX = 0f
+    var startY = 0f
     
     
     @Deprecated("Deprecated in Java")
@@ -146,6 +152,36 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
             cardStackView.swipe()
         }
         
+        cardStackView.setOnTouchListener { _, motionEvent ->
+            when (motionEvent.action){
+                MotionEvent.ACTION_DOWN -> {
+                    isDragging = false
+                    startX = motionEvent.x
+                    startY = motionEvent.y
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    if (abs(motionEvent.x - startX) > 10 || abs(motionEvent.y) > 10){
+                        isDragging = true
+                    }
+                    false
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (!isDragging) {
+                        Toast.makeText(
+                            this@MatchActivity,
+                            "Clicked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    isDragging = false
+                    false
+                }
+                else -> false
+            }
+            
+        }
+
         imageList = imageList + R.drawable.pixabay_cute_cat
         imageList = imageList + R.drawable.dislike
         imageList = imageList + R.drawable.love
@@ -249,9 +285,11 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         likeApi.dislikeAnimal(profileId, animalId) { response, error ->
             runOnUiThread {
                 if (error != null) {
-                    Toast.makeText(
-                        this@MatchActivity, getString(R.string.like_error_text), Toast.LENGTH_SHORT
-                    ).show()
+                    if (error.message != "Error: 500"){
+                        Toast.makeText(
+                            this@MatchActivity, getString(R.string.like_error_text), Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else if (response?.isSuccessful == true) {
                     Log.i("PawSwipe", "Succesfully Disliked")
                 }
@@ -268,24 +306,15 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     }
     
     override fun onCardSwiped(direction: Direction?) {
-        val currentPosition = layoutManager.topPosition
         
         if (currentPosition >= 0 && currentPosition < adapter.itemCount) {
             val animal = adapter.getAnimal(currentPosition)
             when (direction) {
                 Direction.Left -> {
-                    Toast.makeText(
-                        this@MatchActivity, "Swiped Left", Toast.LENGTH_SHORT
-                    ).show()
                     dislikeAnimal(profileId, animal.animal_id!!)
                 }
-                
                 Direction.Right -> {
-                    Toast.makeText(
-                        this@MatchActivity, "Swiped Right", Toast.LENGTH_SHORT
-                    ).show()
                     likeAnimal(profileId, animal.animal_id!!)
-                    
                 }
                 
                 else -> {
@@ -306,13 +335,14 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     }
     
     override fun onCardDisappeared(view: View?, position: Int) {
+        currentPosition = position
     }
     
     private fun getAllAnimals() {
         
         val animals = mutableListOf<AnimalProfileData>()
         
-        animalProfileApi.getAllAnimalProfileIDs { ints, error ->
+        animalProfileApi.getAllAnimalProfileIDs { ids, error ->
             if (error != null) {
                 runOnUiThread {
                     Toast.makeText(
@@ -323,7 +353,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 }
                 
             } else {
-                ints?.forEach { int ->
+                ids?.forEach { int ->
                     animalProfileApi.getAnimalProfileByID(int) { profile, error ->
                         if (error != null) {
                             runOnUiThread {
@@ -335,29 +365,31 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                             }
                             
                         } else {
-                            val animal = AnimalProfileData(
-                                profile?.animal_id,
-                                profile?.name,
-                                profile?.species,
-                                profile?.birthday,
-                                profile?.illness,
-                                profile?.description,
-                                profile?.breed,
-                                profile?.color,
-                                profile?.gender,
-                                profile?.picture_one,
-                                null,
-                                null,
-                                null,
-                                null,
-                                profile!!.profile_id
-                            )
-                            animals.add(animal)
-                            // Check if all animals have been retrieved
-                            if (animals.size == ints.size) {
+                            profile?.let {
+                                val animal = AnimalProfileData(
+                                    it.animal_id,
+                                    it.name,
+                                    it.species,
+                                    it.birthday,
+                                    it.illness,
+                                    it.description,
+                                    it.breed,
+                                    it.color,
+                                    it.gender,
+                                    it.picture_one,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    it.profile_id
+                                )
+                                animals.add(animal)
+                                // Check if all animals have been retrieved
+                            }
+                            if (animals.size == ids.size) {
                                 // All animals have been retrieved, initialize the adapter
                                 runOnUiThread {
-                                    adapter = CardAdapter(this@MatchActivity, animals)
+                                    adapter = CardAdapter(animals)
                                     cardStackView.adapter =
                                         adapter // Set the adapter for the cardStackView
                                 }
@@ -368,7 +400,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 
             }
         }
-        adapter = CardAdapter(this@MatchActivity, animals)
+        adapter = CardAdapter(animals)
         cardStackView.adapter = adapter // Setzen Sie den Adapter für den CardStackView
     }
 }
