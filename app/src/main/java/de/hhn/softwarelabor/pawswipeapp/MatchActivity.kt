@@ -25,6 +25,8 @@ import com.yuyakaido.android.cardstackview.StackFrom
 import com.yuyakaido.android.cardstackview.SwipeAnimationSetting
 import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
 import de.hhn.softwarelabor.pawswipeapp.api.data.AnimalProfileData
+import de.hhn.softwarelabor.pawswipeapp.api.filter.FilterApi
+import de.hhn.softwarelabor.pawswipeapp.api.filter.FilterEnum
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 import kotlin.math.abs
@@ -54,6 +56,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     private val latLongUtil = LatLongUtil(this)
     
     private val animalProfileApi = AnimalProfileApi()
+    private val filterAPI = FilterApi()
     
     private lateinit var adapter: CardAdapter
     private lateinit var cardStackView: CardStackView
@@ -341,65 +344,115 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     private fun getAllAnimals() {
         
         val animals = mutableListOf<AnimalProfileData>()
-        
-        animalProfileApi.getAllAnimalProfileIDs { ids, error ->
-            if (error != null) {
-                runOnUiThread {
-                    Toast.makeText(
-                        this@MatchActivity,
-                        "Ids konnten nicht geladen werden! (${error.message})",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                
-            } else {
-                ids?.forEach { int ->
-                    animalProfileApi.getAnimalProfileByID(int) { profile, error ->
-                        if (error != null) {
-                            runOnUiThread {
-                                Toast.makeText(
-                                    this@MatchActivity,
-                                    "Tier konnte nicht geladen werden! (${error.message})",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                            
-                        } else {
-                            profile?.let {
-                                val animal = AnimalProfileData(
-                                    it.animal_id,
-                                    it.name,
-                                    it.species,
-                                    it.birthday,
-                                    it.illness,
-                                    it.description,
-                                    it.breed,
-                                    it.color,
-                                    it.gender,
-                                    it.picture_one,
-                                    null,
-                                    null,
-                                    null,
-                                    null,
-                                    it.profile_id
-                                )
-                                animals.add(animal)
-                                // Check if all animals have been retrieved
-                            }
-                            if (animals.size == ids.size) {
-                                // All animals have been retrieved, initialize the adapter
+
+        val radius: Int = AppData.getRadius()
+        val species: String = AppData.getSpecies()
+        val illness: Boolean = AppData.getIllness()
+        val breed: String = AppData.getBreed()
+        val color: String = AppData.getColor()
+        val gender: String = AppData.getGender()
+        val minAge: String = AppData.getMinAge()
+        val maxAge: String = AppData.getMaxAge()
+
+        if(species == "" || !illness || breed == "" || color == "" || gender == "" || minAge == "" || maxAge == ""){
+
+            // No filter set so retriving all animals
+            animalProfileApi.getAllAnimalProfileIDs { ids, error ->
+                if (error != null) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@MatchActivity,
+                            "Ids konnten nicht geladen werden! (${error.message})",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                } else {
+                    ids?.forEach { int ->
+                        animalProfileApi.getAnimalProfileByID(int) { profile, error ->
+                            if (error != null) {
                                 runOnUiThread {
-                                    adapter = CardAdapter(animals)
-                                    cardStackView.adapter =
-                                        adapter // Set the adapter for the cardStackView
+                                    Toast.makeText(
+                                        this@MatchActivity,
+                                        "Tier konnte nicht geladen werden! (${error.message})",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                            } else {
+                                profile?.let {
+                                    val animal = AnimalProfileData(
+                                        it.animal_id,
+                                        it.name,
+                                        it.species,
+                                        it.birthday,
+                                        it.illness,
+                                        it.description,
+                                        it.breed,
+                                        it.color,
+                                        it.gender,
+                                        it.picture_one,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        it.profile_id
+                                    )
+                                    animals.add(animal)
+                                    // Check if all animals have been retrieved
+                                }
+                                if (animals.size == ids.size) {
+                                    // All animals have been retrieved, initialize the adapter
+                                    runOnUiThread {
+                                        adapter = CardAdapter(animals)
+                                        cardStackView.adapter =
+                                            adapter // Set the adapter for the cardStackView
+                                    }
                                 }
                             }
                         }
                     }
+
                 }
-                
             }
         }
+        else{
+            // Retrieving animals by filter (radius needs to be checked locally) @todo ???
+
+            val filters = mutableMapOf<FilterEnum, String>()
+            if (species != "") {
+                filters[FilterEnum.SPECIES] = species
+            }
+            if (!illness) {
+                filters[FilterEnum.ILLNESS] = ""   // if illness not ok filter for healthy animals
+            }
+            if (breed != "") {
+                filters[FilterEnum.BREED] = breed
+            }
+            if (color != "") {
+                filters[FilterEnum.COLOR] = color
+            }
+            if (gender != "") {
+                filters[FilterEnum.GENDER] = gender
+            }
+            if (minAge != "") {
+                filters[FilterEnum.AGE_MIN] = minAge
+            }
+            if (maxAge != "") {
+                filters[FilterEnum.AGE_MAX] = maxAge
+            }
+
+            filterAPI.filterAnimal(filters) { _, error ->
+                if (error != null) {
+                    // Handle the error
+                    // For example: showErrorDialog(error.message)
+                } else {
+                    // Use the filtered animal profiles
+                    // For example: displayAnimalProfiles(animalProfiles)
+                }
+            }
+        }
+
         adapter = CardAdapter(animals)
         cardStackView.adapter = adapter // Setzen Sie den Adapter für den CardStackView
     }
