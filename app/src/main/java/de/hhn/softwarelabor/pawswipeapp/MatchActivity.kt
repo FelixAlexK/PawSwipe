@@ -38,26 +38,26 @@ import kotlin.math.abs
  * @since 2023.06.12
  */
 class MatchActivity : AppCompatActivity(), CardStackListener {
-    
+
     private lateinit var filterBtn: Button
     private lateinit var animalListBtn: Button
     private lateinit var likeBtn: ImageButton
     private lateinit var dislikeBtn: ImageButton
     private lateinit var matchBtn: Button
     private lateinit var imageList: List<Int>
-    
+
     private var profileId: Int = 0
     private var likeApi: LikeApi = LikeApi()
     private var animalId: Int = 0
-    
+
     private var backPressedOnce = false
     private val timerDuration = 3000 // 3 Sekunden
-    
+
     private val latLongUtil = LatLongUtil(this)
-    
+
     private val animalProfileApi = AnimalProfileApi()
     private val filterAPI = FilterApi()
-    
+
     private lateinit var adapter: CardAdapter
     private lateinit var cardStackView: CardStackView
     private lateinit var layoutManager: CardStackLayoutManager
@@ -65,79 +65,79 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     var isDragging = false
     var startX = 0f
     var startY = 0f
-    
-    
+
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        
+
         if (backPressedOnce) {
             finishAffinity()    // Beendet alle Activities und die App
             return
         }
-        
+
         backPressedOnce = true
         Toast.makeText(
             this, getString(R.string.zum_beenden_der_app), Toast.LENGTH_SHORT
         ).show()
-        
+
         Handler(Looper.getMainLooper()).postDelayed({
             backPressedOnce = false
         }, timerDuration.toLong())
-        
+
     }
-    
+
     override fun onResume() {
         super.onResume()
         profileId = AppData.getID(this@MatchActivity)
     }
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
-        
+
         cardStackView = findViewById(R.id.matchCardStackView)
-        
-        
+
+
         layoutManager = CardStackLayoutManager(this@MatchActivity, this@MatchActivity)
         layoutManager.setStackFrom(StackFrom.None)
         layoutManager.setVisibleCount(1)
         cardStackView.layoutManager = layoutManager
-        
+
         getAllAnimals()
-        
+
         // If a bug brings a Shelter to the Match Activity, it closes the Activity
         if (AppData.getDiscriminator(this@MatchActivity) == "shelter") {
             finish()
         }
-        
-        
+
+
         profileId = AppData.getID(this)
         animalId = intent.getIntExtra("animal_id", 0)
-        
+
         filterBtn = findViewById(R.id.filter_btn)
         animalListBtn = findViewById(R.id.animalList_btn2)
         likeBtn = findViewById(R.id.like_button)
         dislikeBtn = findViewById(R.id.dislike_button)
         matchBtn = findViewById(R.id.matching_btn2)
         imageList = ArrayList()
-        
+
         if (AppData.getDiscriminator(this@MatchActivity) == "shelter") {
             matchBtn.isClickable = false
             matchBtn.setBackgroundColor(Color.TRANSPARENT)
             matchBtn.background = null
         }
-        
+
         filterBtn.setOnClickListener {
             val intent = Intent(this@MatchActivity, FilterActivity::class.java)
             startActivity(intent)
         }
-        
+
         animalListBtn.setOnClickListener {
             val intent = Intent(this@MatchActivity, AnimalListActivity::class.java)
             intent.putExtra("id", profileId)
             startActivity(intent)
         }
-        
+
         likeBtn.setOnClickListener {
             val swipeAnimationSetting =
                 SwipeAnimationSetting.Builder().setDirection(Direction.Right)
@@ -146,7 +146,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
             layoutManager.setSwipeAnimationSetting(swipeAnimationSetting)
             cardStackView.swipe()
         }
-        
+
         dislikeBtn.setOnClickListener {
             val swipeAnimationSetting = SwipeAnimationSetting.Builder().setDirection(Direction.Left)
                 .setDuration(Duration.Normal.duration).setInterpolator(AccelerateInterpolator())
@@ -154,9 +154,9 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
             layoutManager.setSwipeAnimationSetting(swipeAnimationSetting)
             cardStackView.swipe()
         }
-        
+
         cardStackView.setOnTouchListener { _, motionEvent ->
-            when (motionEvent.action){
+            when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
                     isDragging = false
                     startX = motionEvent.x
@@ -164,7 +164,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                     true
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    if (abs(motionEvent.x - startX) > 10 || abs(motionEvent.y) > 10){
+                    if (abs(motionEvent.x - startX) > 10 || abs(motionEvent.y) > 10) {
                         isDragging = true
                     }
                     false
@@ -182,7 +182,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 }
                 else -> false
             }
-            
+
         }
 
         imageList = imageList + R.drawable.pixabay_cute_cat
@@ -190,10 +190,10 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         imageList = imageList + R.drawable.love
         imageList = imageList + R.drawable.wf
         imageList = imageList + R.drawable.paw_swipe_splash_screen
-        
-        
+
+
     }
-    
+
     /**
      * Inflates the options menu.
      *
@@ -205,7 +205,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         inflater.inflate(R.menu.menu_home, menu)
         return super.onCreateOptionsMenu(menu)
     }
-    
+
     /**
      * Handles the selected menu item.
      *
@@ -222,26 +222,26 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 startActivity(intent)
                 true
             }
-            
+
             R.id.menu_animalServices -> {
                 val intent = Intent(this@MatchActivity, AnimalServiceActivity::class.java)
                 startActivity(intent)
                 true
             }
-            
+
             R.id.menu_animalEdit -> {
                 val intent = Intent(this@MatchActivity, EditAnimalActivity::class.java)
                 startActivity(intent)
                 true
             }
-            
+
             R.id.menu_animalCreate -> {
                 val intent = Intent(this@MatchActivity, PetProfileActivity::class.java)
                 intent.putExtra("id", profileId)
                 startActivity(intent)
                 true
             }
-            
+
             R.id.menu_logOut -> {
                 AppData.setID(this, 0)
                 AppData.setPassword(this, "")
@@ -250,17 +250,17 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 startActivity(intent)
                 true
             }
-            
+
             R.id.menu_filter -> {
                 val intent = Intent(this@MatchActivity, FilterActivity::class.java)
                 startActivity(intent)
                 true
             }
-            
+
             else -> super.onOptionsItemSelected(item)
         }
     }
-    
+
     /**
      * Performs the like action for an animal.
      * Calls the corresponding API method based on the like status.
@@ -279,37 +279,39 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                     Log.i("PawSwipe", "Successfully liked")
                 }
             }
-            
+
         }
     }
-    
+
     /** -------------------------------------------------------------------------------------- */
     private fun dislikeAnimal(profileId: Int, animalId: Int) {
         likeApi.dislikeAnimal(profileId, animalId) { response, error ->
             runOnUiThread {
                 if (error != null) {
-                    if (error.message != "Error: 500"){
+                    if (error.message != "Error: 500") {
                         Toast.makeText(
-                            this@MatchActivity, getString(R.string.like_error_text), Toast.LENGTH_SHORT
+                            this@MatchActivity,
+                            getString(R.string.like_error_text),
+                            Toast.LENGTH_SHORT
                         ).show()
                     }
                 } else if (response?.isSuccessful == true) {
                     Log.i("PawSwipe", "Succesfully Disliked")
                 }
             }
-            
+
         }
     }
-    
+
     fun findLatLongForGivenAddress(address: String): Pair<Double, Double>? {
         return latLongUtil.getLatLongFromAddress(address)
     }
-    
+
     override fun onCardDragging(direction: Direction?, ratio: Float) {
     }
-    
+
     override fun onCardSwiped(direction: Direction?) {
-        
+
         if (currentPosition >= 0 && currentPosition < adapter.itemCount) {
             val animal = adapter.getAnimal(currentPosition)
             when (direction) {
@@ -319,31 +321,33 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 Direction.Right -> {
                     likeAnimal(profileId, animal.animal_id!!)
                 }
-                
+
                 else -> {
                     // Swiped to the Wrong way
                 }
             }
-            
+
         }
     }
-    
+
     override fun onCardRewound() {
     }
-    
+
     override fun onCardCanceled() {
     }
-    
+
     override fun onCardAppeared(view: View?, position: Int) {
     }
-    
+
     override fun onCardDisappeared(view: View?, position: Int) {
         currentPosition = position
     }
-    
+
     private fun getAllAnimals() {
-        
-        val animals = mutableListOf<AnimalProfileData>()
+
+        var animals = mutableListOf<AnimalProfileData>()
+        var filteredAnimalList =
+            listOf<AnimalProfileData>() // converting of a list into mutable list failed in OutOfMemoryError due to the big size of the list
 
         val radius: Int = AppData.getRadius()
         val species: String = AppData.getSpecies()
@@ -354,9 +358,9 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         val minAge: String = AppData.getMinAge()
         val maxAge: String = AppData.getMaxAge()
 
-        if(species == "" || !illness || breed == "" || color == "" || gender == "" || minAge == "" || maxAge == ""){
-
+        if (species == "" && illness && breed == "" && color == "" && gender == "" && minAge == "" && maxAge == "") {
             // No filter set so retriving all animals
+
             animalProfileApi.getAllAnimalProfileIDs { ids, error ->
                 if (error != null) {
                     runOnUiThread {
@@ -415,8 +419,8 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
 
                 }
             }
-        }
-        else{
+            adapter = CardAdapter(animals)
+        } else {
             // Retrieving animals by filter (radius needs to be checked locally) @todo ???
 
             val filters = mutableMapOf<FilterEnum, String>()
@@ -442,18 +446,24 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 filters[FilterEnum.AGE_MAX] = maxAge
             }
 
-            filterAPI.filterAnimal(filters) { _, error ->
+            filterAPI.filterAnimal(filters) { filteredAnimalListCallback, error ->
                 if (error != null) {
-                    // Handle the error
-                    // For example: showErrorDialog(error.message)
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@MatchActivity,
+                            "Ids konnten nicht geladen werden! (${error.message})",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
                 } else {
-                    // Use the filtered animal profiles
-                    // For example: displayAnimalProfiles(animalProfiles)
+                    if (filteredAnimalListCallback != null) {
+                        filteredAnimalList = filteredAnimalListCallback
+                    }
                 }
             }
+            adapter = CardAdapter(filteredAnimalList)
         }
-
-        adapter = CardAdapter(animals)
         cardStackView.adapter = adapter // Setzen Sie den Adapter für den CardStackView
     }
 }
