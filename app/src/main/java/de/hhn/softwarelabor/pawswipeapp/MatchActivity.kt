@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.widget.Button
@@ -26,6 +27,7 @@ import de.hhn.softwarelabor.pawswipeapp.api.animal.AnimalProfileApi
 import de.hhn.softwarelabor.pawswipeapp.api.data.AnimalProfileData
 import de.hhn.softwarelabor.pawswipeapp.api.like.LikeApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AppData
+import kotlin.math.abs
 
 
 /**
@@ -57,6 +59,9 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     private lateinit var cardStackView: CardStackView
     private lateinit var layoutManager: CardStackLayoutManager
     private var currentPosition = 1
+    var isDragging = false
+    var startX = 0f
+    var startY = 0f
     
     
     @Deprecated("Deprecated in Java")
@@ -147,6 +152,36 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
             cardStackView.swipe()
         }
         
+        cardStackView.setOnTouchListener { _, motionEvent ->
+            when (motionEvent.action){
+                MotionEvent.ACTION_DOWN -> {
+                    isDragging = false
+                    startX = motionEvent.x
+                    startY = motionEvent.y
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    if (abs(motionEvent.x - startX) > 10 || abs(motionEvent.y) > 10){
+                        isDragging = true
+                    }
+                    false
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (!isDragging) {
+                        Toast.makeText(
+                            this@MatchActivity,
+                            "Clicked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    isDragging = false
+                    false
+                }
+                else -> false
+            }
+            
+        }
+
         imageList = imageList + R.drawable.pixabay_cute_cat
         imageList = imageList + R.drawable.dislike
         imageList = imageList + R.drawable.love
@@ -250,9 +285,11 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         likeApi.dislikeAnimal(profileId, animalId) { response, error ->
             runOnUiThread {
                 if (error != null) {
-                    Toast.makeText(
-                        this@MatchActivity, getString(R.string.like_error_text), Toast.LENGTH_SHORT
-                    ).show()
+                    if (error.message != "Error: 500"){
+                        Toast.makeText(
+                            this@MatchActivity, getString(R.string.like_error_text), Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else if (response?.isSuccessful == true) {
                     Log.i("PawSwipe", "Succesfully Disliked")
                 }
