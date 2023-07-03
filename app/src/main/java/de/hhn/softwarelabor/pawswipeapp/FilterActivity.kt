@@ -133,9 +133,9 @@ class FilterActivity : AppCompatActivity() {
         // Listener for illness switch
         petIllnessSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                petIllnessSwitch.text = "Ok"
+                petIllnessSwitch.text = getString(R.string.ok)
             } else {
-                petIllnessSwitch.text = "Nicht Ok"
+                petIllnessSwitch.text = getString(R.string.not_ok)
             }
         }
 
@@ -147,7 +147,7 @@ class FilterActivity : AppCompatActivity() {
             maxAgeSpinner.setSelection(0)
             genderSpinner.setSelection(0)
             petIllnessSwitch.isChecked = true
-            petIllnessSwitch.text = "Ok"
+            petIllnessSwitch.text = getString(R.string.ok)
             petColorEditText.setText("")
             radiusField.setText("0")
         }
@@ -156,7 +156,7 @@ class FilterActivity : AppCompatActivity() {
     private fun loadTextViews(){
         // Load the color from AppData
         val color: String = AppData.getColor()
-        if(!(color.equals(""))){
+        if(color != ""){
             petColorEditText.setText(color)
         }
 
@@ -172,11 +172,11 @@ class FilterActivity : AppCompatActivity() {
         // Loads the illness from AppData
         val illness :Boolean = AppData.getIllness()
         if(illness){
-            petIllnessSwitch.text = "Ok"
+            petIllnessSwitch.text = getString(R.string.ok)
             petIllnessSwitch.isChecked = true
         }
         else{
-            petIllnessSwitch.text = "Nicht Ok"
+            petIllnessSwitch.text = getString(R.string.not_ok)
             petIllnessSwitch.isChecked = false
         }
     }

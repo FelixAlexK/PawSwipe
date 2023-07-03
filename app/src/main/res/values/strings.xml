@@ -149,5 +149,7 @@
     <string name="detailed_animal_email_hint_text">E-Mail:</string>
     <string name="detailed_shelter_phone_text">(+49) %s</string>
     <string name="coming_soon_text">Demnächst verfügbar!</string>
+    <string name="ok">Ok</string>
+    <string name="not_ok">Nicht Ok</string>
 
 </resources>
