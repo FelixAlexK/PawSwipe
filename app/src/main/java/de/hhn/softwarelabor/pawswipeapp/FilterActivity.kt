@@ -28,7 +28,9 @@ class FilterActivity : AppCompatActivity() {
     private lateinit var minAgeSpinner: Spinner
     private lateinit var maxAgeSpinner: Spinner
 
-    private lateinit var radiusField: EditText
+    private lateinit var radiusField: EditText  // in xml were set to textField.isClickable = false &&
+                                                // textField.isFocusable = false since radius is not
+                                                // implemented yet @todo
     private lateinit var petColorEditText: EditText
     private lateinit var petIllnessSwitch: Switch
 
