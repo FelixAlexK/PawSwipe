@@ -371,7 +371,8 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                         ).show()
                     }
 
-                } else {
+                }
+                else {
                     ids?.forEach { int ->
                         animalProfileApi.getAnimalProfileByID(int) { profile, error ->
                             if (error != null) {
@@ -419,16 +420,17 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
 
                 }
             }
-            adapter = CardAdapter(animals)
         } else {
             // Retrieving animals by filter (radius needs to be checked locally) @todo ???
 
             val filters = mutableMapOf<FilterEnum, String>()
+            val map = mutableMapOf<FilterEnum, String>()
+
             if (species != "") {
                 filters[FilterEnum.SPECIES] = species
             }
             if (!illness) {
-                filters[FilterEnum.ILLNESS] = ""   // if illness not ok filter for healthy animals
+                filters[FilterEnum.ILLNESS] = ""
             }
             if (breed != "") {
                 filters[FilterEnum.BREED] = breed
@@ -446,24 +448,67 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 filters[FilterEnum.AGE_MAX] = maxAge
             }
 
-            filterAPI.filterAnimal(filters) { filteredAnimalListCallback, error ->
-                if (error != null) {
-                    runOnUiThread {
-                        Toast.makeText(
-                            this@MatchActivity,
-                            "Ids konnten nicht geladen werden! (${error.message})",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+            // Assign the filters to the 'map' parameter
+            map.putAll(filters)
 
-                } else {
-                    if (filteredAnimalListCallback != null) {
-                        filteredAnimalList = filteredAnimalListCallback
+            FilterApi().filterAnimalsAndGetIds(map){ ids, error ->
+                if(error != null){
+                    runOnUiThread {
+                        Toast.makeText(this@MatchActivity, error.message, Toast.LENGTH_SHORT).show()
+                    }
+                }else {
+                    Log.d("Filter", ids.toString())
+
+
+                    ids?.forEach { int ->
+                        animalProfileApi.getAnimalProfileByID(int) { profile, error ->
+                            if (error != null) {
+                                runOnUiThread {
+                                    Toast.makeText(
+                                        this@MatchActivity,
+                                        "Tier konnte nicht geladen werden! (${error.message})",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                            } else {
+                                profile?.let {
+                                    val animal = AnimalProfileData(
+                                        it.animal_id,
+                                        it.name,
+                                        it.species,
+                                        it.birthday,
+                                        it.illness,
+                                        it.description,
+                                        it.breed,
+                                        it.color,
+                                        it.gender,
+                                        it.picture_one,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        it.profile_id
+                                    )
+                                    animals.add(animal)
+                                    // Check if all animals have been retrieved
+                                }
+                                if (animals.size == ids.size) {
+                                    // All animals have been retrieved, initialize the adapter
+                                    runOnUiThread {
+                                        adapter = CardAdapter(animals)
+                                        cardStackView.adapter =
+                                            adapter // Set the adapter for the cardStackView
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
-            adapter = CardAdapter(filteredAnimalList)
         }
+        println("asdf")
+        adapter = CardAdapter(animals)
         cardStackView.adapter = adapter // Setzen Sie den Adapter für den CardStackView
     }
 }
