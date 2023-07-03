@@ -15,7 +15,6 @@ import de.hhn.softwarelabor.pawswipeapp.utils.*
 import android.widget.Switch
 
 
-
 class FilterActivity : AppCompatActivity() {
 
     private lateinit var cancelButton: Button
@@ -78,7 +77,7 @@ class FilterActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
 
             // saves the filter settings into the AppData companion object
-            if(radiusField.text.toString().equals("")){
+            if(radiusField.text.toString() == ""){
                 AppData.setRadius(0)
             }
             else{
@@ -116,17 +115,6 @@ class FilterActivity : AppCompatActivity() {
                 AppData.setMaxAge(maxAgeSpinner.selectedItem.toString())
             }
             else{ AppData.setMaxAge("") }
-
-            // This is for debugging @todo remove this part
-            val radius = AppData.getRadius()
-            val species = AppData.getSpecies()
-            val breed = AppData.getBreed()
-            val gender = AppData.getGender()
-            val minAge = AppData.getMinAge()
-            val maxAge = AppData.getMaxAge()
-            val color = AppData.getColor()
-            val illness = AppData.getIllness()
-            println("Radius: $radius \nTierart: $species \nRasse: $breed \nGeschlecht: $gender \nMin Alter: $minAge \nMax Alter: $maxAge \nFarbe: $color \nIllness: $illness")
 
             val intent = Intent(this@FilterActivity, MatchActivity::class.java)
             startActivity(intent)
