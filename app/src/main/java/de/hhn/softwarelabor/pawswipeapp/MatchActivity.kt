@@ -305,7 +305,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         
         val animals = mutableListOf<AnimalProfileData>()
         
-        animalProfileApi.getAllAnimalProfileIDs { ints, error ->
+        animalProfileApi.getAllAnimalProfileIDs { ids, error ->
             if (error != null) {
                 runOnUiThread {
                     Toast.makeText(
@@ -316,7 +316,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 }
                 
             } else {
-                ints?.forEach { int ->
+                ids?.forEach { int ->
                     animalProfileApi.getAnimalProfileByID(int) { profile, error ->
                         if (error != null) {
                             runOnUiThread {
@@ -328,29 +328,31 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                             }
                             
                         } else {
-                            val animal = AnimalProfileData(
-                                profile?.animal_id,
-                                profile?.name,
-                                profile?.species,
-                                profile?.birthday,
-                                profile?.illness,
-                                profile?.description,
-                                profile?.breed,
-                                profile?.color,
-                                profile?.gender,
-                                profile?.picture_one,
-                                null,
-                                null,
-                                null,
-                                null,
-                                profile!!.profile_id
-                            )
-                            animals.add(animal)
-                            // Check if all animals have been retrieved
-                            if (animals.size == ints.size) {
+                            profile?.let {
+                                val animal = AnimalProfileData(
+                                    it.animal_id,
+                                    it.name,
+                                    it.species,
+                                    it.birthday,
+                                    it.illness,
+                                    it.description,
+                                    it.breed,
+                                    it.color,
+                                    it.gender,
+                                    it.picture_one,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    it.profile_id
+                                )
+                                animals.add(animal)
+                                // Check if all animals have been retrieved
+                            }
+                            if (animals.size == ids.size) {
                                 // All animals have been retrieved, initialize the adapter
                                 runOnUiThread {
-                                    adapter = CardAdapter(this@MatchActivity, animals)
+                                    adapter = CardAdapter(animals)
                                     cardStackView.adapter =
                                         adapter // Set the adapter for the cardStackView
                                 }
@@ -361,7 +363,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 
             }
         }
-        adapter = CardAdapter(this@MatchActivity, animals)
+        adapter = CardAdapter(animals)
         cardStackView.adapter = adapter // Setzen Sie den Adapter für den CardStackView
     }
 }
