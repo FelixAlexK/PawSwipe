@@ -56,6 +56,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     private lateinit var adapter: CardAdapter
     private lateinit var cardStackView: CardStackView
     private lateinit var layoutManager: CardStackLayoutManager
+    private var currentPosition = 1
     
     
     @Deprecated("Deprecated in Java")
@@ -268,24 +269,15 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     }
     
     override fun onCardSwiped(direction: Direction?) {
-        val currentPosition = layoutManager.topPosition
         
         if (currentPosition >= 0 && currentPosition < adapter.itemCount) {
             val animal = adapter.getAnimal(currentPosition)
             when (direction) {
                 Direction.Left -> {
-                    Toast.makeText(
-                        this@MatchActivity, "Swiped Left", Toast.LENGTH_SHORT
-                    ).show()
                     dislikeAnimal(profileId, animal.animal_id!!)
                 }
-                
                 Direction.Right -> {
-                    Toast.makeText(
-                        this@MatchActivity, "Swiped Right", Toast.LENGTH_SHORT
-                    ).show()
                     likeAnimal(profileId, animal.animal_id!!)
-                    
                 }
                 
                 else -> {
@@ -306,6 +298,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     }
     
     override fun onCardDisappeared(view: View?, position: Int) {
+        currentPosition = position
     }
     
     private fun getAllAnimals() {
