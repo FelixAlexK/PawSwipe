@@ -85,6 +85,10 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Logs into a profile.
+     * @param email, password The usual two values necessary for a login
+     */
     private fun loginAccount(email: String, password: String) {
         try {
             profile.getUserProfileByEmail(email) { profile, error ->

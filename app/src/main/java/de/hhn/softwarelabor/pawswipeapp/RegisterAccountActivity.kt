@@ -10,7 +10,19 @@ import okhttp3.*
 import java.security.MessageDigest
 import java.util.*
 
-
+/**
+ * This class provides functionality for general account registration.
+ * An account is distinguished by the type of it either being "user" or "shelter".
+ * These discriminators have an impact on functionality, where "user" is a normal
+ * user of the app in the role of a keeper, and "shelter" is meant for proper animal
+ * shelters.
+ *
+ * There is no actual "registration" in this specific activity yet, in the sense of
+ * creating an account entry in the database with the specified values. Instead,
+ * after "registering", it redirects to profile creation and just passes the values.
+ * Only after profile creation is the actual account (and all its additional values) saved.
+ * @author Nico Wendler
+ */
 open class RegisterAccountActivity : AppCompatActivity() {
     private var email = ""
     private var passwordHashed = ""
@@ -60,6 +72,9 @@ open class RegisterAccountActivity : AppCompatActivity() {
     }
     /** ----------------------------------- redirects ----------------------------------- */
 
+    /**
+     * Redirects to LoginActivity.kt
+     */
     private fun goBackToLoginActivity() {
         try {
             val backToLoginIntent = Intent(this, LoginActivity::class.java)
@@ -70,7 +85,7 @@ open class RegisterAccountActivity : AppCompatActivity() {
     }
 
     /**
-     * Redirects to profiles after registration has been successful
+     * Redirects to CreateUserProfileActivity.kt
      */
     private fun proceedToUserProfileCreation() {
         try{
@@ -91,7 +106,10 @@ open class RegisterAccountActivity : AppCompatActivity() {
         }
         
     }
-    
+
+    /**
+     * Redirects to CreateShelterActivity.kt
+     */
     private fun proceedToShelterProfileCreation() {
     
         try{
@@ -134,6 +152,13 @@ open class RegisterAccountActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Checks if an email has at least valid syntax (text@example.com)
+     * Does NOT check if the email actually exists or can receive mail
+     *
+     * @param emailInputString the email input
+     * @return Return true if the email is syntactically valid
+     */
     private fun isValidEmail(emailInputString: String): Boolean {
         if (emailInputString.isEmpty()) {
             emptyInputErrorMessage()
@@ -151,6 +176,14 @@ open class RegisterAccountActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Checks if the passwords are valid:
+     * - Must be at least 8 characters long (so not empty)
+     * - Both input fields contain the same String
+     *
+     * @param passwordInputString, passwordConfirmInputString The password input
+     * @return Returns true if both passwords are valid
+     */
     private fun isValidPassword(passwordInputString: String,
                                   passwordConfirmInputString: String): Boolean {
         // empty fields
@@ -178,18 +211,30 @@ open class RegisterAccountActivity : AppCompatActivity() {
         Toast.makeText(this,"Fehlgeschlagen. Überprüfe deine Netzwerkverbindung",
             Toast.LENGTH_LONG).show()
     }
+    /**
+     * An error that is not described by anything in particular
+     */
     private fun displayGeneralErrorMessage() {
         Toast.makeText(this,"Irgendetwas ist falsch gelaufen. Versuche es später nochmal.",
             Toast.LENGTH_LONG).show()
     }
+    /**
+     * Error when input fields are empty
+     */
     private fun emptyInputErrorMessage() {
         Toast.makeText(this, "Eingabefelder können nicht leer sein",
             Toast.LENGTH_LONG).show()
     }
+    /**
+     * Error when password fields contain differing input
+     */
     private fun differentPasswordsErrorMessage() {
         Toast.makeText(this, "Passwörter stimmen nicht überein",
             Toast.LENGTH_LONG).show()
     }
+    /**
+     * Error when password input length is too short
+     */
     private fun passwordLengthTooShortErrorMessage() {
         Toast.makeText(this, "Passwort muss mindestens 8 Stellen lang sein",
             Toast.LENGTH_LONG).show()
@@ -198,6 +243,7 @@ open class RegisterAccountActivity : AppCompatActivity() {
 
     /**
      * Hashes data (for instance a password) to SHA-256
+     * The SHA-256 algorithm outputs a String with 64 characters
      */
     private fun stringToSHA256(input: String): String {
         val md = MessageDigest.getInstance("SHA-256")
