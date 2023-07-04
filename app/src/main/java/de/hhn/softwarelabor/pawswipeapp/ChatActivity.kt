@@ -71,8 +71,13 @@ class ChatActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.menu_home,menu)
+        if (AppData.getDiscriminator(this@ChatActivity) == "shelter") {
+            val inflater: MenuInflater = menuInflater
+            inflater.inflate(R.menu.menu_home,menu)
+        } else {
+            val inflater: MenuInflater = menuInflater
+            inflater.inflate(R.menu.menu_user,menu)
+        }
         return super.onCreateOptionsMenu(menu)
     }
 

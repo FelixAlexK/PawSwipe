@@ -202,7 +202,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.menu_home, menu)
+        inflater.inflate(R.menu.menu_user, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -225,19 +225,6 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
 
             R.id.menu_animalServices -> {
                 val intent = Intent(this@MatchActivity, AnimalServiceActivity::class.java)
-                startActivity(intent)
-                true
-            }
-
-            R.id.menu_animalEdit -> {
-                val intent = Intent(this@MatchActivity, EditAnimalActivity::class.java)
-                startActivity(intent)
-                true
-            }
-
-            R.id.menu_animalCreate -> {
-                val intent = Intent(this@MatchActivity, PetProfileActivity::class.java)
-                intent.putExtra("id", profileId)
                 startActivity(intent)
                 true
             }
