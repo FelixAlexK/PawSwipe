@@ -1,6 +1,5 @@
 package de.hhn.softwarelabor.pawswipeapp
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -94,7 +93,6 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     
 
 
-    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
 
         if (backPressedOnce) {
@@ -119,7 +117,6 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     }
 
     
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
@@ -476,7 +473,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
 
     private fun getAllAnimals() {
 
-        var animals = mutableListOf<AnimalProfileData>()
+        val animals = mutableListOf<AnimalProfileData>()
         var filteredAnimalList =
             listOf<AnimalProfileData>() // converting of a list into mutable list failed in OutOfMemoryError due to the big size of the list
 
