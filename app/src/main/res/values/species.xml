@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="species_array">
-        <item>Tierart</item>
+        <item>---</item>
         <item>Hund</item>
         <item>Katze</item>
         <item>Vogel</item>

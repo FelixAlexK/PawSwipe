@@ -3,6 +3,7 @@
 
 
     <string name="chat_btn">Chats</string>
+    <string name="filter_btn">Filter</string>
     <string name="matching_btn">Matchen</string>
     <string name="animalList_btn">Tierliste</string>
     <string name="search_pt">Suchen</string>
@@ -85,6 +86,8 @@
     <string name="animalList_tv">Tierliste</string>
     <string name="filterEdit_tv">Filter bearbeiten</string>
     <string name="filterRadius_et">Radius in km</string>
+    <string name="no_selection">---</string>
+
     <string name="resetFilter_btn">Zurücksetzen</string>
     <string name="createAnimal_tv">Tier erstellen</string>
     <string name="createUser_tv">Profil erstellen</string>
@@ -146,5 +149,7 @@
     <string name="detailed_animal_email_hint_text">E-Mail:</string>
     <string name="detailed_shelter_phone_text">(+49) %s</string>
     <string name="coming_soon_text">Demnächst verfügbar!</string>
+    <string name="ok">Ok</string>
+    <string name="not_ok">Nicht Ok</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package de.hhn.softwarelabor.pawswipeapp
-import android.content.Context
+
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.hhn.softwarelabor.pawswipeapp.api.data.AnimalProfileData
 import de.hhn.softwarelabor.pawswipeapp.utils.Base64Utils
-import de.hhn.softwarelabor.pawswipeapp.utils.BitmapScaler
 
-class CardAdapter(private val context: Context, private val animals: List<AnimalProfileData>) :
+class CardAdapter(private val animals: List<AnimalProfileData>) :
     RecyclerView.Adapter<CardAdapter.ViewHolder>() {
     
     fun getAnimal(position: Int): AnimalProfileData {
@@ -41,19 +41,25 @@ class CardAdapter(private val context: Context, private val animals: List<Animal
         
         fun bind(animal: AnimalProfileData) {
             
-            val screenWidth = context.resources.displayMetrics.widthPixels
-            
             // Überprüfe, ob das Bild vorhanden ist
             
             animal.picture_one?.let { pictureOne ->
                 // Dekodiere das Bild aus dem Base64-String
                 val decodedBitmap = Base64Utils.decode(pictureOne)
-        
+                
+                val width = decodedBitmap.width
+                val height = decodedBitmap.height
+                
+                val targetSize = height.coerceAtMost(width)
+                
+                val x = (width - targetSize) / 2
+                val y = (height - targetSize) / 2
+                
                 // Skaliere das Bild entsprechend der gewünschten Breite und Höhe
-                val scaledBitmap = BitmapScaler.scaleToFitWidth(decodedBitmap, screenWidth)
+                val scaledBitmap = Bitmap.createBitmap(decodedBitmap, x, y, targetSize, targetSize)
                 // Oder:
                 // val scaledBitmap = BitmapScaler.scaleToFitHeight(decodedBitmap, screenHeight)
-        
+                
                 // Setze das skalierte Bild in das ImageView
                 picture.setImageBitmap(scaledBitmap)
                 name.text = animal.name

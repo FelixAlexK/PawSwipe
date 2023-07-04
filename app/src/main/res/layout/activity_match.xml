@@ -17,10 +17,10 @@
         />
 
     <Button
-        android:id="@+id/chat_btn2"
+        android:id="@+id/filter_btn"
         android:layout_width="126dp"
         android:layout_height="59dp"
-        android:text="@string/chat_btn"
+        android:text="@string/filter_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.056"
