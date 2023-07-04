@@ -86,5 +86,29 @@ class FilterApi : FilterInterface {
         }
     }
 
+    fun filterAnimalsAndGetIds(
+        map: MutableMap<FilterEnum, String>,
+        callback: (List<Int>?, Throwable?) -> Unit
+    ) {
+        val idList = ArrayList<Int>()
+
+        try {
+            this.filterAnimal(map) { response, error ->
+                if (error != null) {
+                    callback(null, FilterException("Filtering was not possible"))
+                } else {
+                    response?.forEach {
+                        it.animal_id?.let { it1 -> idList.add(it1) }
+                    }
+                    callback(idList, null)
+                }
+            }
+        } catch (e: IllegalStateException) {
+            throw IllegalStateException("An error has occurred: $e")
+        }
+
+
+    }
+
 
 }
