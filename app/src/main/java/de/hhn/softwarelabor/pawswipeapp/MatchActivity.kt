@@ -192,6 +192,9 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         cardStackView.setOnTouchListener { _, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
+                    if (isCardStackEmpty()) {
+                        return@setOnTouchListener true
+                    }
                     isDragging = false
                     startX = motionEvent.x
                     startY = motionEvent.y
@@ -199,6 +202,9 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 }
                 
                 MotionEvent.ACTION_MOVE -> {
+                    if (isCardStackEmpty()) {
+                        return@setOnTouchListener true
+                    }
                     if (abs(motionEvent.x - startX) > 10 || abs(motionEvent.y) > 10) {
                         isDragging = true
                     }
@@ -206,7 +212,10 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 }
                 
                 MotionEvent.ACTION_UP -> {
-                    if (!isDragging) {
+                    if (isCardStackEmpty()) {
+                        return@setOnTouchListener true
+                    }
+                    if (!isDragging && currentPosition < adapter.itemCount) {
                         currentAnimal = adapter.getAnimal(currentPosition)
     
                         val customLayout =
@@ -307,6 +316,10 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         imageList = imageList + R.drawable.paw_swipe_splash_screen
         
 
+    }
+    
+    private fun isCardStackEmpty(): Boolean {
+        return adapter.itemCount == 0
     }
 
     /**
