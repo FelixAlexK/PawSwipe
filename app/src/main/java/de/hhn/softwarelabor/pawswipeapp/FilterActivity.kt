@@ -222,7 +222,7 @@ class FilterActivity : AppCompatActivity() {
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             speciesSpinner.adapter = adapter
-            val species = AppData.getSpecies();
+            val species = AppData.getSpecies()
             val position = (0 until adapter.count).firstOrNull { adapter.getItem(it) == species }
             if (position != null) {
                 speciesSpinner.setSelection(position)

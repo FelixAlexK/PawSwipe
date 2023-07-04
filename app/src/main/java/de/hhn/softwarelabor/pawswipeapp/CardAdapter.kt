@@ -62,12 +62,12 @@ class CardAdapter(private val animals: List<AnimalProfileData>) :
                 
                 // Setze das skalierte Bild in das ImageView
                 picture.setImageBitmap(scaledBitmap)
-                name.text = animal.name
-                species.text = animal.species
-                breed.text = animal.breed
-                gender.text = animal.gender
-                birthday.text = animal.birthday
             }
+            name.text = animal.name
+            species.text = animal.species
+            breed.text = animal.breed
+            gender.text = animal.gender
+            birthday.text = animal.birthday
         }
     }
 }
