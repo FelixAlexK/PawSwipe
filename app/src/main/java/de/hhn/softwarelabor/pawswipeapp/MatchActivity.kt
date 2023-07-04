@@ -540,7 +540,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                                 if (animals.size == ids.size) {
                                     // All animals have been retrieved, initialize the adapter
                                     runOnUiThread {
-                                        adapter = CardAdapter(animals)
+                                        adapter = CardAdapter(animals.shuffled())
                                         cardStackView.adapter =
                                             adapter // Set the adapter for the cardStackView
                                     }
@@ -548,7 +548,6 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                             }
                         }
                     }
-
                 }
             }
         } else {
@@ -627,7 +626,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                                 if (animals.size == ids.size) {
                                     // All animals have been retrieved, initialize the adapter
                                     runOnUiThread {
-                                        adapter = CardAdapter(animals)
+                                        adapter = CardAdapter(animals.shuffled())
                                         cardStackView.adapter =
                                             adapter // Set the adapter for the cardStackView
                                     }
