@@ -477,6 +477,4 @@ class PetProfileActivity : AppCompatActivity() {
         inputStream?.close()
         return bitmap
     }
-
-
 }
