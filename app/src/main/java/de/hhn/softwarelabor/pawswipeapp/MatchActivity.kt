@@ -40,7 +40,7 @@ import kotlin.math.abs
 
 /**
  * Match activity is an activity for displaying and interacting with animal profiles.
- * @author Felix Kuhbier & Leo Kalmbach
+ * @author Felix Kuhbier & Leo Kalmbach & Julian Ertle & Ecehan Colan
  * @since 2023.06.12
  */
 class MatchActivity : AppCompatActivity(), CardStackListener {
@@ -86,12 +86,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     private lateinit var detailedShelterPhoneHint: TextView
     private lateinit var detailedShelterEmailHint: TextView
     private lateinit var detailedAnimalDislikeButton: ImageButton
-    
-    
     private lateinit var currentAnimal: AnimalProfileData
-    
-    
-
 
     override fun onBackPressed() {
 
@@ -108,21 +103,18 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         Handler(Looper.getMainLooper()).postDelayed({
             backPressedOnce = false
         }, timerDuration.toLong())
-
     }
 
     override fun onResume() {
         super.onResume()
         profileId = AppData.getID(this@MatchActivity)
     }
-
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
 
         cardStackView = findViewById(R.id.matchCardStackView)
-
 
         layoutManager = CardStackLayoutManager(this@MatchActivity, this@MatchActivity)
         layoutManager.setStackFrom(StackFrom.None)
@@ -131,8 +123,6 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         
         cardStackView.layoutParams.width = resources.displayMetrics.widthPixels
         cardStackView.layoutParams.height = (resources.displayMetrics.widthPixels*1.2f).toInt()
-        
-        
 
         getAllAnimals()
 
@@ -141,10 +131,8 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
             finish()
         }
 
-
         profileId = AppData.getID(this)
         animalId = intent.getIntExtra("animal_id", 0)
-
         filterBtn = findViewById(R.id.filter_btn)
         animalListBtn = findViewById(R.id.animalList_btn2)
         likeBtn = findViewById(R.id.like_button)
@@ -305,14 +293,11 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
             }
 
         }
-        
         imageList = imageList + R.drawable.pixabay_cute_cat
         imageList = imageList + R.drawable.dislike
         imageList = imageList + R.drawable.love
         imageList = imageList + R.drawable.wf
         imageList = imageList + R.drawable.paw_swipe_splash_screen
-        
-
     }
     
     private fun isCardStackEmpty(): Boolean {
@@ -395,7 +380,12 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         }
     }
 
-    /** -------------------------------------------------------------------------------------- */
+    /**
+     * Dislikes an animal based on the provided profile ID and animal ID.
+     *
+     * @param profileId The ID of the user's profile.
+     * @param animalId The ID of the animal to dislike.
+     */
     private fun dislikeAnimal(profileId: Int, animalId: Int) {
         likeApi.dislikeAnimal(profileId, animalId) { response, error ->
             runOnUiThread {
@@ -415,6 +405,12 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         }
     }
 
+    /**
+     * Finds the latitude and longitude for a given address.
+     *
+     * @param address The address for which to find the latitude and longitude.
+     * @return The latitude and longitude as a Pair, or null if the address cannot be found.
+     */
     fun findLatLongForGivenAddress(address: String): Pair<Double, Double>? {
         return latLongUtil.getLatLongFromAddress(address)
     }
@@ -458,12 +454,12 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
     override fun onCardDisappeared(view: View?, position: Int) {
     }
 
+    /**
+     * Retrieves all animals based on the filter settings and displays them in the card stack view.
+     */
     private fun getAllAnimals() {
 
         val animals = mutableListOf<AnimalProfileData>()
-        var filteredAnimalList =
-            listOf<AnimalProfileData>() // converting of a list into mutable list failed in OutOfMemoryError due to the big size of the list
-
         val radius: Int = AppData.getRadius()
         val species: String = AppData.getSpecies()
         val illness: Boolean = AppData.getIllness()
@@ -474,7 +470,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
         val maxAge: String = AppData.getMaxAge()
 
         if (species == "" && illness && breed == "" && color == "" && gender == "" && minAge == "" && maxAge == "") {
-            // No filter set so retriving all animals
+            // No filter set so retrieving all animals
 
             animalProfileApi.getAllAnimalProfileIDs { ids, error ->
                 if (error != null) {
@@ -535,7 +531,7 @@ class MatchActivity : AppCompatActivity(), CardStackListener {
                 }
             }
         } else {
-            // Retrieving animals by filter (radius needs to be checked locally) @todo ???
+            // Retrieving animals by filter (radius needs to be checked locally) @todo for future development
 
             val filters = mutableMapOf<FilterEnum, String>()
             val map = mutableMapOf<FilterEnum, String>()

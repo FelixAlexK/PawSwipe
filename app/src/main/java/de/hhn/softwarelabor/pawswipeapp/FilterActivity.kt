@@ -14,6 +14,10 @@ import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.utils.*
 import android.widget.Switch
 
+/**
+ * The FilterActivity class represents the activity where the user can set filters for matching pets.
+ * These filters are used to narrow down the search results in the MatchActivity.
+ */
 
 class FilterActivity : AppCompatActivity() {
 
@@ -29,10 +33,15 @@ class FilterActivity : AppCompatActivity() {
 
     private lateinit var radiusField: EditText  // in xml were set to textField.isClickable = false &&
                                                 // textField.isFocusable = false since radius is not
-                                                // implemented yet @todo
+                                                // implemented yet @todo if project is continued
     private lateinit var petColorEditText: EditText
     private lateinit var petIllnessSwitch: Switch
 
+    /**
+     * Called when the activity is starting. Sets up the views and listeners.
+     *
+     * @param savedInstanceState The saved instance state bundle.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,6 +68,9 @@ class FilterActivity : AppCompatActivity() {
         loadTextViews()         // also loads Data from AppData
     }
 
+    /**
+     * Sets up the listeners for buttons and switches.
+     */
     private fun setupListeners(){
 
         cancelButton.setOnClickListener {
@@ -143,6 +155,9 @@ class FilterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Loads the saved filter settings into the text views.
+     */
     private fun loadTextViews(){
         // Load the color from AppData
         val color: String = AppData.getColor()
@@ -171,6 +186,9 @@ class FilterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Sets up the spinner adapters and listeners.
+     */
     private fun setupSpinners(){
 
         ArrayAdapter.createFromResource(
