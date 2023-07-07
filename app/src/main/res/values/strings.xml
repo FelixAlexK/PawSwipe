@@ -152,5 +152,6 @@
     <string name="ok">Ok</string>
     <string name="not_ok">Nicht Ok</string>
     <string name="like_to_see">Liken zum sehen!</string>
+    <string name="not_implemented_yet">Noch nicht implementiert</string>
 
 </resources>
