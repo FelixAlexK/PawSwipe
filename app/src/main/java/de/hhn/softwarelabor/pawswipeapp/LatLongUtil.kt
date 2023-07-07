@@ -7,13 +7,23 @@ import android.location.Geocoder
 import android.util.Log
 
 /**
+ * This class provides functionality for determining latitude and longitude from a
+ * given address.
  * To use this class, you can create an instance of GeocodingHelper and call the
- * getLatLngFromAddress() function, passing in the user's manually inputted address as a parameter.
- * The function will return a Pair object containing the latitude and longitude coordinates, or null
- * if the coordinates couldn't be retrieved.
+ * getLatLngFromAddress() function.
+ * @author Nico Wendler
  */
 class LatLongUtil(private val context: Context) {
 
+    /**
+     * Provides latitude and longitude from a given address.
+     *
+     * @param address the user's manually inputted address
+     *              For example: "1600 Amphitheatre Parkway, Mountain View, CA"
+     *              Even works with incomplete addresses such as "Heilbronn" only.
+     * @return a Pair object containing the latitude and longitude coordinates, or null
+     *          if the coordinates couldn't be retrieved.
+     */
     fun getLatLongFromAddress(address: String): Pair<Double, Double>? {
         val geocoder = Geocoder(context)
         try {
