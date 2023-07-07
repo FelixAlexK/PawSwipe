@@ -32,6 +32,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.025" />
 
+    <TextView
+        android:id="@+id/textView39"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/coming_soon_text"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
     <ScrollView
         android:layout_width="409dp"
         android:layout_height="460dp"
@@ -42,12 +54,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
-        android:fadeScrollbars="false">
+        android:fadeScrollbars="false"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -307,6 +320,8 @@
             android:id="@+id/save_btn"
             android:layout_width="126dp"
             android:layout_height="59dp"
+            android:clickable="false"
+            android:enabled="false"
             android:text="@string/saveChanges_btn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

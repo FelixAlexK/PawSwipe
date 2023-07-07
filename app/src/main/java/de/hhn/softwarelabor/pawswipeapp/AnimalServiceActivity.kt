@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,7 @@ class AnimalServiceActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         chatBtn = findViewById(R.id.chat_btn4)
+        chatBtn.visibility = View.GONE
         chatBtn.setOnClickListener {
             val intent = Intent(this@AnimalServiceActivity, ChatActivity::class.java)
             startActivity(intent)
