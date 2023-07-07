@@ -14,7 +14,9 @@ import de.hhn.softwarelabor.pawswipeapp.api.user.ProfileApi
 import de.hhn.softwarelabor.pawswipeapp.utils.AppData
 import de.hhn.softwarelabor.pawswipeapp.utils.DatePickerFragment
 
-
+/**
+ * The SettingsActivity class represents an activity for managing user settings.
+ */
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var cancelButton: Button
@@ -182,7 +184,9 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
     }
-
+    /**
+     * Updates the user profile.
+     */
     private fun updateUser() {
 
         profileApi.updateUserProfileByID(id, map) { response, error ->
@@ -205,7 +209,9 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
     }
-
+    /**
+     * Deletes the user profile.
+     */
     private fun deleteUser() {
         profileApi.deleteUserProfileByID(id) { response, error ->
             if (error != null) {
@@ -227,8 +233,12 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
     }
-
-
+    /**
+     * Sets a value in the map if it is not empty or blank.
+     *
+     * @param key   The key to set in the map.
+     * @param value The value to set in the map.
+     */
     private fun setMap(key: String, value: String) {
 
         if (value.isNotEmpty() || value.isNotBlank()) {
@@ -236,7 +246,11 @@ class SettingsActivity : AppCompatActivity() {
         }
 
     }
-
+    /**
+     * Shows a date picker dialog.
+     *
+     * @param v The view that triggers the date picker dialog.
+     */
     private fun showDatePickerDialog(v: View) {
         datePickerFragment.show(supportFragmentManager, "datePicker")
     }

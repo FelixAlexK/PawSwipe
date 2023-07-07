@@ -69,7 +69,12 @@ class ChatActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
+    /**
+     * Creates the options menu for the activity.
+     *
+     * @param menu The menu to inflate.
+     * @return true to display the menu, false otherwise.
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if (AppData.getDiscriminator(this@ChatActivity) == "shelter") {
             val inflater: MenuInflater = menuInflater
@@ -80,7 +85,12 @@ class ChatActivity : AppCompatActivity() {
         }
         return super.onCreateOptionsMenu(menu)
     }
-
+    /**
+     * Handles the selection of an option from the menu.
+     *
+     * @param item The selected menu item.
+     * @return true if the item is handled, false otherwise.
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {

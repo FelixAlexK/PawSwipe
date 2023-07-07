@@ -188,7 +188,11 @@ class EditAnimalActivity : AppCompatActivity() {
             }
         }
     }
-
+    /**
+     * Displays a date picker dialog.
+     *
+     * @param v The view that triggers the date picker dialog.
+     */
     private fun showDatePickerDialog(v: View) {
         datePickerFragment.show(supportFragmentManager, "datePicker")
     }

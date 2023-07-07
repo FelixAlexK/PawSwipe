@@ -2,8 +2,20 @@ package de.hhn.softwarelabor.pawswipeapp
 
 import java.lang.Math.*
 import java.text.DecimalFormat
-
+/**
+ * The DistanceHelper class provides methods for calculating distances between geographical coordinates.
+ */
 class DistanceHelper {
+    /**
+     * Checks if a given geographical coordinate is within a specified range of another coordinate.
+     *
+     * @param currentLat  The latitude of the current coordinate.
+     * @param currentLong The longitude of the current coordinate.
+     * @param distance    The maximum distance in kilometers.
+     * @param lat         The latitude of the target coordinate.
+     * @param lon         The longitude of the target coordinate.
+     * @return true if the target coordinate is within the specified range, false otherwise.
+     */
     private fun getShelterInRange(
         currentLat: Double,
         currentLong: Double,
@@ -25,7 +37,15 @@ class DistanceHelper {
         // Überprüfung, ob die Distanz innerhalb des angegebenen Radius liegt
         return distanceInKm <= distance
     }
-
+    /**
+     * Calculates the distance between two geographical coordinates.
+     *
+     * @param lat1  The latitude of the first coordinate.
+     * @param long1 The longitude of the first coordinate.
+     * @param lat2  The latitude of the second coordinate.
+     * @param long2 The longitude of the second coordinate.
+     * @return The distance between the two coordinates in kilometers, formatted as a string with three decimal places.
+     */
     private fun calculateDistance(lat1: Double, long1: Double, lat2: Double, long2: Double): String {
         val earthRadius = 6371 // Durchmesser der Erde in Kilometern
         val decimalFormat = DecimalFormat("#.###")

@@ -10,14 +10,20 @@ import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import de.hhn.softwarelabor.pawswipeapp.utils.AppData
-
+/**
+ * The AnimalServiceActivity class represents an activity for animal services.
+ */
 class AnimalServiceActivity : AppCompatActivity() {
 
     private lateinit var chatBtn: Button
     private lateinit var matchBtn: Button
     private lateinit var animalListBtn: Button
 
-
+    /**
+     * Creates the activity and initializes its views.
+     *
+     * @param savedInstanceState The saved instance state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_service)
@@ -47,7 +53,12 @@ class AnimalServiceActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
+    /**
+     * Creates the options menu for the activity.
+     *
+     * @param menu The menu to inflate.
+     * @return true to display the menu, false otherwise.
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if (AppData.getDiscriminator(this@AnimalServiceActivity) == "shelter") {
             val inflater: MenuInflater = menuInflater
@@ -58,7 +69,12 @@ class AnimalServiceActivity : AppCompatActivity() {
         }
         return super.onCreateOptionsMenu(menu)
     }
-
+    /**
+     * Handles the selection of an option from the menu.
+     *
+     * @param item The selected menu item.
+     * @return true if the item is handled, false otherwise.
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {

@@ -200,7 +200,24 @@ class CreateShelterActivity : AppCompatActivity() {
         }
         return false
     }
-    
+    /**
+     * Creates a shelter profile with the specified information.
+     *
+     * @param username         The username of the shelter profile.
+     * @param email            The email of the shelter profile.
+     * @param phone_number     The phone number of the shelter profile.
+     * @param profile_picture  The profile picture of the shelter profile.
+     * @param password         The password of the shelter profile.
+     * @param opening_hours    The opening hours of the shelter profile.
+     * @param street           The street of the shelter profile.
+     * @param country          The country of the shelter profile.
+     * @param city             The city of the shelter profile.
+     * @param street_number    The street number of the shelter profile.
+     * @param homepage         The homepage of the shelter profile.
+     * @param postal_code      The postal code of the shelter profile.
+     * @param lat              The latitude of the shelter location.
+     * @param lon              The longitude of the shelter location.
+     */
     private fun createShelterProfile(
         username: String,
         email: String,

@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         //Splash screen
         Handler().postDelayed({
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, MatchActivity::class.java)
             startActivity(intent)
             finish()
         }, SPLASH_DISPLAY_LENGTH.toLong())
