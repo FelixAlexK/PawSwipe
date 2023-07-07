@@ -204,7 +204,12 @@ class CreateUserProfileActivity : AppCompatActivity() {
         }
 
     }
-    
+    /**
+     * Checks if a TextView is empty or contains only spaces.
+     *
+     * @param v The TextView to check.
+     * @return true if the TextView is empty or contains only spaces, false otherwise.
+     */
     private fun checkTVEmpty(v: TextView): Boolean {
         val newString = v.text.toString().replace(" ", "")
         if (newString == ""){

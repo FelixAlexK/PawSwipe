@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Button
-
+/**
+ * The EditShelterActivity class represents an activity for editing a shelter profile.
+ * It allows the user to cancel, save changes, and delete the shelter profile.
+ */
 class EditShelterActivity : AppCompatActivity() {
 
     private lateinit var cancelButton: Button

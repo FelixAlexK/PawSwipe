@@ -68,7 +68,12 @@ class PetProfileActivity : AppCompatActivity() {
     private var pictureFour: String? = null
     private var pictureFive: String? = null
 
-
+    /**
+     * Checks if a TextView is empty or has a specific default text.
+     *
+     * @param v The TextView to check.
+     * @return true if the TextView is empty or has a default text, false otherwise.
+     */
     private fun checkTVEmpty(v: TextView): Boolean {
         val newString = v.text.toString().replace(" ", "")
         if (newString == "" || newString == resources.getString(R.string.birthday_text)) {
@@ -79,7 +84,12 @@ class PetProfileActivity : AppCompatActivity() {
         }
         return false
     }
-
+    /**
+     * Checks if a Spinner has a selected item.
+     *
+     * @param v The Spinner to check.
+     * @return true if the Spinner does not have a selected item, false otherwise.
+     */
     private fun checkSpinnerEmpty(v: Spinner): Boolean {
         if (v.selectedItem == v.getItemAtPosition(0)) {
             val errorText: TextView = v.selectedView as TextView
@@ -90,7 +100,13 @@ class PetProfileActivity : AppCompatActivity() {
         }
         return false
     }
-
+    /**
+     * Checks if a picture has been uploaded.
+     *
+     * @param pictureString The string representation of the picture.
+     * @param v             The TextView associated with the picture.
+     * @return true if no picture has been uploaded, false otherwise.
+     */
     private fun checkPictureUploaded(pictureString: String?, v: TextView): Boolean {
         if (pictureString.isNullOrEmpty()) {
             v.error = "Bitte ein Bild hochladen"

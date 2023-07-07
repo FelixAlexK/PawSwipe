@@ -408,7 +408,11 @@ class AnimalListActivity : AppCompatActivity() {
             }
         }
     }
-
+    /**
+     * Retrieves the animals from the specified shelter profile.
+     *
+     * @param profileId The ID of the shelter profile.
+     */
     private fun getAnimalsFromShelter(profileId: Int) {
 
         animalProfileApi.getAllAnimalProfileIDs { ints, error ->
